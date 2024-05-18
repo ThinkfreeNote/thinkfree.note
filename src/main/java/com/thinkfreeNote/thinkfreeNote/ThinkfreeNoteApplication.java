@@ -8,6 +8,7 @@ public class ThinkfreeNoteApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ThinkfreeNoteApplication.class, args);
+		System.out.println("pull request test");
 	}
 
 }

@@ -1,9 +1,11 @@
-function App() {
-  return (
-    <div className="App">
+import NotePage from "./component/container/NotePage";
 
-    </div>
-  );
+function App() {
+    return (
+        <div className="App">
+            <NotePage/>
+        </div>
+    );
 }
 
 export default App;

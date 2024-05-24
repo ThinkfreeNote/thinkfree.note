@@ -29,5 +29,8 @@ Content-Type: application/json
 }
 
 
-###
+### Delete Document
+DELETE http://localhost:8080/documents/1
+Content-Type: application/json
+
 

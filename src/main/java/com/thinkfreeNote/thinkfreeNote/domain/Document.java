@@ -1,6 +1,8 @@
 package com.thinkfreeNote.thinkfreeNote.domain;
 
 import com.thinkfreeNote.thinkfreeNote.request.DocumentCreateRequest;
+import com.thinkfreeNote.thinkfreeNote.request.DocumentUpdateRequest;
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -26,5 +28,15 @@ public class Document {
 
     public static Document toEntity(DocumentCreateRequest documentCreateRequest) {
         return new Document("Untitled", documentCreateRequest.content());
+    }
+
+    public void update(DocumentUpdateRequest request) {
+        if(StringUtils.isNotBlank(request.title())) {
+            this.title = request.title();
+        }
+
+        if(StringUtils.isNotBlank(request.content())) {
+            this.content = request.content();
+        }
     }
 }

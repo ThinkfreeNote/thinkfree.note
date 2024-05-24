@@ -3,6 +3,7 @@ package com.thinkfreeNote.thinkfreeNote.service;
 import com.thinkfreeNote.thinkfreeNote.domain.Document;
 import com.thinkfreeNote.thinkfreeNote.repository.DocumentRepository;
 import com.thinkfreeNote.thinkfreeNote.request.DocumentCreateRequest;
+import com.thinkfreeNote.thinkfreeNote.request.DocumentUpdateRequest;
 import com.thinkfreeNote.thinkfreeNote.response.DocumentResponse;
 import com.thinkfreeNote.thinkfreeNote.response.DocumentTitleResponse;
 import lombok.RequiredArgsConstructor;
@@ -56,5 +57,20 @@ public class DocumentService {
         return documentRepository.findAll().stream()
                 .map(document -> DocumentTitleResponse.toResponse(document.getId(), document.getTitle()))
                 .toList();
+    }
+
+    /**
+     * 문서 업데이트
+     * @param request
+     * @return
+     */
+    public Long updateDocument(DocumentUpdateRequest request) throws Exception {
+        Document document = documentRepository.findById(request.id()).orElseThrow(
+                () -> new Exception("해당 문서가 없습니다.")
+        );
+
+        document.update(request);
+
+        return documentRepository.save(document).getId();
     }
 }

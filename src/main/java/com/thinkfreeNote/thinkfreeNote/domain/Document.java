@@ -16,9 +16,7 @@ public class Document {
     @Id
     @GeneratedValue
     private Long id;
-
     private String title;
-
     private String content;
 
     public Document(String title, String content) {

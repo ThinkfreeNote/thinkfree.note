@@ -35,4 +35,9 @@ public class DocumentController {
     public Long updateDocument(@RequestBody DocumentUpdateRequest request) throws Exception {
         return documentService.updateDocument(request);
     }
+
+    @DeleteMapping("/{id}")
+    public Long deleteDocument(@PathVariable Long id) throws Exception {
+        return documentService.deleteDocument(id);
+    }
 }

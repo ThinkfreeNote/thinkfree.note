@@ -73,4 +73,19 @@ public class DocumentService {
 
         return documentRepository.save(document).getId();
     }
+
+    /**
+     * 문서 삭제
+     * @param id
+     * @return
+     */
+    public Long deleteDocument(Long id) throws Exception {
+        if (!documentRepository.existsById(id)) {
+            throw new Exception("해당 문서가 없습니다.");
+        }
+
+        documentRepository.deleteById(id);
+
+        return id;
+    }
 }

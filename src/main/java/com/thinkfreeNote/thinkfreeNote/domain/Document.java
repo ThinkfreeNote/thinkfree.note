@@ -18,13 +18,16 @@ public class Document {
     @GeneratedValue
     private Long id;
 
+    private String title;
+
     private String content;
 
-    public Document(String content) {
+    public Document(String title, String content) {
+        this.title = title;
         this.content = content;
     }
 
     public static Document toEntity(DocumentDto documentDto) {
-        return new Document(documentDto.getContent());
+        return new Document(documentDto.getTitle(), documentDto.getContent());
     }
 }

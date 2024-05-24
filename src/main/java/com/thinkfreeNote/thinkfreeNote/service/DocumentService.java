@@ -17,8 +17,8 @@ public class DocumentService {
 
     public DocumentDto createDocument(DocumentDto request) throws Exception {
         // 내용이 없으면 오류
-        if (Strings.isBlank(request.getContent())) {
-            throw new Exception("문서 내용이 없습니다.");
+        if (Strings.isBlank(request.getTitle()) || Strings.isBlank(request.getContent())) {
+            throw new Exception("문서 제목 또는 내용이 없습니다.");
         }
 
         // 엔티티로 변경

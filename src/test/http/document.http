@@ -4,6 +4,7 @@ POST http://localhost:8080/documents
 Content-Type: application/json
 
 {
-  "content" : "Test"
+  "title" : "제목 1",
+  "content" : "Test1"
 }
 ###

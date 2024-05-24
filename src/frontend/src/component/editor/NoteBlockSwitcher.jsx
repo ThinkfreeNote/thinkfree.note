@@ -4,23 +4,23 @@ import BlockWrapper from "./BlockWrapper";
 import TextBlock from "./TextBlock";
 import TableBlock from "./TableBlock";
 
-const switcher = (blockData) => {
-    switch (blockData.type) {
+const switcher = (type, id) => {
+    switch (type) {
         case "text" :
-            return <TextBlock/>
+            return <TextBlock blockId={id}/>
         case "table" :
-            return <TableBlock/>
+            return <TableBlock blockId={id}/>
         default :
-            return <TextBlock/>
+            return <TextBlock blockId={id}/>
     }
 }
 
 function NoteBlockSwitcher({blockId}) {
     const blockStore = useContext(BlockStoreContext);
-    const blockData = blockStore[blockId];
+    const {type, id} = blockStore[blockId];
 
     return <BlockWrapper id={blockId}>
-        {switcher(blockData)}
+        {switcher(type,id)}
     </BlockWrapper>
 }
 

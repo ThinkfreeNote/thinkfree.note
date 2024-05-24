@@ -1,6 +1,6 @@
 import React from 'react';
 
-function TableBlock(props) {
+function TableBlock({blockId}) {
     return (
         <div></div>
     );

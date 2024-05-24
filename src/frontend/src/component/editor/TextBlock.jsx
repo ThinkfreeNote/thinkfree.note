@@ -1,6 +1,6 @@
 import React from 'react';
 
-function TextBlock(props) {
+function TextBlock({blockId}) {
     return (
         <div></div>
     );

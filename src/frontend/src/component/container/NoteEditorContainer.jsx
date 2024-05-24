@@ -1,35 +1,35 @@
-import React, {createContext, useEffect, useRef, useState} from 'react';
-import {Note} from "../../model/note";
-import {Block} from "../../model/block";
-import {getRandomId} from "../../utils/id";
+import React, {createContext, useRef, useState} from 'react';
 import NoteEditor from "../editor/NoteEditor";
+
+const testNote = {
+    type: "docs",
+    id: "1",
+    contents: [
+        "block-abcs-123a-2sf1",
+        "block-fi12-123a-2sf1",
+    ]
+}
+
+const testBlockStore = {
+    "block-abcs-123a-2sf1": {
+        id : "block-abcs-123a-2sf1",
+        type: "text",
+        contents: []
+    },
+    "block-fi12-123a-2sf1": {
+        id : "block-fi12-123a-2sf1",
+        type: "table",
+        contents: [
+            "sdf","asdf",
+        ]
+    }
+}
 
 export const BlockStoreContext = createContext(null);
 
 function NoteEditorContainer(props) {
-    const [noteData, setNoteData] = useState(new Note());
-    const {current: blockStore} = useRef({});
-
-    useEffect(() => {
-        // 개발 테스트용 데이터
-        if (process.env.NODE_ENV === "development" && Object.keys(blockStore).length < 2) {
-            const testId = "block-" + getRandomId();
-            blockStore[testId] = new Block(testId);
-            // 테스트용 수정
-            if(Object.keys(blockStore).length === 1) {
-                blockStore[testId].type = "text";
-            }
-            else {
-                blockStore[testId].type = "table";
-            }
-            setNoteData({
-                ...noteData,
-                contents: noteData.contents.concat([testId]),
-            })
-            console.log(noteData.contents);
-        }
-    }, [blockStore, noteData]);
-
+    const [noteData, setNoteData] = useState(testNote);
+    const {current: blockStore} = useRef(testBlockStore);
     return (
         <BlockStoreContext.Provider value={blockStore}>
             <NoteEditor note={noteData} setNote={setNoteData}/>

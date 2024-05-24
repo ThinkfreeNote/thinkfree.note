@@ -1,10 +1,9 @@
 package com.thinkfreeNote.thinkfreeNote.domain;
 
-import com.thinkfreeNote.thinkfreeNote.dto.DocumentDto;
+import com.thinkfreeNote.thinkfreeNote.request.DocumentCreateRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,7 +26,7 @@ public class Document {
         this.content = content;
     }
 
-    public static Document toEntity(DocumentDto documentDto) {
-        return new Document(documentDto.getTitle(), documentDto.getContent());
+    public static Document toEntity(DocumentCreateRequest documentCreateRequest) {
+        return new Document(documentCreateRequest.title(), documentCreateRequest.content());
     }
 }

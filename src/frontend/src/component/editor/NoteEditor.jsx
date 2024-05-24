@@ -1,17 +1,13 @@
 import React from 'react';
 import NoteBlockSwitcher from "./NoteBlockSwitcher";
+import useEditHandler from "./hooks/useEditHandler";
 
-function NoteEditor({note, setNote}) {
+function NoteEditor({noteContents, setNoteContents}) {
+    const {onKeyDownHandler,onClick} = useEditHandler(noteContents,setNoteContents);
 
-    const onKeyDownHandler = (e) => {
-        if(e.key === "Enter") {
-            e.preventDefault();
-            setNote({...note})
-        }
-    }
     return (
-        <div onKeyDown={onKeyDownHandler} contentEditable={true} suppressContentEditableWarning={true}>
-            {note.contents.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}
+        <div onClick={onClick} onKeyDown={onKeyDownHandler} contentEditable={true} suppressContentEditableWarning={true}>
+            {noteContents.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}
         </div>
     );
 }

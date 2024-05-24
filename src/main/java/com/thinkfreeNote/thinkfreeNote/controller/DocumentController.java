@@ -1,6 +1,7 @@
 package com.thinkfreeNote.thinkfreeNote.controller;
 
 import com.thinkfreeNote.thinkfreeNote.request.DocumentCreateRequest;
+import com.thinkfreeNote.thinkfreeNote.response.DocumentResponse;
 import com.thinkfreeNote.thinkfreeNote.response.DocumentTitleResponse;
 import com.thinkfreeNote.thinkfreeNote.service.DocumentService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,11 @@ public class DocumentController {
     @PostMapping
     public Long createDocument(@RequestBody DocumentCreateRequest request) throws Exception {
         return documentService.createDocument(request);
+    }
+
+    @GetMapping("/{id}")
+    public DocumentResponse getDocument(@PathVariable Long id) throws Exception {
+        return documentService.getDocument(id);
     }
 
     @GetMapping("/titles")

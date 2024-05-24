@@ -3,6 +3,7 @@ package com.thinkfreeNote.thinkfreeNote.service;
 import com.thinkfreeNote.thinkfreeNote.domain.Document;
 import com.thinkfreeNote.thinkfreeNote.repository.DocumentRepository;
 import com.thinkfreeNote.thinkfreeNote.request.DocumentCreateRequest;
+import com.thinkfreeNote.thinkfreeNote.response.DocumentResponse;
 import com.thinkfreeNote.thinkfreeNote.response.DocumentTitleResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -15,6 +16,12 @@ import java.util.List;
 public class DocumentService {
     private final DocumentRepository documentRepository;
 
+    /**
+     * 문서 생성
+     * @param request
+     * @return
+     * @throws Exception
+     */
     public Long createDocument(DocumentCreateRequest request) throws Exception {
         // 내용이 없으면 오류
         if (Strings.isBlank(request.title()) || Strings.isBlank(request.content())) {
@@ -28,6 +35,23 @@ public class DocumentService {
         return documentRepository.save(document).getId();
     }
 
+    /**
+     * 문서 조회
+     * @param id
+     * @return
+     */
+    public DocumentResponse getDocument(Long id) throws Exception {
+        Document document = documentRepository.findById(id).orElseThrow(
+                () -> new Exception("문서가 없습니다.")
+        );
+
+        return DocumentResponse.toResponse(document);
+    }
+
+    /**
+     * 문서 제목 리스트 조회
+     * @return
+     */
     public List<DocumentTitleResponse> getTitleList() {
         return documentRepository.findAll().stream()
                 .map(document -> DocumentTitleResponse.toResponse(document.getId(), document.getTitle()))

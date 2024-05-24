@@ -6,9 +6,9 @@ import React from 'react';
  * @param children
  * @returns {Element}
  */
-function BlockWrapper({children}) {
+function BlockWrapper({id,children}) {
     return (
-        <div>
+        <div data-block-id={id}>
             {children}
         </div>
     );

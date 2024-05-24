@@ -19,7 +19,7 @@ function NoteBlockSwitcher({blockId}) {
     const blockStore = useContext(BlockStoreContext);
     const blockData = blockStore[blockId];
 
-    return <BlockWrapper>
+    return <BlockWrapper id={blockId}>
         {switcher(blockData)}
     </BlockWrapper>
 }

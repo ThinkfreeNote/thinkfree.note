@@ -6,7 +6,7 @@ const testNote = {
     id: "1",
     contents: [
         "block-abcs-123a-2sf1",
-        "block-fi12-123a-2sf1",
+        "block-fi12-test-2sf1",
     ]
 }
 
@@ -16,8 +16,8 @@ const testBlockStore = {
         type: "text",
         contents: []
     },
-    "block-fi12-123a-2sf1": {
-        id : "block-fi12-123a-2sf1",
+    "block-fi12-test-2sf1": {
+        id : "block-fi12-test-2sf1",
         type: "table",
         contents: [
             "sdf","asdf",

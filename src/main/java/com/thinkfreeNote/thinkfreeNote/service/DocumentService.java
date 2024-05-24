@@ -1,12 +1,15 @@
 package com.thinkfreeNote.thinkfreeNote.service;
 
 import com.thinkfreeNote.thinkfreeNote.domain.Document;
-import com.thinkfreeNote.thinkfreeNote.request.DocumentCreateRequest;
 import com.thinkfreeNote.thinkfreeNote.repository.DocumentRepository;
+import com.thinkfreeNote.thinkfreeNote.request.DocumentCreateRequest;
 import com.thinkfreeNote.thinkfreeNote.response.DocumentCreateResponse;
+import com.thinkfreeNote.thinkfreeNote.response.DocumentTitleResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,5 +27,11 @@ public class DocumentService {
 
         // DB에 저장
         return DocumentCreateResponse.toResponse(documentRepository.save(document));
+    }
+
+    public List<DocumentTitleResponse> getTitleList() {
+        return documentRepository.findAll().stream()
+                .map(document -> DocumentTitleResponse.toResponse(document.getId(), document.getTitle()))
+                .toList();
     }
 }

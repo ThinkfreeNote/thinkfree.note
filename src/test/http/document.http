@@ -1,4 +1,5 @@
 
+
 ### Create Document
 POST http://localhost:8080/documents
 Content-Type: application/json
@@ -7,4 +8,9 @@ Content-Type: application/json
   "title" : "제목 1",
   "content" : "Test1"
 }
+###
+
+GET http://localhost:8080/documents/titles
+Accept: application/json
+
 ###

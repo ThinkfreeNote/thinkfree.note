@@ -25,6 +25,6 @@ public class Document {
     }
 
     public static Document toEntity(DocumentCreateRequest documentCreateRequest) {
-        return new Document(documentCreateRequest.title(), documentCreateRequest.content());
+        return new Document("Untitled", documentCreateRequest.content());
     }
 }

@@ -10,6 +10,12 @@ npm run start
 ```
 
 
+```bash
+NodeJS version = v20.11.1
+NPM version = 10.5.2
+```
+
+
 ## 백엔드
 ```bash
 

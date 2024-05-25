@@ -1,31 +1,31 @@
 import React, {useEffect, useLayoutEffect, useRef} from 'react';
 import {setSelection} from "../../utils/editor";
 
-
 /**
  * 블록 공통 기능 구현 목적
  * @param id 블록 아이디
  * @param children
- * @returns {Element}
+ * @returns {JSX.Element}
  */
 function BlockWrapper({id,children}) {
-    const blockRef = useRef(null);
+    const wrapper = useRef(null);
 
-    useLayoutEffect(() => {
+    // 최초 생성 시 캐럿 위치 초기화
+    useEffect(() => {
         const selection = window.getSelection();
 
         const newRange = document.createRange();
 
-        const targetNode = blockRef.current.childNodes[0];
-
+        const targetNode = wrapper.current.childNodes[0];
         newRange.setStart(targetNode,0);
-        newRange.setEnd(targetNode,0);
+        newRange.collapse(true);
 
         selection.removeAllRanges();
         selection.addRange(newRange);
     }, []);
+
     return (
-        <div ref={blockRef} data-block-id={id} style={{minHeight : "30px", paddingLeft : "10px"}}>
+        <div ref={wrapper} data-block-id={id} style={{minHeight : "30px", paddingLeft : "10px"}}>
             {children}
         </div>
     );

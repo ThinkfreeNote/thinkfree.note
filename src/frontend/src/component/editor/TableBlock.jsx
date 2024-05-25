@@ -5,7 +5,7 @@ function TableBlock({blockId}) {
     const blockStore = useContext(BlockStoreContext);
     const data = blockStore[blockId];
     return (
-        <div></div>
+        <div>&#xFEFF;</div>
     );
 }
 

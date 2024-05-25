@@ -1,26 +1,22 @@
 import React, {createContext, useRef, useState} from 'react';
 import NoteEditor from "../editor/NoteEditor";
 
-const testNote = {
-    type: "docs",
-    id: "1",
-    contents: [
-        "block-abcs-123a-2sf1",
-        "block-fi12-test-2sf1",
-    ]
-}
+const testNote = [
+    "abcs-123a-2sf1",
+    "fi12-test-2sf1",
+];
 
 const testBlockStore = {
-    "block-abcs-123a-2sf1": {
-        id : "block-abcs-123a-2sf1",
+    "abcs-123a-2sf1": {
+        id: "abcs-123a-2sf1",
         type: "text",
-        contents: []
+        contents: ["s1234"]
     },
-    "block-fi12-test-2sf1": {
-        id : "block-fi12-test-2sf1",
+    "fi12-test-2sf1": {
+        id: "fi12-test-2sf1",
         type: "table",
         contents: [
-            "sdf","asdf",
+            "sdf", "asdf",
         ]
     }
 }
@@ -28,11 +24,11 @@ const testBlockStore = {
 export const BlockStoreContext = createContext(null);
 
 function NoteEditorContainer(props) {
-    const [noteData, setNoteData] = useState(testNote);
+    const [noteContents, setNoteContents] = useState(testNote);
     const {current: blockStore} = useRef(testBlockStore);
     return (
         <BlockStoreContext.Provider value={blockStore}>
-            <NoteEditor note={noteData} setNote={setNoteData}/>
+            <NoteEditor noteContents={noteContents} setNoteContents={setNoteContents}/>
         </BlockStoreContext.Provider>
     );
 }

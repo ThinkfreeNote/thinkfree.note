@@ -2,7 +2,7 @@ import React from 'react';
 
 function TextBlock({blockId}) {
     return (
-        <div></div>
+        <p>&#xFEFF;</p>
     );
 }
 

@@ -1,27 +1,20 @@
-import {createBlock, getBlockId, getCaratPositionElement, setSelection} from "../../../utils/editor";
-import {useContext, useEffect, useState} from "react";
+import {createBlock, getBlockId, getCaratPositionElement, isCaretAtEnd} from "../../../utils/editor";
+import {useContext, useEffect} from "react";
 import {BlockStoreContext} from "../../container/NoteEditorContainer";
 
 function useEditHandler(noteContents, setNoteContents) {
     const blockStore = useContext(BlockStoreContext);
 
-    useEffect(() => {
-
-    }, []);
-
     const onKeyDownHandler = (e) => {
-        try {
-            if (e.key === "Enter") {
-                e.preventDefault();
+        if (e.key === "Enter") {
+            const selection = window.getSelection();
+            e.preventDefault();
+
+            // 캐럿이 마지막 텍스트 노드에 위치한 경우에만 새로운 Block 추가
+            if (selection.type === "Caret" && isCaretAtEnd(selection)) {
                 addNewBlock();
             }
-        } catch (e) {
-            console.log(e);
         }
-    }
-
-    const onClick = (e) =>{
-        console.log(window.getSelection());
     }
 
     const addNewBlock = () => {
@@ -35,7 +28,7 @@ function useEditHandler(noteContents, setNoteContents) {
         newNoteContents.splice(currentIndex + 1, 0, newBlockId);
         setNoteContents(newNoteContents);
     }
-    return {onKeyDownHandler,onClick};
+    return {onKeyDownHandler};
 }
 
 export default useEditHandler;

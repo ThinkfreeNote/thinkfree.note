@@ -17,7 +17,8 @@ function BlockWrapper({id,children}) {
         const newRange = document.createRange();
 
         const targetNode = wrapper.current.childNodes[0];
-        newRange.setStart(targetNode,0);
+        const lastChild = targetNode.lastChild;
+        newRange.setStart(lastChild,1);
         newRange.collapse(true);
 
         selection.removeAllRanges();

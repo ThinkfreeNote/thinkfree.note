@@ -1,0 +1,36 @@
+### Create Document
+POST http://localhost:8080/documents
+Content-Type: application/json
+
+{
+  "title" : "제목 1",
+  "content" : "Test1"
+}
+
+
+### Get Document
+GET http://localhost:8080/documents/1
+Accept: application/json
+
+
+### Get Document Titles
+GET http://localhost:8080/documents/titles
+Accept: application/json
+
+
+### Create Document
+PATCH http://localhost:8080/documents
+Content-Type: application/json
+
+{
+  "id" : 3,
+  "title" : "수정됨 12",
+  "content" : "수정됨 ㅋ"
+}
+
+
+### Delete Document
+DELETE http://localhost:8080/documents/1
+Content-Type: application/json
+
+

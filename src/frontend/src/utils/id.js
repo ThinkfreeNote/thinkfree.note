@@ -5,3 +5,7 @@ export function getRandomId() {
 
     return randomId.slice(9,23);
 }
+
+export function generate4wordId () {
+    return uuidv4().slice(9,13);
+}

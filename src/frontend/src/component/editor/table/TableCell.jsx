@@ -1,11 +1,11 @@
 import React from 'react';
 
-function TableCell({data}) {
+function TableCell({data,cellId}) {
     if(data.length === 0) {
-        return <td>&#xFEFF;</td>
+        return <td data-cell-id={cellId}>&#xFEFF;</td>
     }
     return (
-        <td>{data}</td>
+        <td data-cell-id={cellId}>{data}</td>
     );
 }
 

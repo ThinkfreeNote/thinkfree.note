@@ -1,5 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {BlockStoreContext} from "../../container/NoteEditorContainer";
+import React, {useContext, useState} from 'react';
 import TableRow from "./TableRow";
 import {Table} from "../../../model/Table";
 import useTable from "./hooks/useTable";
@@ -33,7 +32,7 @@ function TableBlock({blockId}) {
                     <thead>
                     </thead>
                     <tbody>
-                    {data.contents.map(item => <TableRow key={item} data={data.rows[item]} format={data.format}/>)}
+                    {data.contents.map(item => <TableRow key={item} data={data.rows[item]} rowId={item} format={data.format}/>)}
                     </tbody>
                 </table>
                 <button onClick={addColumn} contentEditable={false} className="btn_add btn_add_column">+</button>

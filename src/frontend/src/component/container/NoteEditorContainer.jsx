@@ -5,7 +5,7 @@ const testNote = [
     "abcs-123a-2sf1",
     "fi22-test-2sf1",
     "fi22-test-2sf2",
-    "fi12-test-2sf1",
+
 ];
 
 const testBlockStore = {
@@ -42,13 +42,6 @@ const testBlockStore = {
                     fontFamily: "Noto Sans KR"
                 }
             }
-        ]
-    },
-    "fi12-test-2sf1": {
-        id: "fi12-test-2sf1",
-        type: "table",
-        contents: [
-            "sdf", "asdf",
         ]
     }
 }

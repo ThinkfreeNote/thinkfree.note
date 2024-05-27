@@ -26,7 +26,7 @@ function BlockWrapper({id,children}) {
     }, []);
 
     return (
-        <div ref={wrapper} data-block-id={id} style={{minHeight : "30px", paddingLeft : "10px"}}>
+        <div className="block_wrapper" ref={wrapper} data-block-id={id}>
             {children}
         </div>
     );

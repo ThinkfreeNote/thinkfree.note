@@ -1,5 +1,6 @@
 import React, {createContext, useRef, useState} from 'react';
 import NoteEditor from "../editor/NoteEditor";
+import {Table} from "../../model/Table";
 
 const testNote = [
     "abcs-123a-2sf1",
@@ -12,13 +13,7 @@ const testBlockStore = {
         type: "text",
         contents: ["s1234"]
     },
-    "fi12-test-2sf1": {
-        id: "fi12-test-2sf1",
-        type: "table",
-        contents: [
-            "sdf", "asdf",
-        ]
-    }
+    "fi12-test-2sf1": new Table("fi12-test-2sf1"),
 }
 
 export const BlockStoreContext = createContext(null);

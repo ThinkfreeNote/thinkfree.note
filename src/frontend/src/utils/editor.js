@@ -31,15 +31,7 @@ const getBlockId = (element) => {
 
 /// selection
 
-const setSelection = (targetId) => {
-    const selection = window.getSelection();
 
-    const newRange = document.createRange();
-
-    const caretContainer = document.querySelector(`[data-block-id="${targetId}"]`);
-    console.log(caretContainer);
-    // newRange.setStart();
-}
 
 /**
  * @description 현재 캐럿이 한 블록 내의 마지막에 위치해 있는지 확인
@@ -83,5 +75,5 @@ const getSelectedBlock = (selection) => {
 }
 
 export {
-    createBlock, getCaratPositionElement, getBlockId, setSelection, isCaretAtEnd, getSelectedBlock
+    createBlock, getCaratPositionElement, getBlockId, isCaretAtEnd, getSelectedBlock
 }

@@ -1,5 +1,4 @@
-import React, {useEffect, useLayoutEffect, useRef} from 'react';
-import {setSelection} from "../../utils/editor";
+import React, {useEffect, useRef} from 'react';
 
 /**
  * 블록 공통 기능 구현 목적

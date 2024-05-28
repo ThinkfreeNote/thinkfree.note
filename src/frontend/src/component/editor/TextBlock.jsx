@@ -1,5 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import {BlockStoreContext} from "../container/NoteEditorContainer";
+import {EditorContext} from "./NoteEditor";
 
 // 폰트 스타일 적용 함수
 const addFontStyles = (style) => {
@@ -14,7 +15,8 @@ const addFontStyles = (style) => {
     }
     if (style.type.includes('italic')) {
         fontStyles.fontStyle = 'italic';
-    }// 밑줄 취소선 겹칠 경우 밑줄만 적용
+    }
+    // 밑줄 취소선 겹칠 경우 밑줄만 적용
     if (style.type.includes('underline') && style.type.includes('line-through')) {
         fontStyles.textDecoration = 'underline';
     } else if (style.type.includes('underline')) {
@@ -26,10 +28,28 @@ const addFontStyles = (style) => {
     return fontStyles;
 };
 
+
 function TextBlock({blockId}) {
     const blockStore = useContext(BlockStoreContext);
+    const editorContext = useContext(EditorContext);
     const data = blockStore[blockId];
-    console.log(data.contents);
+
+    // 인풋 이벤트가 발생한 노드 가져와서 blockStore에 저장
+    useEffect(() => {
+        if (!editorContext.current) return;
+
+        const handler = (e) => {
+            const element = window.getSelection().anchorNode.parentElement;
+            blockStore[blockId].value = element.innerText;
+            console.log(blockStore[blockId]);
+        }
+
+        editorContext.current.addEventListener("input", handler)
+
+        return () => {
+            editorContext.current.removeEventListener("input", handler)
+        }
+    }, [editorContext]);
 
 
     // 비어있는 블록
@@ -43,9 +63,8 @@ function TextBlock({blockId}) {
         return (
             <>
                 {data.contents.map((content, index) => (
-                    <p
-                        key={index}
-                        style={addFontStyles(content.style)}
+                    <p key={index}
+                       style={addFontStyles(content.style)}
                     >
                         {content.value}
                     </p>

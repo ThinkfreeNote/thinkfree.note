@@ -1,4 +1,4 @@
-import {getBlockId} from "./editor";
+import {getClosestBlockId} from "./editor";
 
 /**
  * 셀 엘리먼트 받아서 해당하는 테이블 아이디들 반환
@@ -7,7 +7,7 @@ import {getBlockId} from "./editor";
  */
 export function getCellIds($cell) {
     return {
-        blockId : getBlockId($cell),
+        blockId : getClosestBlockId($cell),
         rowId : $cell.closest("[data-row-id]").dataset.rowId,
         cellId : $cell.dataset.cellId
     }

@@ -91,13 +91,73 @@ td {
     overflow-x: auto;
 }
 
-.table td {
+.cell  {
+    position: relative;
+    padding: 10px 12px;
     min-width: 100px;
     height: 30px;
-    padding: 6px;
     font-size: 14px;
     line-height: 140%;
+    word-break: break-all;
 }
+
+[class^="table-selector"] {
+    position: absolute;
+    opacity: 0;
+    border: none;
+    background-color: rgba(128,128,128);
+    border-radius: 4px;
+    padding : 0;
+    display: flex;
+    align-items: center;
+    height: 24px;
+    cursor: pointer;
+
+}
+[class^="table-selector"]:hover {
+    background-color: rgba(168,168,168);
+}
+[class^="table-selector"] svg {
+    width: 12px;
+    height: 12px;
+    fill : white;
+}
+
+.table-selector-row {
+    top: calc(50% - 12px);
+    left: -6px;
+}
+.table-selector-col {
+    top : -12px;
+    transform: rotate(90deg);
+    left : calc(50% - 6px);
+}
+
+.table-menu-overlay {
+    position: fixed;
+    z-index: 999;
+    inset : 0;
+    overflow: hidden;
+    background-color: rgba(168,168,168,.3);
+}
+.table-menu {
+    position: fixed;
+    background-color: white;
+    border-radius: 2px;
+    padding : .3rem 0;
+    box-shadow: 0 0 5px rgba(0,0,0,.2);
+}
+.table-menu-item {
+    padding : 1rem;
+    font-family: "Noto Sans KR", sans-serif;
+    font-size : 14px;
+    min-width: 10rem;
+}
+.table-menu-item:hover {
+    background-color: rgba(241, 242, 244);
+    cursor : pointer;
+}
+
 
 .btn_add {
     position: absolute;

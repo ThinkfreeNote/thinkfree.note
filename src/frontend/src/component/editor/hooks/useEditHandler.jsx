@@ -1,4 +1,4 @@
-import {createBlock, getBlockId, getCaratPositionElement, isCaretAtEnd} from "../../../utils/editor";
+import {createBlock, getClosestBlockId, getCaratPositionElement, isCaretAtEnd} from "../../../utils/editor";
 import {useContext, useEffect} from "react";
 import {BlockStoreContext} from "../../container/NoteEditorContainer";
 
@@ -19,8 +19,8 @@ function useEditHandler(noteContents, setNoteContents) {
 
     const addNewBlock = () => {
         // 현재 블록 아이디
-        const currentBlockId = getBlockId(getCaratPositionElement());
-        const newBlockId = createBlock(blockStore, "text");
+        const currentBlockId = getClosestBlockId(getCaratPositionElement());
+        const newBlockId = blockStore.createBlock("text").id;
 
         const currentIndex = noteContents.indexOf(currentBlockId);
 

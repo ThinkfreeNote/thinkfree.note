@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {BlockStoreContext} from "../../container/NoteEditorContainer";
 import TableRow from "./TableRow";
 import {Table} from "../../../model/Table";
 import useTable from "./hooks/useTable";

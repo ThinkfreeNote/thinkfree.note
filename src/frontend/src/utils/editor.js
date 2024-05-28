@@ -10,7 +10,9 @@ import {Block} from "../model/block";
  */
 const createBlock = (store, type) => {
     const id = getRandomId();
-    store[id] = new Block(id);  // 임시 : 테스트로 변경
+    const contents = [];
+
+    store[id] = new Block(id, type, contents);
 
     return id;
 }

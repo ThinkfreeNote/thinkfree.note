@@ -1,7 +1,7 @@
 export class Block {
-    constructor(id) {
+    constructor(id, type, contents) {
         this.id = id;
-        this.type = "block";
-        this.contents = [];
+        this.type = type;
+        this.contents = contents;
     }
 }

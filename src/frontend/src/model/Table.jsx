@@ -2,9 +2,8 @@ import {Block} from "./block";
 import {generate4wordId, getRandomId} from "../utils/id";
 
 export class Table extends Block {
-    constructor(props) {
-        super(props);
-        this.type = "table";
+    constructor(id, type, contents) {
+        super(id, type, contents);
         this.format = [];
         this.rows = {};
         this.init();

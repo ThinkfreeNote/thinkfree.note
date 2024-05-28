@@ -1,19 +1,53 @@
 import React, {useContext, useEffect} from 'react';
+import {BlockStoreContext} from "../container/NoteEditorContainer";
+import {EditorContext} from "./NoteEditor";
+
 
 function TextBlock({blockId}) {
-    const data = {};
-    const abc = () =>{
-        return {
-            fontWeight : data.bold && 600,
-            fontStyle : data.italic || 300,
+    const blockStore = useContext(BlockStoreContext);
+    const editorContext = useContext(EditorContext);
+    const data = blockStore[blockId];
+    console.log(data);
+
+    // 인풋 이벤트가 발생한 노드 가져와서 blockStore에 저장
+    useEffect(() => {
+        if (!editorContext.current) return;
+
+        const handler = (e) => {
+            const element = window.getSelection().anchorNode.parentElement;
+            blockStore[blockId].value = element.innerText;
+            console.log(blockStore[blockId]);
         }
+
+        editorContext.current.addEventListener("input", handler)
+
+        return () => {
+            editorContext.current.removeEventListener("input", handler)
+        }
+    }, [editorContext]);
+
+
+    // 비어있는 블록
+    if (data.contents.length === 0) {
+        return (
+            <>
+                <p>&#xFEFF;</p>
+            </>
+        );
+    } else {
+        return (
+            <>
+                {data.contents.map((content, index) => (
+                    <p key={index}
+                       style={{...content.fontStyle}}
+                    >
+                        {content.value}
+                    </p>
+                ))}
+            </>
+        );
     }
-
-
-
-    return (
-        <p style={{fontWeight: 600}}>&#xFEFF;</p>
-    );
 }
+
 
 export default TextBlock;

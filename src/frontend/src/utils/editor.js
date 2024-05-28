@@ -1,5 +1,5 @@
 import {getRandomId} from "./id";
-import {Block} from "../model/block";
+import {Block} from "../model/Block";
 
 
 /**
@@ -10,7 +10,9 @@ import {Block} from "../model/block";
  */
 const createBlock = (store, type) => {
     const id = getRandomId();
-    store[id] = new Block(id);  // 임시 : 테스트로 변경
+    const contents = [];
+
+    store[id] = new Block(id, type, contents);
 
     return id;
 }
@@ -24,7 +26,7 @@ const getCaratPositionElement = () => {
     }
 }
 
-const getBlockId = (element) => {
+const getClosestBlockId = (element) => {
     if(element.dataset.blockId) return element.dataset.blockId;
     return element.closest("[data-block-id]").dataset.blockId;
 }
@@ -75,5 +77,5 @@ const getSelectedBlock = (selection) => {
 }
 
 export {
-    createBlock, getCaratPositionElement, getBlockId, isCaretAtEnd, getSelectedBlock
+    createBlock, getCaratPositionElement, getClosestBlockId, isCaretAtEnd, getSelectedBlock
 }

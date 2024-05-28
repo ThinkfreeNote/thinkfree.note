@@ -1,4 +1,4 @@
-import {Block} from "./block";
+import {Block} from "./Block";
 import {generate4wordId, getRandomId} from "../utils/id";
 
 export class Table extends Block {

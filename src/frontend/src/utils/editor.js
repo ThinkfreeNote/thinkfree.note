@@ -1,5 +1,5 @@
 import {getRandomId} from "./id";
-import {Block} from "../model/block";
+import {Block} from "../model/Block";
 
 
 /**
@@ -26,7 +26,7 @@ const getCaratPositionElement = () => {
     }
 }
 
-const getBlockId = (element) => {
+const getClosestBlockId = (element) => {
     return element.closest("[data-block-id]").dataset.blockId;
 }
 
@@ -87,5 +87,5 @@ const getSelectedBlock = (selection) => {
 
 
 export {
-    createBlock, getCaratPositionElement, getBlockId, setSelection, isCaretAtEnd, getSelectedBlock
+    createBlock, getCaratPositionElement, getClosestBlockId, setSelection, isCaretAtEnd, getSelectedBlock
 }

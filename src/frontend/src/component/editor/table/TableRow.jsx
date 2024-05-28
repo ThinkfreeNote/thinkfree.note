@@ -1,11 +1,18 @@
-import React, {useEffect} from 'react';
+import React, {useContext} from 'react';
 import TableCell from "./TableCell";
+import {TableSelectorSetContext} from "./contexts/TableSelectorProvider";
 
-function TableRow({data,format,rowId}) {
+function TableRow({data,format,rowId, rowIdx}) {
+    const {setRow} = useContext(TableSelectorSetContext);
+
+    const mouseOverHandler = (e)=> {
+        setRow(rowIdx);
+    }
+
     return (
-        <tr data-row-id={rowId}>
-            {format.map(item => {
-                return <TableCell key={item} data={data[item]} cellId={item}/>
+        <tr onMouseOver={mouseOverHandler} data-row-id={rowId}>
+            {format.map((item,idx) => {
+                return <TableCell key={item} data={data[item]} cellId={item} colIdx={idx} rowIdx={rowIdx}/>
             })}
         </tr>
     );

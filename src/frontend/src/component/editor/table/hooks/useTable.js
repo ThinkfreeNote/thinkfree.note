@@ -1,10 +1,12 @@
 import {useContext, useEffect} from 'react';
 import {BlockStoreContext} from "../../../container/NoteEditorContainer";
 import {getCellIds, isCell} from "../../../../utils/table";
+import {EditorContext} from "../../NoteEditor";
 
 
-function UseTable({contentEditableRef, blockId}) {
+function UseTable(blockId) {
     const blockStore = useContext(BlockStoreContext);
+    const contentEditableRef = useContext(EditorContext);
     const blockData = blockStore[blockId];
 
     useEffect(() => {
@@ -20,6 +22,7 @@ function UseTable({contentEditableRef, blockId}) {
             if (anchorNode.nodeType === Node.TEXT_NODE) {
                 value = anchorNode.nodeValue.replace(/\uFEFF/, "");
             }
+            console.log(blockData);
 
             const {blockId,rowId,cellId} = getCellIds($cell);
 
@@ -32,7 +35,7 @@ function UseTable({contentEditableRef, blockId}) {
             if (!contentEditableRef.current) return;
             contentEditableRef.current.removeEventListener("input", updateStore);
         }
-    }, [contentEditableRef]);
+    }, [blockData,blockStore,contentEditableRef]);
 
     return [blockData]
 }

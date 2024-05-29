@@ -27,12 +27,11 @@ const getCaratPositionElement = () => {
 }
 
 const getClosestBlockId = (element) => {
-    if(element.dataset.blockId) return element.dataset.blockId;
+    if (element.dataset.blockId) return element.dataset.blockId;
     return element.closest("[data-block-id]").dataset.blockId;
 }
 
 /// selection
-
 
 
 /**
@@ -55,7 +54,7 @@ const isCaretAtEnd = (selection) => {
     if (!lastChild) return true;
 
     // 마지막이 BOM 문자열인지에 따라 마지막 offset 구하기
-    const lastChildLength = /\uFEFF/.test(lastChild.textContent[lastChild.length - 1]) ? lastChild.length -1 : lastChild.length;
+    const lastChildLength = /\uFEFF/.test(lastChild.textContent[lastChild.length - 1]) ? lastChild.length - 1 : lastChild.length;
     // 현재 캐릿이 마지막 노드이고, 오프셋이 마지막인 경우에만
     return endContainer === lastChild && (endOffset === lastChild.length || endOffset === lastChildLength);
 }
@@ -76,6 +75,14 @@ const getSelectedBlock = (selection) => {
     }
 }
 
+
+const getElementBySelection = () => {
+    const {anchorNode} = window.getSelection();
+    const type = anchorNode.nodeType;
+    if (type === Node.ELEMENT_NODE) return anchorNode;
+    else if (type === Node.TEXT_NODE) return anchorNode.parentElement;
+}
+
 export {
-    createBlock, getCaratPositionElement, getClosestBlockId, isCaretAtEnd, getSelectedBlock
+    createBlock, getCaratPositionElement, getClosestBlockId, isCaretAtEnd, getSelectedBlock, getElementBySelection
 }

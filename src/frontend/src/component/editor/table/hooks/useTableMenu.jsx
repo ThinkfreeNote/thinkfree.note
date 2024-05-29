@@ -1,26 +1,43 @@
 import {useContext, useLayoutEffect, useRef} from 'react';
 import {TableMenuOffsetContext, TableMenuSetterContext} from "../contexts/TableMenuContextProvider";
 
-function UseTableMenu(props) {
-    const {x, y} = useContext(TableMenuOffsetContext);
-    const dispatch = useContext(TableMenuSetterContext);
-    const menuRef = useRef(null);
+/**
+ * @desc 테이블 메뉴 조작 훅
+ * @returns {{openMenu: function, isOpen: boolean, closeMenu: function}}
+ */
+function useTableMenu() {
+    const {x, y, clearMenuOffset, setMenuOffset} = useTableMenuOffset();
 
     const closeMenu = () => {
-        dispatch({type :"clearOffset"})
+        clearMenuOffset();
+    }
+    const openMenu = (x, y) => {
+        setMenuOffset(x, y);
     }
 
-    // 메뉴 박스가 화면 크기 넘어가는 경우 위치 재조정
-    useLayoutEffect(() => {
-        if(!menuRef.current) return;
-        const innerWidth = window.innerWidth;
-        const menuBoxWidth =menuRef.current.offsetWidth
-        if(menuBoxWidth + x > innerWidth) {
-            dispatch({type : "updateOffset", x : innerWidth - menuBoxWidth - 10});
-        }
-    }, [x,y, dispatch]);
-
-    return {closeMenu, menuRef, offset : {x,y}, isOpen : !(x === 0 && y === 0)}
+    return {openMenu, closeMenu, isOpen: !(x === 0 && y === 0)}
 }
 
-export default UseTableMenu;
+/**
+ * @desc 테이블 메뉴 Offset 조작 훅
+ * @returns {{ x, y, setMenuOffset: function, clearMenuOffset: function}}
+ */
+function useTableMenuOffset() {
+    const {x, y} = useContext(TableMenuOffsetContext);
+    const dispatch = useContext(TableMenuSetterContext);
+
+    if (!dispatch) return;
+    const setMenuOffset = (x, y) => {
+        dispatch({type: "updateOffset", x, y});
+    }
+
+    const clearMenuOffset = () => {
+        dispatch({type: "clearOffset"});
+    }
+
+    return {x, y, setMenuOffset, clearMenuOffset}
+}
+
+export {
+    useTableMenu, useTableMenuOffset
+};

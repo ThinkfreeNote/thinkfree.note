@@ -2,7 +2,7 @@ import {Block} from "./Block";
 import {generate4wordId, getRandomId} from "../utils/id";
 
 export class Table extends Block {
-    constructor(id, type, contents) {
+    constructor(id, type = "table", contents = []) {
         super(id, type, contents);
         this.format = [];
         this.rows = {};
@@ -45,5 +45,9 @@ export class Table extends Block {
         rowIds.forEach(item => {
             this.rows[item][columnId] = ""
         })
+    }
+
+    updateCell(rowId,colId,value) {
+        this.rows[rowId][colId] = value;
     }
 }

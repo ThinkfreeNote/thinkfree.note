@@ -1,22 +1,21 @@
 import React from 'react';
-
-import useTable from "./hooks/useTable";
-import TableSelectorProvider from "./contexts/TableSelectorProvider";
+import TableMousePositionProvider from "./contexts/TableSelectorProvider";
 import TableComponent from "./TableComponent";
 import TableMenu from "./TableMenu";
-import TableMenuContextProvider from "./contexts/TableMenuContextProvider";
-
+import TableMenuProvider from "./contexts/TableMenuContextProvider";
+import {useBlockData} from "../hooks/useBlockHooks";
 
 function TableBlock({blockId}) {
-    const [data] = useTable(blockId);
+    // 테이블 데이터
+    const tableData = useBlockData(blockId);
 
     return (
-        <TableSelectorProvider>
-            <TableMenuContextProvider>
-                <TableComponent data={data}/>
+        <TableMousePositionProvider>
+            <TableMenuProvider>
+                <TableComponent data={tableData}/>
                 <TableMenu/>
-            </TableMenuContextProvider>
-        </TableSelectorProvider>
+            </TableMenuProvider>
+        </TableMousePositionProvider>
     );
 }
 

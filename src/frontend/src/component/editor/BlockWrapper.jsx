@@ -1,5 +1,4 @@
-import React, {useEffect, useLayoutEffect, useRef} from 'react';
-import {setSelection} from "../../utils/editor";
+import React, {useEffect, useRef} from 'react';
 
 /**
  * 블록 공통 기능 구현 목적
@@ -26,7 +25,7 @@ function BlockWrapper({id,children}) {
     }, []);
 
     return (
-        <div ref={wrapper} data-block-id={id} style={{minHeight : "30px", paddingLeft : "10px"}}>
+        <div className="block_wrapper" ref={wrapper} data-block-id={id}>
             {children}
         </div>
     );

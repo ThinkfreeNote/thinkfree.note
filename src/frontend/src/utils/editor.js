@@ -27,21 +27,13 @@ const getCaratPositionElement = () => {
 }
 
 const getClosestBlockId = (element) => {
+    if(element.dataset.blockId) return element.dataset.blockId;
     return element.closest("[data-block-id]").dataset.blockId;
 }
 
-
 /// selection
 
-const setSelection = (targetId) => {
-    const selection = window.getSelection();
 
-    const newRange = document.createRange();
-
-    const caretContainer = document.querySelector(`[data-block-id="${targetId}"]`);
-    console.log(caretContainer);
-    // newRange.setStart();
-}
 
 /**
  * @description 현재 캐럿이 한 블록 내의 마지막에 위치해 있는지 확인
@@ -64,13 +56,12 @@ const isCaretAtEnd = (selection) => {
 
     // 마지막이 BOM 문자열인지에 따라 마지막 offset 구하기
     const lastChildLength = /\uFEFF/.test(lastChild.textContent[lastChild.length - 1]) ? lastChild.length -1 : lastChild.length;
-
     // 현재 캐릿이 마지막 노드이고, 오프셋이 마지막인 경우에만
     return endContainer === lastChild && (endOffset === lastChild.length || endOffset === lastChildLength);
 }
 
 /**
- * 셀렉션 혹은 캐럿의 블록 아이디 반환
+ * 셀렉션 혹은 캐럿의 블록 반환
  * @param {Selection} selection
  * @returns {{anchorBlockId: string, focusBlockId: string}}
  */
@@ -85,7 +76,6 @@ const getSelectedBlock = (selection) => {
     }
 }
 
-
 export {
-    createBlock, getCaratPositionElement, getClosestBlockId, setSelection, isCaretAtEnd, getSelectedBlock
+    createBlock, getCaratPositionElement, getClosestBlockId, isCaretAtEnd, getSelectedBlock
 }

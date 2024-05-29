@@ -6,18 +6,19 @@ import TextBox from "./TextBox";
 
 
 function TextBlock({blockId}) {
-    const data = useBlockData(blockId);
-    console.log(data);
+    const textBlock = useBlockData(blockId);
 
-    const handler = (e) => {
-        const element = window.getSelection().anchorNode.parentElement;
-        data.value = element.innerText;
-        console.log(data);
+    const insertValue = (e) => {
+        const textNode = window.getSelection().anchorNode;
+        if (textNode.nodeType === 3) {
+            textBlock.value = textNode.parentElement
+        }
     }
 
-    useEditorEventListener("input", handler, [handler]);
+    useEditorEventListener("input", insertValue,[insertValue]);
+
     // 비어있는 블록
-    if (data.contents.length === 0) {
+    if (textBlock.contents.length === 0) {
         return (
             <>
                 <p>&#xFEFF;</p>
@@ -26,7 +27,7 @@ function TextBlock({blockId}) {
     } else {
         return (
             <>
-                {data.contents.map((index, content) => (
+                {textBlock.contents.map((content, index) => (
                     <TextComponent key={index} data={content}/>
                 ))}
                 <TextBox/>

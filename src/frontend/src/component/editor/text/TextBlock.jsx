@@ -1,6 +1,7 @@
 import React, {useContext, useEffect} from 'react';
-import {BlockStoreContext} from "../container/NoteEditorContainer";
-import {EditorContext} from "./NoteEditor";
+import {BlockStoreContext} from "../../container/NoteEditorContainer";
+import {EditorContext} from "../NoteEditor";
+import TextComponent from "./TextComponent";
 
 
 function TextBlock({blockId}) {
@@ -36,15 +37,7 @@ function TextBlock({blockId}) {
         );
     } else {
         return (
-            <>
-                {data.contents.map((content, index) => (
-                    <p key={index}
-                       style={{...content.fontStyle}}
-                    >
-                        {content.value}
-                    </p>
-                ))}
-            </>
+            <TextComponent data={data}/>
         );
     }
 }

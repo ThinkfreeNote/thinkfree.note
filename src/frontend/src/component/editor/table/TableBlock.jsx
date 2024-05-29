@@ -1,5 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Table} from "../../../model/Table";
+import React from 'react';
 
 import useTable from "./hooks/useTable";
 import TableSelectorProvider from "./contexts/TableSelectorProvider";

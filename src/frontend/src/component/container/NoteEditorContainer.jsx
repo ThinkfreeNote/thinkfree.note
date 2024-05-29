@@ -5,6 +5,8 @@ import {TextBlock} from "../../model/TextBlock";
 import {BlockStore} from "../../model/BlockStore";
 import {Note} from "../../model/Note";
 import {Text} from "../../model/Text";
+import {getRandomId} from "../../utils/id";
+import {Table} from "../../model/Table";
 
 
 const testBlockStore = new BlockStore();
@@ -30,6 +32,10 @@ const createTest = () => {
 
     // 블럭 스토어
     testBlockStore.addBlock(textBlock1);
+
+    const blockId2 = getRandomId();
+    note.addBlockId(blockId2);
+    testBlockStore.addBlock(new Table(blockId2));
 
     return testBlockStore;
 }

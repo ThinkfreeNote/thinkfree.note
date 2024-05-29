@@ -1,12 +1,23 @@
-import React, {useContext} from 'react';
-import {TableSelectorContext} from "./contexts/TableSelectorProvider";
-import {TableMenuSetterContext} from "./contexts/TableMenuContextProvider";
+import React from 'react';
+import {useTableMousePosition} from "./hooks/useTableMousePositionHooks";
+import {useTableMenu, useTableMenuOffset} from "./hooks/useTableMenu";
 
+
+function TableSelector({colIdx, rowIdx}) {
+    const {row, col} = useTableMousePosition()
+    return (<>
+            {colIdx === 0 && <TableSelectorButton isShow={row === rowIdx} type="row"/>}
+            {rowIdx === 0 && <TableSelectorButton isShow={col === colIdx} type="col"/>}
+        </>
+
+    );
+}
 
 const TableSelectorButton = ({isShow, type}) => {
-    const menuDispatch = useContext(TableMenuSetterContext);
+    const {openMenu} = useTableMenu();
+
     const clickHandler = (e) => {
-        menuDispatch && menuDispatch({type: "updateOffset", x: e.clientX, y: e.clientY});
+        openMenu(e.clientX,e.clientY);
     }
     return <button contentEditable={false} onClick={clickHandler}
                    style={{
@@ -22,16 +33,6 @@ const TableSelectorButton = ({isShow, type}) => {
                 d="m12 16.495c1.242 0 2.25 1.008 2.25 2.25s-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25 1.008-2.25 2.25-2.25zm0 1.5c.414 0 .75.336.75.75s-.336.75-.75.75-.75-.336-.75-.75.336-.75.75-.75zm0-8.25c1.242 0 2.25 1.008 2.25 2.25s-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25 1.008-2.25 2.25-2.25zm0 1.5c.414 0 .75.336.75.75s-.336.75-.75.75-.75-.336-.75-.75.336-.75.75-.75zm0-8.25c1.242 0 2.25 1.008 2.25 2.25s-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25 1.008-2.25 2.25-2.25zm0 1.5c.414 0 .75.336.75.75s-.336.75-.75.75-.75-.336-.75-.75.336-.75.75-.75z"/>
         </svg>
     </button>
-}
-
-function TableSelector({colIdx, rowIdx}) {
-    const {row, col} = useContext(TableSelectorContext);
-    return (<>
-            {colIdx === 0 && <TableSelectorButton isShow={row === rowIdx} type="row"/>}
-            {rowIdx === 0 && <TableSelectorButton isShow={col === colIdx} type="col"/>}
-        </>
-
-    );
 }
 
 export default TableSelector;

@@ -1,13 +1,14 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import TableSelector from "./TableSelector";
-import {TableSelectorSetContext} from "./contexts/TableSelectorProvider";
+import {useTableMousePositionSetter} from "./hooks/useTableMousePositionHooks";
 
 
 function TableCell({data, cellId, colIdx, rowIdx}) {
-    const {setCol} = useContext(TableSelectorSetContext);
+    const {setMouseColPosition} = useTableMousePositionSetter();
 
     const mouseHandler = (e) => {
-        setCol(colIdx);
+        // 현재 마우스가 위치한 Column 위치 업데이트
+        setMouseColPosition(colIdx);
     }
 
     return (

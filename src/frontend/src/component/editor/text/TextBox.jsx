@@ -1,6 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {BlockStoreContext} from "../../container/NoteEditorContainer";
-import {EditorContext} from "../NoteEditor";
+import React, {useState} from 'react';
 
 function TextBox() {
     const [isHidden, setIsHidden] = useState(false);
@@ -10,7 +8,8 @@ function TextBox() {
     } else {
         return (
             <div contentEditable={false} className="textbox" style={{userSelect: "none"}}>
-                <button>123</button><button></button>
+                <button>123</button>
+                <button>123</button>
             </div>
         );
     }

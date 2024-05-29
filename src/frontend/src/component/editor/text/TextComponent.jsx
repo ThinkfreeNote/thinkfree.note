@@ -6,7 +6,7 @@ import {EditorContext} from "../NoteEditor";
 function TextComponent({data}) {
     return (
         <div style={data.fontStyle}>
-            <p>{data.value}</p>
+            {data.value}
         </div>
     )
 }

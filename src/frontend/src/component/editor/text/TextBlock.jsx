@@ -2,6 +2,7 @@ import React, {useContext, useEffect} from 'react';
 import {BlockStoreContext} from "../../container/NoteEditorContainer";
 import {EditorContext} from "../NoteEditor";
 import TextComponent from "./TextComponent";
+import TextBox from "./TextBox";
 
 
 function TextBlock({blockId}) {
@@ -37,7 +38,12 @@ function TextBlock({blockId}) {
         );
     } else {
         return (
-            <TextComponent data={data}/>
+            <>
+                {data.contents.map((content, index) => (
+                    <TextComponent key={index} data={content}/>
+                ))}
+                <TextBox/>
+            </>
         );
     }
 }

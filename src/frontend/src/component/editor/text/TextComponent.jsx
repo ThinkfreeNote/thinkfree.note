@@ -4,26 +4,11 @@ import {EditorContext} from "../NoteEditor";
 
 
 function TextComponent({data}) {
-    // 비어있는 블록
-    if (data.contents.length === 0) {
-        return (
-            <>
-                <p>&#xFEFF;</p>
-            </>
-        );
-    } else {
-        return (
-            <>
-                {data.contents.map((content, index) => (
-                    <p key={index}
-                       style={{...content.fontStyle}}
-                    >
-                        {content.value}
-                    </p>
-                ))}
-            </>
-        );
-    }
+    return (
+        <div style={data.fontStyle}>
+            <p>{data.value}</p>
+        </div>
+    )
 }
 
 

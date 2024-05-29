@@ -1,15 +1,12 @@
-import React, {useContext, useEffect} from 'react';
-import {BlockStoreContext} from "../../container/NoteEditorContainer";
-import {EditorContext} from "../NoteEditor";
+import React from 'react';
 
 
-function TextComponent({data}) {
+function TextComponent({text}) {
     return (
-        <div style={data.fontStyle}>
-            {data.value}
+        <div className={text.id} style={text.fontStyle}>
+            {text.value}
         </div>
     )
 }
-
 
 export default TextComponent;

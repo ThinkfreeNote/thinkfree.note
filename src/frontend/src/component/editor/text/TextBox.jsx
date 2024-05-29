@@ -7,7 +7,7 @@ function TextBox() {
         return;
     } else {
         return (
-            <div contentEditable={false} className="textbox" style={{userSelect: "none"}}>
+            <div contentEditable={false} className="text-box" style={{userSelect: "none"}}>
                 <button>123</button>
                 <button>123</button>
             </div>

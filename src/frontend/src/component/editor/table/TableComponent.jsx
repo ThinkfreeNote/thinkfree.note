@@ -1,28 +1,19 @@
-import React, {useContext, useState} from 'react';
+import React from 'react';
 import TableRow from "./TableRow";
-import {Table} from "../../../model/Table";
-import {TableSelectorSetContext} from "./contexts/TableSelectorProvider";
+import useTable from "./hooks/useTable";
+import {useTableMousePositionSetter} from "./hooks/useTableMousePositionHooks";
+import {useEditorEventListener} from "../hooks/useEditHandler";
 
 function TableComponent({data}) {
-    const [state, setState] = useState(0);
-    const {setCol,setRow} = useContext(TableSelectorSetContext);
+    const {addColumn, addRow} = useTable(data);
+    const {clearPosition} = useTableMousePositionSetter();
 
-    const addColumn = () => {
-        if (data instanceof Table) {
-            data.addColumn();
-            setState(prev => prev + 1);
-        }
-    }
-    const addRow = () => {
-        if (data instanceof Table) {
-            data.addRow();
-            setState(prev => prev + 1);
-        }
-    }
+    // 에디터에 테이블 조작 핸들러 등록
+    const {cellHandler} = useTable(data);
+    useEditorEventListener("input",cellHandler,[cellHandler]);
 
     const mouseOutHandler =  (e) => {
-        setCol(-1);
-        setRow(-1);
+        clearPosition();
     }
 
     return (

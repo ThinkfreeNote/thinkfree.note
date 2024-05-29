@@ -1,43 +1,41 @@
-import {useContext, useEffect} from 'react';
-import {BlockStoreContext} from "../../../container/NoteEditorContainer";
+import {useCallback, useState} from 'react';
 import {getCellIds, isCell} from "../../../../utils/table";
-import {EditorContext} from "../../NoteEditor";
+import {removeBOM} from "../../../../utils/common";
+import {getElementBySelection} from "../../../../utils/editor";
 
+/**
+ * @desc 테이블 핸들러 반환하는 커스텀 훅
+ * @param {Table} tableBlock
+ * @returns {{inputHandler: ((function(*): void)|*)}}
+ */
+function useTable(tableBlock) {
+    // 리렌더링 발생 목적
+    const [_, setNum] = useState(0);
 
-function UseTable(blockId) {
-    const blockStore = useContext(BlockStoreContext);
-    const contentEditableRef = useContext(EditorContext);
-    const blockData = blockStore[blockId];
+    const tableRerender = () => {
+        setNum(prev => prev + 1);
+    }
 
-    useEffect(() => {
-        if (!contentEditableRef.current) return;
+    const cellHandler = useCallback((e) => {
+        const $cell = getElementBySelection();
+        if (!isCell($cell)) return;
+        let value = $cell.textContent.length === 0 ? `\uFEFF` : removeBOM($cell.textContent);
 
-        const updateStore = (e) => {
-            const {anchorNode} = window.getSelection();
-            // 요소 가져와서 셀인지 확인
-            const $cell = anchorNode.nodeType === Node.ELEMENT_NODE ? anchorNode : anchorNode.parentElement;
-            if(!isCell($cell)) return;
+        const {rowId, cellId} = getCellIds($cell);
+        tableBlock.updateCell(rowId, cellId, value);
+    }, [tableBlock])
 
-            let value = `\uFEFF`
-            if (anchorNode.nodeType === Node.TEXT_NODE) {
-                value = anchorNode.nodeValue.replace(/\uFEFF/, "");
-            }
-            console.log(blockData);
+    const addColumn = () => {
+        tableBlock.addColumn();
+        tableRerender();
+    }
 
-            const {blockId,rowId,cellId} = getCellIds($cell);
+    const addRow = () => {
+        tableBlock.addRow();
+        tableRerender();
+    }
 
-            // blockStore 업데이트
-            blockStore[blockId].rows[rowId][cellId] = value;
-        }
-        contentEditableRef.current.addEventListener("input", updateStore);
-
-        return () => {
-            if (!contentEditableRef.current) return;
-            contentEditableRef.current.removeEventListener("input", updateStore);
-        }
-    }, [blockData,blockStore,contentEditableRef]);
-
-    return [blockData]
+    return {cellHandler, addColumn, addRow, tableRerender}
 }
 
-export default UseTable;
+export default useTable;

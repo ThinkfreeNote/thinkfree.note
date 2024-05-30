@@ -1,40 +1,61 @@
-import React, {useLayoutEffect, useRef} from 'react';
-import {useTableMenu, useTableMenuOffset} from "./hooks/useTableMenu";
+import React, {useContext} from 'react';
+import {ContextMenu} from "../../common/ContextMenu";
+import {BlockIdContext} from "../BlockWrapper";
+import {useBlockData} from "../hooks/useBlockHooks";
+import useTable from "./hooks/useTable";
+import {TableRerenderContext} from "./TableComponent";
 
-function TableMenu(props) {
-    const menuRef = useRef(null);
-    const {closeMenu, isOpen} = useTableMenu();
-    const {x,y, setMenuOffset} = useTableMenuOffset();
+function TableMenu({closeMenu, type, rowIdx, colIdx}) {
+    const headerAble = rowIdx === 0 && colIdx === 0;
+    const typeText = type === "row" ? "행" : "열";
+    const blockId = useContext(BlockIdContext);
+    const tableData = useBlockData(blockId);
+    const {addRow,addColumn,removeRow} = useTable(tableData);
+    const reRenderTable = useContext(TableRerenderContext);
 
-    // 배경 클릭 시
-    const overlayClickHandler = (e) => {
-        if(e.target === menuRef.current || menuRef.current.contains(e.target)) return;
-        // 메뉴 닫기
+    const insertNext = () => {
+        if(type === "row") {
+            addRow(rowIdx);
+            reRenderTable();
+        }
+        else if(type === "col") {
+            addColumn(colIdx);
+            reRenderTable();
+        }
+        closeMenu();
+    }
+    const insertPrev = () => {
+        if(type === "row") {
+            addRow(rowIdx-1);
+            reRenderTable();
+        }
+        else if(type === "col") {
+            addColumn(colIdx-1);
+            reRenderTable();
+        }
         closeMenu();
     }
 
-    // 메뉴 박스가 화면 크기 넘어가는 경우 위치 재조정
-    useLayoutEffect(() => {
-        if (!menuRef.current) return;
-        const innerWidth = window.innerWidth;
-        const menuBoxWidth = menuRef.current.offsetWidth
-        if (menuBoxWidth + x > innerWidth) {
-            setMenuOffset(innerWidth - menuBoxWidth - 10);
+    const remove = () => {
+        if(type === "row") {
+            removeRow(rowIdx);
+            reRenderTable();
         }
-    }, [x, y, setMenuOffset]);
+    }
 
-
-    if (!isOpen) return;
     return (
-        <div onClick={overlayClickHandler} contentEditable={false} className="table-menu-overlay"
-             style={{userSelect: "none"}}>
-            <div ref={menuRef} className="table-menu" style={{top: y, left: x}}>
-                <div className="table-menu-item">헤더 설정</div>
-                <div className="table-menu-item">행 추가</div>
-                <div className="table-menu-item">행 삭제</div>
-                <div className="table-menu-item">계산 함수</div>
-            </div>
-        </div>
+        <ContextMenu closeMenu={closeMenu}>
+            {headerAble && (
+                <>
+                    <ContextMenu.Toggle name={`헤더 ${typeText}`}/>
+                    <ContextMenu.Divider/>
+                </>
+            )}
+            <ContextMenu.Plain name={`이전에 ${typeText} 삽입`} handler={insertPrev}/>
+            <ContextMenu.Plain name={`다음에 ${typeText} 삽입`} handler={insertNext}/>
+            <ContextMenu.Plain name={`${typeText} 삭제`} handler={remove}/>
+            <ContextMenu.Plain name="계산 함수"/>
+        </ContextMenu>
     )
 }
 

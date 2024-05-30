@@ -38,8 +38,8 @@ function ContextMenuMain({children, closeMenu}) {
     );
 }
 
-function ContextMenuItemPlain({name, handler}) {
-    return <div className="context-menu-item" onClick={handler}>{name}</div>
+function ContextMenuItemPlain({name, handler, disable = false}) {
+    return <div className={`context-menu-item ${disable && "context-menu-disable"}`} onClick={disable ? () =>{} : handler} style={{color : disable ? "grey" : "inherit"}}>{name}</div>
 }
 
 function ContextMenuItemToggle({name, handler}) {
@@ -51,7 +51,7 @@ function ContextMenuItemToggle({name, handler}) {
 }
 
 function ContextMenuItemDivider() {
-    return <hr></hr>
+    return <hr style={{margin:"0 10px"}}></hr>
 }
 
 /**

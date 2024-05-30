@@ -1,9 +1,9 @@
 import React from 'react';
 
 
-function TextComponent({text}) {
+function TextComponent({textId, text}) {
     return (
-        <div className={text.id} style={text.fontStyle}>
+        <div data-text-id={textId} style={text.fontStyle}>
             {text.value}
         </div>
     )

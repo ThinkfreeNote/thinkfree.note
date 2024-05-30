@@ -25,7 +25,7 @@ const createTest = () => {
         ["underline", "line-through"]
     );
     // 텍스트
-    const text1 = new Text(blockId1, "테스트입니다~~~", fontStyle1);
+    const text1 = new Text(getRandomId(), "테스트입니다~~~", fontStyle1);
     // 텍스트 블럭
     const textBlock1 = new TextBlock(blockId1, "text", {});
     textBlock1.addText(text1);

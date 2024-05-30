@@ -1,15 +1,20 @@
 import React, {useState} from 'react';
+import {useBlockData} from "../hooks/useBlockHooks";
 
-function TextBox() {
+function TextBox({targetBlockId, targetTextId}) {
     const [isHidden, setIsHidden] = useState(false);
+    const textBlock = useBlockData(targetBlockId);
+
+    console.log(targetBlockId);
+    console.log(targetTextId);
+
 
     if (isHidden) {
-        return;
+        return null;
     } else {
         return (
-            <div contentEditable={false} className="text-box" style={{userSelect: "none"}}>
-                <button>123</button>
-                <button>123</button>
+            <div contentEditable={false} style={{userSelect: "none"}}>
+                <button>Bord</button>
             </div>
         );
     }

@@ -10,7 +10,7 @@ function TableSelector({colIdx, rowIdx}) {
     const {row, col} = useTableMousePosition()
     return (<>
             {colIdx === 0 && <TableSelectorButton isShow={row === rowIdx} type="row" rowIdx={rowIdx} colIdx={colIdx}/>}
-            {rowIdx === 0 && <TableSelectorButton isShow={col === colIdx} type="col" rowIdx={rowIdx} colIdx={colIdx}/>}
+            {rowIdx === 0 && <TableSelectorButton isShow={col === colIdx} type="column" rowIdx={rowIdx} colIdx={colIdx}/>}
         </>
     );
 }

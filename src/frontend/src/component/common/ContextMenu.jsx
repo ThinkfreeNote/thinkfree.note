@@ -1,6 +1,5 @@
-import React, {useContext, useLayoutEffect, useRef} from 'react';
-import {ReactComponent as ToggleOn} from "../../assets/toggle_icon_on.svg";
-import {ReactComponent as HeaderIcon} from "../../assets/icon_header.svg";
+import React, {useContext, useLayoutEffect, useRef, useState} from 'react';
+import {ReactComponent as ToggleOn} from "../../assets/icon_check.svg";
 import {MenuContext} from "./MenuContext";
 
 
@@ -42,11 +41,14 @@ function ContextMenuItemPlain({name, handler, disable = false}) {
     return <div className={`context-menu-item ${disable && "context-menu-disable"}`} onClick={disable ? () =>{} : handler} style={{color : disable ? "grey" : "inherit"}}>{name}</div>
 }
 
-function ContextMenuItemToggle({name, handler}) {
-    return <div className="context-menu-item" onClick={handler}>
-        <HeaderIcon width="24px" height="24px"/>
+function ContextMenuItemToggle({name, handler, init = false}) {
+    const [on,setOn] = useState(init);
+    return <div className="context-menu-item" onClick={()=>{
+        handler()
+        setOn(!on);
+    }}>
         <span>{name}</span>
-        <ToggleOn width="24px" height="24px" style={{marginLeft: "auto"}}/>
+        {on && <ToggleOn width="24px" height="24px" style={{marginLeft: "auto"}}/>}
     </div>
 }
 

@@ -43,7 +43,12 @@ function useTable() {
         reRender();
     }
 
-    return {cellHandler, addColumn, addRow, removeRow, removeColumn}
+    const toggleHeader = (type) =>{
+        tableData.toggleHeader(type);
+        reRender();
+    }
+
+    return {cellHandler, addColumn, addRow, removeRow, removeColumn,toggleHeader}
 }
 
 export default useTable;

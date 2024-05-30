@@ -5,11 +5,15 @@ import {isCell} from "../utils/table";
 /**
  * @property {Array} format
  * @property {Object} rows
+ * @property {boolean} isRowHeader
+ * @property {boolean} isColumnHeader
  */
 export class Table extends Block {
     constructor(id, type = "table", contents = []) {
         super(id, type, contents);
         this.format = [];
+        this.isRowHeader = true;
+        this.isColumnHeader = false;
         this.rows = {};
         this.init();
     }
@@ -62,13 +66,14 @@ export class Table extends Block {
         delete this.rows[rowId];
         this.contents.splice(index, 1);
     }
+
     removeColumn(index) {
         const cellId = this.format[index];
         this.contents.map(rowId => {
             delete this.rows[rowId][cellId];
         })
         const formatIndex = this.format.indexOf(cellId);
-        this.format.splice(formatIndex,1);
+        this.format.splice(formatIndex, 1);
 
     }
 
@@ -102,7 +107,26 @@ export class Table extends Block {
     getRowLength() {
         return this.contents.length;
     }
+
     getColumnLength() {
         return this.format.length;
+    }
+
+
+    /**
+     * @param {"column"|"row"} type
+     * @returns {boolean}
+     */
+    getHeaderByType(type) {
+        if(type === "row")
+            return this.isRowHeader;
+        if (type === "column")
+            return this.isColumnHeader;
+
+    }
+
+    toggleHeader(type) {
+        if (type === "row") this.isRowHeader = !this.isRowHeader;
+        if (type === "column") this.isColumnHeader = !this.isColumnHeader;
     }
 }

@@ -98,6 +98,8 @@ td {
 
 .table-box {
     position: relative;
+    background-color: white;
+
 }
 
 .cell  {
@@ -152,6 +154,10 @@ td {
     border-radius: 2px;
     padding : .3rem 0;
     box-shadow: 0 0 5px rgba(0,0,0,.2);
+}
+
+.table-header{
+    background-color: rgb(201, 202, 204) ;
 }
 
 .btn_add {

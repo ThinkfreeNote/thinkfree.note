@@ -6,21 +6,18 @@ import {TableSelectorContext, TableSelectorSetContext} from "../contexts/TableSe
  * @returns {{clearPosition : function}}
  */
 function useTableMousePositionSetter() {
-    const {setCol,setRow} = useContext(TableSelectorSetContext);
+    const {setCol, setRow} = useContext(TableSelectorSetContext);
     const clearPosition = () => {
         setCol(-1);
         setRow(-1);
     }
 
-    const setMouseRowPosition = useCallback((rowId) => {
-        setRow(rowId)
-    },[setRow])
-
-    const setMouseColPosition = useCallback((colIdx)=>{
+    const setMousePosition = useCallback((rowIdx, colIdx) => {
+        setRow(rowIdx);
         setCol(colIdx);
-    },[setCol])
+    }, [])
 
-    return {clearPosition, setMouseRowPosition,setMouseColPosition}
+    return {clearPosition, setMousePosition}
 }
 
 /**
@@ -34,4 +31,4 @@ function useTableMousePosition() {
     return (position)
 }
 
-export {useTableMousePositionSetter,useTableMousePosition};
+export {useTableMousePositionSetter, useTableMousePosition};

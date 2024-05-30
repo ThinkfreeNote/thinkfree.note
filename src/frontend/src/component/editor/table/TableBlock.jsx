@@ -1,20 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import TableMousePositionProvider from "./contexts/TableSelectorProvider";
 import TableComponent from "./TableComponent";
-import TableMenu from "./TableMenu";
-import TableMenuProvider from "./contexts/TableMenuContextProvider";
+import {useTableHandlers} from "./hooks/useTableHandlers";
 import {useBlockData} from "../hooks/useBlockHooks";
+import {BlockIdContext} from "../BlockWrapper";
 
-function TableBlock({blockId}) {
-    // 테이블 데이터
-    const tableData = useBlockData(blockId);
+function TableBlock() {
+    const {blockId} = useContext(BlockIdContext);
+    useTableHandlers(useBlockData(blockId));
 
     return (
         <TableMousePositionProvider>
-            <TableMenuProvider>
-                <TableComponent data={tableData}/>
-                <TableMenu/>
-            </TableMenuProvider>
+            <TableComponent/>
         </TableMousePositionProvider>
     );
 }

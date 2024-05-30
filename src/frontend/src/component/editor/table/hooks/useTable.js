@@ -1,41 +1,49 @@
-import {useCallback, useState} from 'react';
+import {useCallback, useContext, useState} from 'react';
 import {getCellIds, isCell} from "../../../../utils/table";
 import {removeBOM} from "../../../../utils/common";
 import {getElementBySelection} from "../../../../utils/editor";
+import {BlockIdContext} from "../../BlockWrapper";
+import {useTableData} from "./useTableData";
 
 /**
- * @desc 테이블 핸들러 반환하는 커스텀 훅
- * @param {Table} tableBlock
- * @returns {{inputHandler: ((function(*): void)|*)}}
+ * @desc 테이블 조작 함수 반환 커스텀 훅
+ * @returns {{addColumn, removeColumn, cellHandler, removeRow, addRow}}
  */
-function useTable(tableBlock) {
-    // 리렌더링 발생 목적
-    const [_, setNum] = useState(0);
+function useTable() {
+    const tableData = useTableData();
+    const {reRender} = useContext(BlockIdContext);
 
-    const tableRerender = () => {
-        setNum(prev => prev + 1);
-    }
-
+    // TODO 목적에 맞게 분리 예정
     const cellHandler = useCallback((e) => {
         const $cell = getElementBySelection();
         if (!isCell($cell)) return;
         let value = $cell.textContent.length === 0 ? `\uFEFF` : removeBOM($cell.textContent);
 
         const {rowId, cellId} = getCellIds($cell);
-        tableBlock.updateCell(rowId, cellId, value);
-    }, [tableBlock])
+        tableData.updateCell(rowId, cellId, value);
+    }, [tableData])
 
-    const addColumn = () => {
-        tableBlock.addColumn();
-        tableRerender();
+    const addColumn = (index) => {
+        tableData.addColumn(index);
+        reRender();
     }
 
-    const addRow = () => {
-        tableBlock.addRow();
-        tableRerender();
+    const addRow = (index) => {
+        tableData.addRow(index);
+        reRender();
     }
 
-    return {cellHandler, addColumn, addRow, tableRerender}
+    const removeRow = (index) => {
+        tableData.removeRow(index);
+        reRender();
+    }
+
+    const removeColumn = (index) => {
+        tableData.removeColumn(index);
+        reRender();
+    }
+
+    return {cellHandler, addColumn, addRow, removeRow, removeColumn}
 }
 
 export default useTable;

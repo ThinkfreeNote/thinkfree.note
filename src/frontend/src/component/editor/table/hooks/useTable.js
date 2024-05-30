@@ -1,4 +1,4 @@
-import {useCallback, useContext, useState} from 'react';
+import {useCallback, useContext} from 'react';
 import {getCellIds, isCell} from "../../../../utils/table";
 import {removeBOM} from "../../../../utils/common";
 import {getElementBySelection} from "../../../../utils/editor";

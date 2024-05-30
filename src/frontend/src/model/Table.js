@@ -69,9 +69,7 @@ export class Table extends Block {
 
     removeColumn(index) {
         const cellId = this.format[index];
-        this.contents.map(rowId => {
-            delete this.rows[rowId][cellId];
-        })
+        this.contents.map(rowId => delete this.rows[rowId][cellId])
         const formatIndex = this.format.indexOf(cellId);
         this.format.splice(formatIndex, 1);
 
@@ -118,11 +116,11 @@ export class Table extends Block {
      * @returns {boolean}
      */
     getHeaderByType(type) {
-        if(type === "row")
+        if (type === "row")
             return this.isRowHeader;
         if (type === "column")
             return this.isColumnHeader;
-
+        return false;
     }
 
     toggleHeader(type) {

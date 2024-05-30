@@ -12,7 +12,7 @@ function BlockWrapper({id, children}) {
     const wrapper = useRef(null);
 
     // 강제 리렌더링 유발 목적
-    const [_, setState] = useState(0);
+    const [, setState] = useState(0);
     const reRender = useCallback(() => {
         setState(prev => prev + 1);
     }, [])

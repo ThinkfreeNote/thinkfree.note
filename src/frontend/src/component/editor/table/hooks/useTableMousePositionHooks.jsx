@@ -15,7 +15,7 @@ function useTableMousePositionSetter() {
     const setMousePosition = useCallback((rowIdx, colIdx) => {
         setRow(rowIdx);
         setCol(colIdx);
-    }, [])
+    }, [setCol,setRow])
 
     return {clearPosition, setMousePosition}
 }

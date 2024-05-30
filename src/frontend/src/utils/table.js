@@ -13,6 +13,12 @@ export function getCellIds($cell) {
     }
 }
 
+/**
+ * @desc 매개변수로 받은 요소가 셀인지 확인
+ * @param $element
+ * @returns {boolean}
+ */
 export function isCell($element) {
-    return $element.tagName === "TD" && $element.dataset.cellId
+    if(!($element instanceof HTMLElement)) return false;
+    return Boolean($element.dataset.cellId);
 }

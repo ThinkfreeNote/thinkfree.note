@@ -1,4 +1,3 @@
-
 export class FontStyle {
     constructor(color, fontSize, fontFamily, fontWeight, fontStyle, textDecoration) {
         this.color = color;

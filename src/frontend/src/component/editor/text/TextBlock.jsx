@@ -12,7 +12,7 @@ function TextBlock({blockId}) {
     const [targetBlockId, setTargetBlockId] = useState(null);
     const [targetTextId, setTargetTextId] = useState(null);
     const [offset, setOffset] = useState({start: -1, end: -1});
-
+    const [isHidden, setIsHidden] = useState(true);
 
     const updateTextValue = () => {
         // 실제돔 불러오기
@@ -31,6 +31,9 @@ function TextBlock({blockId}) {
         const startNode = range.startContainer;
         const endNode = range.endContainer;
 
+        // mouseup이 발생했을 때 기본적으로 텍스트 박스를 숨김
+        setIsHidden(true);
+
         // 셀렉션이 아닌 경우 (클릭)
         if (range.collapsed) return;
         // 시작 또는 끝 노드가 텍스트가 아닌 경우
@@ -45,10 +48,10 @@ function TextBlock({blockId}) {
         }
 
         setTargetBlockId(startNodeBlockId);
-        setTargetTextId(getClosestTextId(startNode.parentElement));
+        setTargetTextId(textId);
         setOffset({ start: range.startOffset, end: range.endOffset });
+        setIsHidden(false);// 텍스트 박스 표시
     };
-
     // input이 발생했을 때 BlockStore의 value를 변경해줌
     useEditorEventListener("input", updateTextValue, [updateTextValue]);
     // 마우스 뗄 때 text selection range 정보를 반환
@@ -67,7 +70,7 @@ function TextBlock({blockId}) {
                 {Object.entries(textBlock.contents).map(([textId, text]) => (
                     <TextComponent key={textId} textId={textId} text={text}/>
                 ))}
-                <TextBox targetBlockId={targetBlockId} targetTextId={targetTextId} offset={offset}/>
+                {!isHidden && <TextBox targetBlockId={targetBlockId} targetTextId={targetTextId} offset={offset}/>}
             </>
         );
     }

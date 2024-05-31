@@ -45,7 +45,7 @@ function ColumnResizer() {
             document.removeEventListener("mouseup", mouseUp);
             document.removeEventListener("mousemove", mouseMove);
         }
-    }, [currentCol, startPageX, setCurrentCol, moveX]);
+    }, [currentCol, startPageX, setCurrentCol, moveX,reRender,tableData]);
     
     return (<>
             {currentCol ? <div contentEditable={false} className="column-resizer"

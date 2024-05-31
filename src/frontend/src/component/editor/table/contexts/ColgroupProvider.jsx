@@ -1,4 +1,4 @@
-import React, {createContext, useCallback, useMemo, useState} from 'react';
+import React, {createContext, useMemo, useState} from 'react';
 
 export const ColgroupContext = createContext(null);
 export const ColgroupSetterContext = createContext(null);

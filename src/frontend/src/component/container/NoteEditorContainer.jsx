@@ -22,7 +22,7 @@ const createTest = () => {
         "30px",
         "Noto Sans KR",
         "bold", "italic",
-        ["underline", "line-through"]
+        "underline"
     );
     // 텍스트
     const text1 = new Text(getRandomId(), "테스트입니다~~~", fontStyle1);

@@ -4,4 +4,9 @@ export class Text {
         this.value = value;
         this.fontStyle = fontStyle;
     }
+
+    // updateFontStyle(styleName) {
+    //     const styleValue = this.fontStyle
+    //     this.fontStyle = {...this.fontStyle, }
+    // }
 }

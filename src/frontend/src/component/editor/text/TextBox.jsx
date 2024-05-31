@@ -1,12 +1,20 @@
 import React, {useState} from 'react';
 import {useBlockData} from "../hooks/useBlockHooks";
+import {Text} from "../../../model/Text";
 
 function TextBox({targetBlockId, targetTextId}) {
     const [isHidden, setIsHidden] = useState(false);
     const textBlock = useBlockData(targetBlockId);
 
-    console.log(targetBlockId);
-    console.log(targetTextId);
+    const updateFontStyle = (styleName) => {
+        const text = textBlock.contents[targetTextId];
+        if (!(text instanceof Text)) return;
+
+
+        console.log(text.fontStyle.fontWeight);
+
+
+    };
 
 
     if (isHidden) {
@@ -14,7 +22,7 @@ function TextBox({targetBlockId, targetTextId}) {
     } else {
         return (
             <div contentEditable={false} style={{userSelect: "none"}}>
-                <button>Bord</button>
+                <button onClick={() => updateFontStyle("bold")}>Bord</button>
             </div>
         );
     }

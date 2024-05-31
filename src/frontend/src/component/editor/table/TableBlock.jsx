@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
 import TableMousePositionProvider from "./contexts/TableSelectorProvider";
-import TableComponent from "./TableComponent";
 import {useTableHandlers} from "./hooks/useTableHandlers";
 import {useBlockData} from "../hooks/useBlockHooks";
 import {BlockIdContext} from "../BlockWrapper";
+import Table from "./Table";
 
 function TableBlock() {
     const {blockId} = useContext(BlockIdContext);
@@ -11,7 +11,7 @@ function TableBlock() {
 
     return (
         <TableMousePositionProvider>
-            <TableComponent/>
+            <Table/>
         </TableMousePositionProvider>
     );
 }

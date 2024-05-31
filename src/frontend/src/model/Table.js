@@ -12,6 +12,7 @@ export class Table extends Block {
     constructor(id, type = "table", contents = []) {
         super(id, type, contents);
         this.format = [];
+        this.columnFormat = {}
         this.isRowHeader = true;
         this.isColumnHeader = false;
         this.rows = {};
@@ -53,12 +54,20 @@ export class Table extends Block {
         } else {
             this.format.splice(index + 1, 0, columnId);
         }
+        this.addColumnFormat(columnId);
 
         const rowIds = Object.keys(this.rows);
 
         rowIds.forEach(item => {
             this.rows[item][columnId] = ""
         })
+    }
+
+    addColumnFormat(columnId) {
+        this.columnFormat[columnId] = {
+            width: 100,
+            color: "black",
+        }
     }
 
     removeRow(index) {
@@ -126,5 +135,17 @@ export class Table extends Block {
     toggleHeader(type) {
         if (type === "row") this.isRowHeader = !this.isRowHeader;
         if (type === "column") this.isColumnHeader = !this.isColumnHeader;
+    }
+
+
+    getColumnStyle(columnId) {
+        return this.columnFormat[columnId];
+    }
+
+    setColumnWidth(columnId, number) {
+        if (typeof number !== "number") return;
+        const prevWidth = this.columnFormat[columnId].width;
+        const nextWidth = prevWidth + number;
+        this.columnFormat[columnId].width = nextWidth > 30 ? nextWidth : 30;
     }
 }

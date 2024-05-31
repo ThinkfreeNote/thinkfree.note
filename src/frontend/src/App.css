@@ -66,10 +66,6 @@ table, th, td {
     border-collapse: collapse;
 }
 
-td {
-    width: 80px;
-}
-
 .editor {
     outline: none;
     border: 1px solid black;
@@ -102,10 +98,14 @@ td {
 
 }
 
+.table-row {
+    position: relative;
+}
+
 .cell  {
     position: relative;
     padding: 10px 12px;
-    min-width: 100px;
+    min-width: 50px;
     height: 30px;
     font-size: 14px;
     line-height: 140%;
@@ -158,6 +158,17 @@ td {
 
 .table-header{
     background-color: rgb(201, 202, 204) ;
+}
+
+.column-resizer {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    z-index: 50;
+    top:0;
+    border : none;
+    border-right: thin dashed red;
+    cursor : col-resize;
 }
 
 .btn_add {

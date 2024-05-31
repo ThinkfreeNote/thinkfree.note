@@ -13,6 +13,12 @@ function TextBlock({blockId}) {
     const [targetTextId, setTargetTextId] = useState(null);
     const [offset, setOffset] = useState({start: -1, end: -1});
     const [isHidden, setIsHidden] = useState(true);
+    const [refresh, setRefresh] = useState(true);
+
+    const onRefresh = () => {
+        const value = refresh === false;
+        setRefresh(value);
+    }
 
     const updateTextValue = () => {
         // 실제돔 불러오기
@@ -52,6 +58,7 @@ function TextBlock({blockId}) {
         setOffset({ start: range.startOffset, end: range.endOffset });
         setIsHidden(false);// 텍스트 박스 표시
     };
+
     // input이 발생했을 때 BlockStore의 value를 변경해줌
     useEditorEventListener("input", updateTextValue, [updateTextValue]);
     // 마우스 뗄 때 text selection range 정보를 반환
@@ -70,7 +77,8 @@ function TextBlock({blockId}) {
                 {Object.entries(textBlock.contents).map(([textId, text]) => (
                     <TextComponent key={textId} textId={textId} text={text}/>
                 ))}
-                {!isHidden && <TextBox targetBlockId={targetBlockId} targetTextId={targetTextId} offset={offset}/>}
+                {!isHidden && <TextBox targetBlockId={targetBlockId} targetTextId={targetTextId} offset={offset} onRefresh={onRefresh} />}
+
             </>
         );
     }

@@ -1,17 +1,14 @@
 import React from 'react';
-import TableSelector from "./TableSelector";
 import {useTableData} from "./hooks/useTableData";
+import CellWrapper from "./CellWrapper";
 
 
 function Cell({cellId, rowId, colIdx, rowIdx}) {
-    const tableData = useTableData();
-    const cellValue = tableData.getCellValue(rowId,cellId);
-    const isHeader = colIdx === 0 && tableData.getHeaderByType("column");
+    const value = useTableData().getCellValue(rowId,cellId);
 
-    return (
-        <td data-cell-id={cellId} className={`cell ${isHeader ? "table-header" : ""}`}>
-            <TableSelector colIdx={colIdx} rowIdx={rowIdx}/>
-            {cellValue.length === 0 ? `\uFEFF` : cellValue}</td>
-    );
+    return <CellWrapper cellId={cellId} rowId={rowId} colIdx={colIdx} rowIdx={rowIdx}>
+        {value.length === 0 ? `\uFEFF` : value}
+    </CellWrapper>
+
 }
 export default Cell;

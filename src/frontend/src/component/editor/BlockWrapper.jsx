@@ -1,6 +1,7 @@
-import React, {createContext, useCallback, useEffect, useRef, useState} from 'react';
-
-export const BlockIdContext = createContext(null);
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {selection} from "../../App";
+import BlockContextProvider from "./BlockContextProvider";
+import BlockMenuBox from "./block/BlockMenuBox";
 
 /**
  * 블록 공통 기능 구현 목적
@@ -11,34 +12,20 @@ export const BlockIdContext = createContext(null);
 function BlockWrapper({id, children}) {
     const wrapper = useRef(null);
 
-    // 강제 리렌더링 유발 목적
-    const [, setState] = useState(0);
-    const reRender = useCallback(() => {
-        setState(prev => prev + 1);
-    }, [])
-
-    // 최초 생성 시 캐럿 위치 초기화
-    // ! 추후 텍스트, 테이블 개발 완료 시 제거 예정
+    // 블록이 처음 생성될 때 커서 위치 지정
     useEffect(() => {
-        const selection = window.getSelection();
-
-        const newRange = document.createRange();
-
-        const targetNode = wrapper.current.childNodes[0];
-        const lastChild = targetNode.lastChild;
-        newRange.setStart(lastChild, 1);
-        newRange.collapse(true);
-
-        selection.removeAllRanges();
-        selection.addRange(newRange);
+        // 블록 내의 첫번째 leaf 요소에 커서 지정
+        const $firstLeaf = wrapper.current.querySelector("[data-leaf]");
+        selection.setCaret($firstLeaf);
     }, []);
 
     return (
-        <BlockIdContext.Provider value={{blockId: id, reRender}}>
+        <BlockContextProvider id={id}>
             <div className="block_wrapper" ref={wrapper} data-block-id={id}>
+                <BlockMenuBox/>
                 {children}
             </div>
-        </BlockIdContext.Provider>
+        </BlockContextProvider>
     );
 }
 

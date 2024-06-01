@@ -13,16 +13,6 @@ function useTable() {
     const tableData = useTableData();
     const {reRender} = useContext(BlockIdContext);
 
-    // TODO 목적에 맞게 분리 예정
-    const cellHandler = useCallback((e) => {
-        const $cell = getElementBySelection();
-        if (!isCell($cell)) return;
-        let value = $cell.textContent.length === 0 ? `\uFEFF` : removeBOM($cell.textContent);
-
-        const {rowId, cellId} = getCellIds($cell);
-        tableData.updateCell(rowId, cellId, value);
-    }, [tableData])
-
     const addColumn = (index) => {
         tableData.addColumn(index);
         reRender();
@@ -43,12 +33,12 @@ function useTable() {
         reRender();
     }
 
-    const toggleHeader = (type) =>{
+    const toggleHeader = (type) => {
         tableData.toggleHeader(type);
         reRender();
     }
 
-    return {cellHandler, addColumn, addRow, removeRow, removeColumn,toggleHeader}
+    return {addColumn, addRow, removeRow, removeColumn, toggleHeader}
 }
 
 export default useTable;

@@ -1,13 +1,10 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import TableMousePositionProvider from "./contexts/TableSelectorProvider";
 import {useTableHandlers} from "./hooks/useTableHandlers";
-import {useBlockData} from "../hooks/useBlockHooks";
-import {BlockIdContext} from "../BlockWrapper";
 import Table from "./Table";
 
 function TableBlock() {
-    const {blockId} = useContext(BlockIdContext);
-    useTableHandlers(useBlockData(blockId));
+    useTableHandlers();
 
     return (
         <TableMousePositionProvider>

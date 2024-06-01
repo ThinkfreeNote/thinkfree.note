@@ -8,7 +8,7 @@ import {EditorContext} from "../NoteEditor";
  * @todo 리팩토링 필요
  * @param noteContents
  * @param setNoteContents
- * @returns {{onKeyDownHandler: onKeyDownHandler}}
+ * @returns {{onKeyDownHandler: (event) => {}}
  */
 function useEditHandler(noteContents, setNoteContents) {
     const blockStore = useContext(BlockStoreContext);
@@ -44,9 +44,8 @@ function useEditHandler(noteContents, setNoteContents) {
  * @desc contentEditable요소(에디터)에 이벤트를 등록하는 훅
  * @param {string} eventType (input, click, mouseup... etc)
  * @param handler 등록할 핸들러 함수
- * @param dependency useEffect 의존성
  */
-export function useEditorEventListener(eventType,handler,dependency = [handler]) {
+export function useEditorEventListener(eventType,handler) {
     const editorRef = useContext(EditorContext);
 
     useEffect(() => {
@@ -58,7 +57,7 @@ export function useEditorEventListener(eventType,handler,dependency = [handler])
         return () => {
             $editor.removeEventListener(eventType,handler);
         }
-    }, [...dependency,editorRef,eventType,handler]);
+    }, [editorRef,eventType,handler]);
 }
 
 export default useEditHandler;

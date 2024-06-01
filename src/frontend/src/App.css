@@ -71,11 +71,13 @@ table, th, td {
     border: 1px solid black;
     width: 100vw;
     min-height: 100vh;
-    padding: 40px 20px
+    padding: 40px 10vw;
 }
 
 .block_wrapper {
     padding: 5px 10px;
+    position: relative;
+    margin: 50px 0;
 }
 
 .block_wrapper:hover {
@@ -88,14 +90,13 @@ table, th, td {
     display: flex;
     justify-content: flex-start;
     width: 100%;
-    padding: 20px;
+    padding: 20px 20px;
     overflow-x: auto;
 }
 
 .table-box {
     position: relative;
     background-color: white;
-
 }
 
 .table-row {
@@ -180,6 +181,7 @@ table, th, td {
     cursor: pointer;
     transition: all .3s ease-out;
     background: none;
+    user-select: none;
 }
 
 .btn_add:hover {
@@ -208,15 +210,15 @@ table, th, td {
 .context-menu {
     position: absolute;
     background-color: white;
-    border-radius: 2px;
+    border-radius: 4px;
     padding : .3rem 0;
-    box-shadow: 0 0 5px rgba(0,0,0,.2);
+    box-shadow: 0 0 5px rgba(0,0,0,.3);
 }
 
 .context-menu-item {
-    padding : 1rem;
+    padding : 1em 1em;
     font-family: "Noto Sans KR", sans-serif;
-    font-size : 14px;
+    font-size : 12px;
     min-width: 12rem;
     display: flex;
     align-items: center;
@@ -229,3 +231,49 @@ table, th, td {
 .context-menu-item:hover:not(.context-menu-disable) {
     background-color: rgba(241, 242, 244);
 }
+.context-menu-dropDown .context-menu {
+    display: none;
+}
+
+.context-menu-dropDown:hover .context-menu {
+    opacity: 1;
+    display: initial;
+}
+
+.block-menu-btn-box {
+    position: absolute;
+    top:0;
+    left: 0;
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: opacity .3s ease-out;
+}
+
+.block-menu-btn-box:hover {
+    opacity: 1;
+}
+
+.block-menu-btn {
+    width: 24px;
+    height: 24px;
+    padding : 0;
+    margin: 0;
+    border: none;
+    background: none;
+    cursor:pointer;
+}
+
+.block-menu-btn:hover {
+    background: rgb(239, 239, 239);
+    border-radius: 8px;
+}
+
+.block-menu-btn svg {
+    fill : rgb(144, 144, 144);
+    height: 100%;
+}
+.block-menu-btn:hover svg {
+    fill : rgb(48, 48, 48);
+
+}
+

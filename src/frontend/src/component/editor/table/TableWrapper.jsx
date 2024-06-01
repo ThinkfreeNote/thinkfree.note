@@ -1,13 +1,13 @@
 import React, {useContext} from 'react';
-import {BlockIdContext} from "../BlockWrapper";
 import {useBlockData} from "../hooks/useBlockHooks";
 import useTable from "./hooks/useTable";
 import {useTableMousePositionSetter} from "./hooks/useTableMousePositionHooks";
 import {isCell} from "../../../utils/table";
 import ColumnResizer from "./ColumnResizer";
+import {BlockContext} from "../BlockContextProvider";
 
 function TableWrapper({children}) {
-    const {blockId} = useContext(BlockIdContext);
+    const {blockId} = useContext(BlockContext);
     const tableData = useBlockData(blockId);
 
     const {addColumn, addRow} = useTable();

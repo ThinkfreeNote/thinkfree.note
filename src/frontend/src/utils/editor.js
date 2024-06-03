@@ -1,43 +1,4 @@
-import {getRandomId} from "./id";
-import {Block} from "../model/Block";
-
-
-/**
- * 새로운 블록 생성해서 저장소에 추가
- * @param store 블록 저장소
- * @param type 블록 타입 (type 처리 기능 추가 예정)
- * @return id 생성된 블록 아이디
- */
-const createBlock = (store, type) => {
-    const id = getRandomId();
-    const contents = [];
-
-    store[id] = new Block(id, type, contents);
-
-    return id;
-}
-
-const getCaratPositionElement = () => {
-    const {anchorNode} = window.getSelection();
-    if (anchorNode instanceof Text) {
-        return anchorNode.parentElement.closest("[data-block-id]");
-    } else {
-        return anchorNode;
-    }
-}
-
-const getClosestBlockId = (element) => {
-    if (element.dataset.blockId) return element.dataset.blockId;
-    return element.closest("[data-block-id]").dataset.blockId;
-}
-
-const getClosestTextId = (element) => {
-    if (element.dataset.textId) return element.dataset.textId;
-    return element.closest("[data-text-id]").dataset.textId;
-}
-
-/// selection
-
+import {editorSelection} from "../App";
 
 /**
  * @description 현재 캐럿이 한 블록 내의 마지막에 위치해 있는지 확인
@@ -49,7 +10,7 @@ const isCaretAtEnd = (selection) => {
 
     const {endContainer, endOffset} = selection.getRangeAt(0);
 
-    const {anchorBlock} = getSelectedBlock(selection);
+    const {anchorBlock} = editorSelection.getClosestElement("block").start;
 
     // Block 에서 BlockWrapper를 제외하고 탐색하기 위한 과정
     const children = [...anchorBlock.children];
@@ -80,14 +41,6 @@ const getSelectedBlock = (selection) => {
     }
 }
 
-
-const getElementBySelection = () => {
-    const {anchorNode} = window.getSelection();
-    const type = anchorNode.nodeType;
-    if (type === Node.ELEMENT_NODE) return anchorNode;
-    else if (type === Node.TEXT_NODE) return anchorNode.parentElement;
-}
-
 export {
-    createBlock, getCaratPositionElement, getClosestBlockId, isCaretAtEnd, getSelectedBlock, getElementBySelection, getClosestTextId
+      isCaretAtEnd, getSelectedBlock
 }

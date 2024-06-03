@@ -4,12 +4,12 @@ import {MenuContextProvider} from "./component/common/MenuContext";
 import {useEffect} from "react";
 import {EditorSelection} from "./model/Selection";
 
-export const selection = new EditorSelection();
-console.log(selection);
+export const editorSelection = new EditorSelection();
+console.log(editorSelection);
 function App() {
 
     const handler = (e) => {
-        selection.updateSelectionNodes();
+        editorSelection.updateSelectionNodes();
     }
     useEffect(()=>{
         document.addEventListener("selectionchange",handler);

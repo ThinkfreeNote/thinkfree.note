@@ -78,7 +78,6 @@ function TextBlock({blockId}) {
                     <TextComponent key={textId} textId={textId} text={text}/>
                 ))}
                 {!isHidden && <TextBox targetBlockId={targetBlockId} targetTextId={targetTextId} offset={offset} onRefresh={onRefresh} />}
-
             </>
         );
     }

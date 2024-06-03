@@ -78,8 +78,13 @@ function TextBlock({blockId}) {
     } else {
         return (
             <>
-                {Object.entries(textBlock.contents).map(([textId, text]) => (
-                    <TextComponent key={textId} textId={textId} text={text}/>
+                {textBlock.textIdList.map(textId => (
+                    <TextComponent
+                        key={textId}
+                        textId={textId}
+                        text={textBlock.contents[textId]}
+                        isSelected={targetTextId === textId && !isHidden}
+                    />
                 ))}
                 {(targetBlockId === blockId) && !isHidden && <TextBox targetBlockId={targetBlockId} targetTextId={targetTextId} offset={offset} onRefresh={onRefresh} />}
             </>

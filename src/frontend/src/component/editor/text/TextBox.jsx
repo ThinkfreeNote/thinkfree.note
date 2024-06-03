@@ -1,7 +1,7 @@
 import React from 'react';
 import {useBlockData} from "../hooks/useBlockHooks";
 
-function TextBox({targetBlockId, targetTextId, onRefresh}) {
+function TextBox({targetBlockId, targetTextId, onRefresh, offset}) {
     const textBlock = useBlockData(targetBlockId);
     const text = textBlock.getText(targetTextId);
 

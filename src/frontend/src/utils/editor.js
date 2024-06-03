@@ -31,6 +31,11 @@ const getClosestBlockId = (element) => {
     return element.closest("[data-block-id]").dataset.blockId;
 }
 
+const getClosestTextId = (element) => {
+    if (element.dataset.textId) return element.dataset.textId;
+    return element.closest("[data-text-id]").dataset.textId;
+}
+
 /// selection
 
 
@@ -84,5 +89,5 @@ const getElementBySelection = () => {
 }
 
 export {
-    createBlock, getCaratPositionElement, getClosestBlockId, isCaretAtEnd, getSelectedBlock, getElementBySelection
+    createBlock, getCaratPositionElement, getClosestBlockId, isCaretAtEnd, getSelectedBlock, getElementBySelection, getClosestTextId
 }

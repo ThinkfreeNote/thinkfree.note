@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {BlockStoreContext} from "../container/NoteEditorContainer";
 import BlockWrapper from "./BlockWrapper";
-import TextBlock from "./TextBlock";
+import TextBlock from "./text/TextBlock";
 import TableBlock from "./table/TableBlock";
 
 const switcher = (type, id) => {

@@ -1,17 +1,17 @@
 import {getCaratPositionElement, getClosestBlockId, isCaretAtEnd} from "../../../utils/editor";
 import {useContext, useEffect} from "react";
-import {BlockStoreContext} from "../../container/NoteEditorContainer";
 import {EditorContext} from "../NoteEditor";
+import {BlockStoreContext, BlockIdListContext} from "../context/BlockIdListProvider";
+import useBlockIdList from "./useBlockIdList";
 
 
 /**
  * @todo 리팩토링 필요
- * @param noteContents
- * @param setNoteContents
  * @returns {{onKeyDownHandler: (event) => {}}
  */
-function useEditHandler(noteContents, setNoteContents) {
+function useEditHandler() {
     const blockStore = useContext(BlockStoreContext);
+    const note = useBlockIdList();
 
     const onKeyDownHandler = (e) => {
         if (e.key === "Enter") {
@@ -20,21 +20,13 @@ function useEditHandler(noteContents, setNoteContents) {
 
             // 캐럿이 마지막 텍스트 노드에 위치한 경우에만 새로운 Block 추가
             if (selection.type === "Caret" && isCaretAtEnd(selection)) {
-                addNewBlock();
+                const currentBlockId = getClosestBlockId(getCaratPositionElement());
+                const newBlockId = blockStore.createBlock("text").id;
+                
+                // 현재 커서의 blockId 뒤에 새로운 block 추가
+                note.addBlockId(newBlockId, note.getIndexOfBlock(currentBlockId) + 1);
             }
         }
-    }
-
-    const addNewBlock = () => {
-        // 현재 블록 아이디
-        const currentBlockId = getClosestBlockId(getCaratPositionElement());
-        const newBlockId = blockStore.createBlock("text").id;
-
-        const currentIndex = noteContents.indexOf(currentBlockId);
-
-        const newNoteContents = [...noteContents];
-        newNoteContents.splice(currentIndex + 1, 0, newBlockId);
-        setNoteContents(newNoteContents);
     }
     return {onKeyDownHandler};
 }
@@ -45,19 +37,19 @@ function useEditHandler(noteContents, setNoteContents) {
  * @param {string} eventType (input, click, mouseup... etc)
  * @param handler 등록할 핸들러 함수
  */
-export function useEditorEventListener(eventType,handler) {
+export function useEditorEventListener(eventType, handler) {
     const editorRef = useContext(EditorContext);
 
     useEffect(() => {
         const $editor = editorRef.current;
-        if(!($editor instanceof HTMLElement)) return;
+        if (!($editor instanceof HTMLElement)) return;
 
-        $editor.addEventListener(eventType,handler);
+        $editor.addEventListener(eventType, handler);
 
         return () => {
-            $editor.removeEventListener(eventType,handler);
+            $editor.removeEventListener(eventType, handler);
         }
-    }, [editorRef,eventType,handler]);
+    }, [editorRef, eventType, handler]);
 }
 
 export default useEditHandler;

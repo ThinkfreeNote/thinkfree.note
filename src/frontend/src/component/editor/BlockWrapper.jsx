@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {selection} from "../../App";
 import BlockContextProvider from "./BlockContextProvider";
 import BlockMenuBox from "./block/BlockMenuBox";
@@ -21,7 +21,7 @@ function BlockWrapper({id, children}) {
 
     return (
         <BlockContextProvider id={id}>
-            <div className="block_wrapper" ref={wrapper} data-block-id={id}>
+            <div className="block-wrapper" ref={wrapper} data-block-id={id}>
                 <BlockMenuBox/>
                 {children}
             </div>

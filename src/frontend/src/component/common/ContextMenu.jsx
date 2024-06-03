@@ -73,6 +73,10 @@ function ContextMenuItemDropDown({children, name}) {
     </div>
 }
 
+function ContextMenuSubTitle({text}) {
+    return <div style={{fontSize:"12px", color:"grey", background : "none", cursor:"initial", padding : ".5em 1em"} } className="context-menu-item">{text}</div>
+}
+
 /**
  * @desc ContextMenu UI
  * @desc 합성 컴포넌트 패턴을 적용하여 재사용성 향상
@@ -86,4 +90,5 @@ export const ContextMenu = Object.assign(ContextMenuMain, {
     Toggle: ContextMenuItemToggle,
     Divider: ContextMenuItemDivider,
     DropDown: ContextMenuItemDropDown,
+    SubTitle : ContextMenuSubTitle,
 })

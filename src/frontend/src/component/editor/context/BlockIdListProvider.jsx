@@ -1,11 +1,11 @@
 import React, {createContext, useRef, useState} from 'react';
-import {FontStyle} from "../../model/FontStyle";
-import {TextBlock} from "../../model/TextBlock";
-import {BlockStore} from "../../model/BlockStore";
-import {Note} from "../../model/Note";
-import {Text} from "../../model/Text";
-import {getRandomId} from "../../utils/id";
-import {Table} from "../../model/Table";
+import {FontStyle} from "../../../model/FontStyle";
+import {TextBlock} from "../../../model/TextBlock";
+import {BlockStore} from "../../../model/BlockStore";
+import {Note} from "../../../model/Note";
+import {Text} from "../../../model/Text";
+import {getRandomId} from "../../../utils/id";
+import {Table} from "../../../model/Table";
 
 
 const testBlockStore = new BlockStore();

@@ -11,7 +11,7 @@ function BlockContextProvider({children, id}) {
     }, [])
     return (
         <BlockContext.Provider value={{blockId: id, reRender}}>
-            <div>{children}</div>
+            {children}
         </BlockContext.Provider>
     );
 }

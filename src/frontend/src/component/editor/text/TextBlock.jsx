@@ -22,9 +22,9 @@ function TextBlock({blockId}) {
 
     const updateTextValue = () => {
         // 실제돔 불러오기
-        const textNode = window.getSelection().anchorNode;
+        const textNode = editorSelection.getStartNode();
         if (textNode.nodeType !== Node.TEXT_NODE) return;
-        const element = textNode.parentElement;
+        const element = editorSelection.getElement()
         const textId = editorSelection.getClosestId("text").start;
 
         // 모델 가져오고 저장하기
@@ -32,8 +32,7 @@ function TextBlock({blockId}) {
     };
 
     const checkTextSelection = () => {
-        const selection = window.getSelection();
-        const range = selection.getRangeAt(0);// 첫번째 셀렉션(다중 셀렉션 x)
+        const range = editorSelection.getRange();
         const startNode = range.startContainer;
         const endNode = range.endContainer;
 

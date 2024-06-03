@@ -61,7 +61,6 @@ export class EditorSelection {
 
     }
 
-
     setCaret(container, offset = 0) {
         if (!(container instanceof Node)) return;
 
@@ -71,5 +70,9 @@ export class EditorSelection {
 
         this.selection.removeAllRanges();
         this.selection.addRange(range);
+    }
+
+    getRange() {
+        return this.selection.getRangeAt(0);
     }
 }

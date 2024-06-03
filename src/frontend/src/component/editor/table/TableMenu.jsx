@@ -1,40 +1,72 @@
-import React, {useLayoutEffect, useRef} from 'react';
-import {useTableMenu, useTableMenuOffset} from "./hooks/useTableMenu";
+import React from 'react';
+import {ContextMenu} from "../../common/ContextMenu";
+import useTable from "./hooks/useTable";
+import {useTableData} from "./hooks/useTableData";
 
-function TableMenu(props) {
-    const menuRef = useRef(null);
-    const {closeMenu, isOpen} = useTableMenu();
-    const {x,y, setMenuOffset} = useTableMenuOffset();
+const convertTypeToText = (type) => {
+    return type === "row" ? "행" : "열";
+}
 
-    // 배경 클릭 시
-    const overlayClickHandler = (e) => {
-        if(e.target === menuRef.current || menuRef.current.contains(e.target)) return;
-        // 메뉴 닫기
+const getTextByDirection = (type, direction) => {
+    if (type === "row") {
+        return direction === "prev" ? "위로" : "아래로";
+    } else {
+        return direction === "next" ? "오른쪽에" : "왼쪽에"
+    }
+}
+
+/**
+ * @desc 테이블 메뉴
+ * @param {function} closeMenu
+ * @param {"row"|"column"} type
+ * @param {number} rowIdx
+ * @param {number} colIdx
+ * @returns {JSX.Element}
+ */
+function TableMenu({closeMenu, type, rowIdx, colIdx}) {
+    const headerAble = rowIdx === 0 && colIdx === 0;
+    const tableData = useTableData();
+    const deleteAble = type === "row" ? tableData.getRowLength() > 1 : tableData.getColumnLength() > 1;
+    const {addRow, addColumn, removeRow, removeColumn,toggleHeader} = useTable();
+
+    // 다음에 삽입
+    const insertNextMenuHandler = () => {
+        type === "row" ? addRow(rowIdx) : addColumn(colIdx);
+        closeMenu();
+    }
+    // 이전에 삽입
+    const insertPrevMenuHandler = () => {
+        type === "row" ? addRow(rowIdx - 1) : addColumn(colIdx - 1);
+        closeMenu();
+    }
+    // 삭제
+    const removeMenuHandler = () => {
+        type === "row" ? removeRow(rowIdx) : removeColumn(colIdx);
         closeMenu();
     }
 
-    // 메뉴 박스가 화면 크기 넘어가는 경우 위치 재조정
-    useLayoutEffect(() => {
-        if (!menuRef.current) return;
-        const innerWidth = window.innerWidth;
-        const menuBoxWidth = menuRef.current.offsetWidth
-        if (menuBoxWidth + x > innerWidth) {
-            setMenuOffset(innerWidth - menuBoxWidth - 10);
-        }
-    }, [x, y, setMenuOffset]);
+    const headerMenuHandler = () => {
+        toggleHeader(type);
+        closeMenu();
+    }
 
-
-    if (!isOpen) return;
     return (
-        <div onClick={overlayClickHandler} contentEditable={false} className="table-menu-overlay"
-             style={{userSelect: "none"}}>
-            <div ref={menuRef} className="table-menu" style={{top: y, left: x}}>
-                <div className="table-menu-item">헤더 설정</div>
-                <div className="table-menu-item">행 추가</div>
-                <div className="table-menu-item">행 삭제</div>
-                <div className="table-menu-item">계산 함수</div>
-            </div>
-        </div>
+        <ContextMenu closeMenu={closeMenu}>
+            {headerAble && (
+                <>
+                    <ContextMenu.Toggle name={`${convertTypeToText(type)} 헤더 `} handler={headerMenuHandler} init={tableData.getHeaderByType(type)} />
+                    <ContextMenu.Divider/>
+                </>
+            )}
+            <ContextMenu.Plain name={`${getTextByDirection(type, "prev")} ${convertTypeToText(type)} 삽입`}
+                               handler={insertPrevMenuHandler}/>
+            <ContextMenu.Plain name={`${getTextByDirection(type, "next")} ${convertTypeToText(type)} 삽입`}
+                               handler={insertNextMenuHandler}/>
+            <ContextMenu.Plain disable={!deleteAble} name={`${convertTypeToText(type)} 삭제`}
+                               handler={removeMenuHandler}/>
+            <ContextMenu.Divider/>
+            <ContextMenu.Plain name="계산 함수"/>
+        </ContextMenu>
     )
 }
 

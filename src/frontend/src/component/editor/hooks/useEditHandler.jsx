@@ -1,5 +1,5 @@
-import {createBlock, getClosestBlockId, getCaratPositionElement, isCaretAtEnd} from "../../../utils/editor";
-import {useContext, useEffect, useRef} from "react";
+import {getCaratPositionElement, getClosestBlockId, isCaretAtEnd} from "../../../utils/editor";
+import {useContext, useEffect} from "react";
 import {BlockStoreContext} from "../../container/NoteEditorContainer";
 import {EditorContext} from "../NoteEditor";
 
@@ -50,14 +50,15 @@ export function useEditorEventListener(eventType,handler,dependency = [handler])
     const editorRef = useContext(EditorContext);
 
     useEffect(() => {
-        if(!(editorRef.current instanceof HTMLElement)) return;
+        const $editor = editorRef.current;
+        if(!($editor instanceof HTMLElement)) return;
 
-            editorRef.current.addEventListener(eventType,handler);
+        $editor.addEventListener(eventType,handler);
 
         return () => {
-            editorRef.current.removeEventListener(eventType,handler);
+            $editor.removeEventListener(eventType,handler);
         }
-    }, dependency);
+    }, [...dependency,editorRef,eventType,handler]);
 }
 
 export default useEditHandler;

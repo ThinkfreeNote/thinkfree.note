@@ -34,6 +34,11 @@ ol, ul {
     list-style: none;
 }
 
+hr {
+    padding : 0;
+    margin : 0;
+}
+
 blockquote, q {
     quotes: none;
 }
@@ -61,10 +66,6 @@ table, th, td {
     border-collapse: collapse;
 }
 
-td {
-    width: 80px;
-}
-
 .editor {
     outline: none;
     border: 1px solid black;
@@ -83,7 +84,7 @@ td {
     box-shadow: 2px 2px 10px rgba(0, 0, 0, .1);
 }
 
-.table {
+.table-block {
     display: flex;
     justify-content: flex-start;
     width: 100%;
@@ -91,10 +92,20 @@ td {
     overflow-x: auto;
 }
 
+.table-box {
+    position: relative;
+    background-color: white;
+
+}
+
+.table-row {
+    position: relative;
+}
+
 .cell  {
     position: relative;
     padding: 10px 12px;
-    min-width: 100px;
+    min-width: 50px;
     height: 30px;
     font-size: 14px;
     line-height: 140%;
@@ -112,6 +123,9 @@ td {
     align-items: center;
     height: 24px;
     cursor: pointer;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 
 }
 [class^="table-selector"]:hover {
@@ -133,13 +147,7 @@ td {
     left : calc(50% - 6px);
 }
 
-.table-menu-overlay {
-    position: fixed;
-    z-index: 999;
-    inset : 0;
-    overflow: hidden;
-    background-color: rgba(168,168,168,.3);
-}
+
 .table-menu {
     position: fixed;
     background-color: white;
@@ -147,17 +155,21 @@ td {
     padding : .3rem 0;
     box-shadow: 0 0 5px rgba(0,0,0,.2);
 }
-.table-menu-item {
-    padding : 1rem;
-    font-family: "Noto Sans KR", sans-serif;
-    font-size : 14px;
-    min-width: 10rem;
-}
-.table-menu-item:hover {
-    background-color: rgba(241, 242, 244);
-    cursor : pointer;
+
+.table-header{
+    background-color: rgb(201, 202, 204) ;
 }
 
+.column-resizer {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    z-index: 50;
+    top:0;
+    border : none;
+    border-right: thin dashed red;
+    cursor : col-resize;
+}
 
 .btn_add {
     position: absolute;
@@ -184,4 +196,36 @@ td {
 .btn_add_row {
     width: 100%;
     height: 18px;
+}
+
+.context-menu-overlay {
+    position: fixed;
+    z-index: 999;
+    inset : 0;
+    overflow: hidden;
+}
+
+.context-menu {
+    position: absolute;
+    background-color: white;
+    border-radius: 2px;
+    padding : .3rem 0;
+    box-shadow: 0 0 5px rgba(0,0,0,.2);
+}
+
+.context-menu-item {
+    padding : 1rem;
+    font-family: "Noto Sans KR", sans-serif;
+    font-size : 14px;
+    min-width: 12rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    cursor : pointer;
+}
+
+/* 컨텍스트 메뉴 아이템 (비활성화 아닐 때) */
+.context-menu-item:hover:not(.context-menu-disable) {
+    background-color: rgba(241, 242, 244);
 }

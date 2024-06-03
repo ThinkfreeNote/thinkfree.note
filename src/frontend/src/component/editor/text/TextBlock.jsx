@@ -7,7 +7,6 @@ import {getClosestBlockId, getClosestTextId} from "../../../utils/editor";
 import {BlockStoreContext} from "../context/BlockIdListProvider";
 
 
-
 function TextBlock({blockId}) {
     const textBlock = useBlockData(blockId);
     const [targetBlockId, setTargetBlockId] = useState(null);
@@ -59,7 +58,7 @@ function TextBlock({blockId}) {
 
         setTargetBlockId(startNodeBlockId);
         setTargetTextId(textId);
-        setOffset({ start: range.startOffset, end: range.endOffset });
+        setOffset({start: range.startOffset, end: range.endOffset});
         setIsHidden(false);// 텍스트 박스 표시
     };
 
@@ -69,27 +68,25 @@ function TextBlock({blockId}) {
     useEditorEventListener("mouseup", checkTextSelection, [checkTextSelection]);
 
     // 비어있는 블록
-    if (Object.keys(textBlock.contents).length === 0) {
-        return (
-            <>
-                <p>&#xFEFF;</p>
-            </>
-        );
-    } else {
-        return (
-            <>
-                {textBlock.textIdList.map(textId => (
-                    <TextComponent
-                        key={textId}
-                        textId={textId}
-                        text={textBlock.contents[textId]}
-                        isSelected={targetTextId === textId && !isHidden}
-                    />
-                ))}
-                {(targetBlockId === blockId) && !isHidden && <TextBox targetBlockId={targetBlockId} targetTextId={targetTextId} offset={offset} onRefresh={onRefresh} />}
-            </>
-        );
-    }
+    return (
+        <>
+            {textBlock.textIdList.map(textId => (
+                <TextComponent
+                    key={textId}
+                    textId={textId}
+                    text={textBlock.contents[textId]}
+                />
+            ))}
+
+            {(targetBlockId === blockId) && !isHidden &&
+                <TextBox
+                    targetBlockId={targetBlockId}
+                    targetTextId={targetTextId}
+                    offset={offset}
+                    onRefresh={onRefresh}
+                />}
+        </>
+    );
 }
 
 export default TextBlock;

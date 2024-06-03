@@ -31,14 +31,14 @@ function TextBlock({blockId}) {
     if (data.contents.length === 0) {
         return (
             <>
-                <p>&#xFEFF;</p>
+                <p data-leaf={true}>&#xFEFF;</p>
             </>
         );
     } else {
         return (
             <>
                 {data.contents.map((content, index) => (
-                    <p key={index}
+                    <p data-leaf={true} key={index}
                        style={{...content.fontStyle}}
                     >
                         {content.value}

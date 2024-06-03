@@ -1,64 +1,75 @@
-export class EditorSelection{
+export class EditorSelection {
     constructor() {
         this.selection = window.getSelection();
-        this.isLeaf = false;
-        this.startNode = null;
-        this.endNode = null;
     }
 
+    isCaret() {
+        return this.selection.isCollapsed;
+    }
+
+    getStartNode() {
+        const {anchorNode, focusNode} = this.selection;
+
+        if (anchorNode === null || focusNode === null) {
+            return;
+        }
+        const comparePosition = anchorNode.compareDocumentPosition(focusNode);
+
+        return comparePosition & Node.DOCUMENT_POSITION_FOLLOWING ? anchorNode : focusNode;
+    }
+
+    getEndNode() {
+        const {anchorNode, focusNode} = this.selection;
+
+        if (anchorNode === null || focusNode === null) {
+            return;
+        }
+        const comparePosition = anchorNode.compareDocumentPosition(focusNode);
+
+        return comparePosition & Node.DOCUMENT_POSITION_PRECEDING ? anchorNode : focusNode;
+    }
+
+    getClosestId(type) {
+        const {startElement,endElement} = this.getElement();
+        return {
+            start : startElement.closest(`[data-${type}-id]`).dataset[`${type}Id`],
+            end : endElement.closest(`[data-${type}-id]`).dataset[`${type}Id`]
+        }
+    }
+
+    getClosestElement(type) {
+        const {startElement,endElement} = this.getElement();
+        return {
+            start : startElement.closest(`[data-${type}-id]`),
+            end : endElement.closest(`[data-${type}-id]`)
+        }
+    }
+
+    getElement() {
+        const startNode = this.getStartNode();
+        const endNode = this.getEndNode();
+        return {
+            startElement : startNode.nodeType === Node.TEXT_NODE ? startNode.parentElement : startNode,
+            endElement : endNode.nodeType === Node.TEXT_NODE ? endNode.parentElement : endNode,
+        }
+    }
 
     /**
      * 위치 비교
      */
     updateSelectionNodes() {
-        const {anchorNode, focusNode} = this.selection;
 
-        if(anchorNode === null || focusNode === null) {
-            this.clearSelection();
-            return;
-        }
-
-
-        const comparePosition = anchorNode.compareDocumentPosition(focusNode);
-
-        if(anchorNode === focusNode) {
-            this.startNode = anchorNode;
-            this.endNode = anchorNode;
-            return;
-        }
-
-        // DOM 상 위치 비교
-        if(comparePosition & Node.DOCUMENT_POSITION_FOLLOWING) {
-            this.startNode = anchorNode;
-            this.endNode = focusNode;
-        }
-        else if(comparePosition & Node.DOCUMENT_POSITION_PRECEDING) {
-            this.startNode = focusNode;
-            this.endNode = anchorNode;
-        }
     }
 
 
-
-    getNodes() {
-        return {startNode : this.startNode, endNode : this.endNode};
-    }
-
-    setCaret(container,offset = 0) {
-        if(!(container instanceof Node)) return;
+    setCaret(container, offset = 0) {
+        if (!(container instanceof Node)) return;
 
         const range = new Range();
-        range.setStart(container,offset);
+        range.setStart(container, offset);
         range.collapse(true);
 
         this.selection.removeAllRanges();
         this.selection.addRange(range);
     }
-
-    clearSelection() {
-        this.startNode = null;
-        this.endNode = null;
-    }
-
-
 }

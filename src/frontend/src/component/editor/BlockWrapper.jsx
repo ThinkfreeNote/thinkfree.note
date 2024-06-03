@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {selection} from "../../App";
+import {editorSelection} from "../../App";
 import BlockContextProvider from "./BlockContextProvider";
 import BlockMenuBox from "./block/BlockMenuBox";
 
@@ -16,7 +16,7 @@ function BlockWrapper({id, children}) {
     useEffect(() => {
         // 블록 내의 첫번째 leaf 요소에 커서 지정
         const $firstLeaf = wrapper.current.querySelector("[data-leaf]");
-        selection.setCaret($firstLeaf);
+        editorSelection.setCaret($firstLeaf);
     }, []);
 
     return (

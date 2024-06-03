@@ -1,8 +1,9 @@
-import {getCaratPositionElement, getClosestBlockId, isCaretAtEnd} from "../../../utils/editor";
+import {isCaretAtEnd} from "../../../utils/editor";
 import {useContext, useEffect} from "react";
 import {EditorContext} from "../NoteEditor";
-import {BlockStoreContext, BlockIdListContext} from "../context/BlockIdListProvider";
+import {BlockStoreContext} from "../context/BlockIdListProvider";
 import useBlockIdList from "./useBlockIdList";
+import {editorSelection} from "../../../App";
 
 
 /**
@@ -15,16 +16,15 @@ function useEditHandler() {
 
     const onKeyDownHandler = (e) => {
         if (e.key === "Enter") {
-            const selection = window.getSelection();
             e.preventDefault();
 
             // 캐럿이 마지막 텍스트 노드에 위치한 경우에만 새로운 Block 추가
-            if (selection.type === "Caret" && isCaretAtEnd(selection)) {
-                const currentBlockId = getClosestBlockId(getCaratPositionElement());
+            if (editorSelection.isCaret() && isCaretAtEnd(window.getSelection())) {
+                const {start : startBlockId} = editorSelection.getClosestId("block");
                 const newBlockId = blockStore.createBlock("text").id;
                 
                 // 현재 커서의 blockId 뒤에 새로운 block 추가
-                note.addBlockId(newBlockId, note.getIndexOfBlock(currentBlockId) + 1);
+                note.addBlockId(newBlockId, note.getIndexOfBlock(startBlockId) + 1);
             }
         }
     }

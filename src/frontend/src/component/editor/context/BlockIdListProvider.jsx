@@ -1,11 +1,12 @@
 import React, {createContext, useRef, useState} from 'react';
-import {BlockStore} from "../../../model/BlockStore";
-import {Note} from "../../../model/Note";
-import {FontStyle} from "../../../model/FontStyle";
-import {Text} from "../../../model/Text";
-import {TextBlock} from "../../../model/TextBlock";
-import {getRandomId} from "../../../utils/id";
-import {Table} from "../../../model/Table";
+import {FontStyle} from "../../model/FontStyle";
+import {TextBlock} from "../../model/TextBlock";
+import {BlockStore} from "../../model/BlockStore";
+import {Note} from "../../model/Note";
+import {Text} from "../../model/Text";
+import {getRandomId} from "../../utils/id";
+import {Table} from "../../model/Table";
+
 
 const testBlockStore = new BlockStore();
 const note = new Note();
@@ -20,12 +21,12 @@ const createTest = () => {
         "30px",
         "Noto Sans KR",
         "bold", "italic",
-        ["underline", "line-through"]
+        "underline"
     );
     // 텍스트
-    const text1 = new Text(blockId1, "테스트입니다~~~", fontStyle1);
+    const text1 = new Text(getRandomId(), "테스트입니다~~~", fontStyle1);
     // 텍스트 블럭
-    const textBlock1 = new TextBlock(blockId1, "text", []);
+    const textBlock1 = new TextBlock(blockId1, "text", {});
     textBlock1.addText(text1);
 
     // 블럭 스토어

@@ -1,6 +1,7 @@
 import {getRandomId} from "../utils/id";
 import {TextBlock} from "./TextBlock";
 import {Table} from "./Table";
+import {Text} from "./Text";
 
 export class BlockStore {
     // 블럭을 스토어에 추가
@@ -13,9 +14,10 @@ export class BlockStore {
         const blockId = getRandomId();
 
         if (type === "text") {
-            const text = new TextBlock(blockId, type, []);
-            this.addBlock(text);
-            return text;
+            const textBlock = new TextBlock(blockId, type, {});
+            textBlock.addText(new Text(getRandomId(), "", null));
+            this.addBlock(textBlock);
+            return textBlock;
         } else if (type === "table") {
             const table = new Table(blockId, type, []);
             this.addBlock(table);

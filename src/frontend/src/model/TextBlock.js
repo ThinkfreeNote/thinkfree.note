@@ -18,4 +18,12 @@ export class TextBlock extends Block {
     getText(textId) {
         return this.contents[textId];
     }
+
+    getTextFromIdx(idx) {
+        return this.getText(this.textIdList[idx]);
+    }
+
+    getTextIdx(textId) {
+        return this.textIdList.indexOf(textId);
+    }
 }

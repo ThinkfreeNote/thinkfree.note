@@ -7,7 +7,6 @@ function TextBlock({blockId}) {
     const blockStore = useContext(BlockStoreContext);
     const editorContext = useContext(EditorContext);
     const data = blockStore[blockId];
-    console.log(data);
 
     // 인풋 이벤트가 발생한 노드 가져와서 blockStore에 저장
     useEffect(() => {
@@ -16,7 +15,7 @@ function TextBlock({blockId}) {
         const handler = (e) => {
             const element = window.getSelection().anchorNode.parentElement;
             blockStore[blockId].value = element.innerText;
-            console.log(blockStore[blockId]);
+            // console.log(blockStore[blockId]);
         }
 
         editorContext.current.addEventListener("input", handler)

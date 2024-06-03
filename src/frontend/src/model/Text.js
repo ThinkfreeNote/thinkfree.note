@@ -5,7 +5,7 @@ export class Text {
         this.fontStyle = fontStyle;
     }
 
-    updateFontStyle(styleName, value, onRefresh) {
+    updateFontStyle(styleName, value) {
         let newStyleValue = value;
 
         if (this.fontStyle[styleName] === value) {
@@ -16,7 +16,5 @@ export class Text {
             ...this.fontStyle,
             [styleName]: newStyleValue
         };
-
-        onRefresh();
     }
 }

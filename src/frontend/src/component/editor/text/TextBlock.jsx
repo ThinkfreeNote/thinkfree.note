@@ -14,7 +14,7 @@ function TextBlock({blockId}) {
     const [isHidden, setIsHidden] = useState(true);
     const [refresh, setRefresh] = useState(true);
 
-    console.log(useContext(BlockStoreContext));
+    // console.log(useContext(BlockStoreContext));
     const onRefresh = () => {
         const value = refresh === false;
         setRefresh(value);

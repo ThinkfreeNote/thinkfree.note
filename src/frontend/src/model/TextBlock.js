@@ -1,7 +1,7 @@
 import {Block} from "./Block";
 
 export class TextBlock extends Block {
-    constructor(id, type, contents = {}) {
+    constructor(id, type, contents = {}, textIdList = []) {
         super(id, type, contents);
     }
 

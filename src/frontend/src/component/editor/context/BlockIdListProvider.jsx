@@ -13,8 +13,11 @@ const note = new Note();
 
 const createTest = () => {
     // 노트
-    const blockId1 = "abcs-123a-2sf1";
+    const blockId1 = "3840-4d93-b06d";
+    const blockId3 = "4840-4d93-b062";
     note.addBlockId(blockId1);
+    note.addBlockId(blockId3);
+
     // 폰트 스타일
     const fontStyle1 = new FontStyle(
         "red",
@@ -23,14 +26,31 @@ const createTest = () => {
         "bold", "italic",
         "underline"
     );
+    const fontStyle2 = new FontStyle(
+        "blue",
+        "30px",
+        "Noto Sans KR",
+        "underline"
+    );
+
     // 텍스트
-    const text1 = new Text(getRandomId(), "테스트입니다~~~", fontStyle1);
+    const text1 = new Text(getRandomId(), "테스트입니다1", fontStyle1);
+    const text2 = new Text(getRandomId(), "테스트입니다2", fontStyle2);
+    const text3 = new Text(getRandomId(), "테스트입니다3", fontStyle1);
+    const text4 = new Text(getRandomId(), "테스트입니다4", fontStyle2);
+
     // 텍스트 블럭
     const textBlock1 = new TextBlock(blockId1, "text", {});
     textBlock1.addText(text1);
+    textBlock1.addText(text2);
+
+    const textBlock2 = new TextBlock(blockId3, "text", {});
+    textBlock2.addText(text3);
+    textBlock2.addText(text4);
 
     // 블럭 스토어
     testBlockStore.addBlock(textBlock1);
+    testBlockStore.addBlock(textBlock2);
 
     const blockId2 = getRandomId();
     note.addBlockId(blockId2);

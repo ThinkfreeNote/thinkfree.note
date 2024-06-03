@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import TextComponent from "./TextComponent";
 import {useEditorEventListener} from "../hooks/useEditHandler";
 import {useBlockData} from "../hooks/useBlockHooks";
 import TextBox from "./TextBox";
 import {getClosestBlockId, getClosestTextId} from "../../../utils/editor";
+import {BlockStoreContext} from "../context/BlockIdListProvider";
 
 
 
@@ -15,6 +16,7 @@ function TextBlock({blockId}) {
     const [isHidden, setIsHidden] = useState(true);
     const [refresh, setRefresh] = useState(true);
 
+    console.log(useContext(BlockStoreContext));
     const onRefresh = () => {
         const value = refresh === false;
         setRefresh(value);
@@ -45,9 +47,11 @@ function TextBlock({blockId}) {
         // 시작 또는 끝 노드가 텍스트가 아닌 경우
         if (startNode.nodeType !== Node.TEXT_NODE || endNode.nodeType !== Node.TEXT_NODE) return;
         const startNodeBlockId = getClosestBlockId(startNode.parentElement);
-        const endNodeBlockId = getClosestBlockId(startNode.parentElement);
+        const endNodeBlockId = getClosestBlockId(endNode.parentElement);
         const textId = getClosestTextId(startNode.parentElement);
 
+        console.log(startNodeBlockId);
+        console.log(endNodeBlockId);
         // startNode와 endNode가 다른 블럭일 경우
         if (startNodeBlockId !== endNodeBlockId) {
             return;
@@ -77,7 +81,7 @@ function TextBlock({blockId}) {
                 {Object.entries(textBlock.contents).map(([textId, text]) => (
                     <TextComponent key={textId} textId={textId} text={text}/>
                 ))}
-                {!isHidden && <TextBox targetBlockId={targetBlockId} targetTextId={targetTextId} offset={offset} onRefresh={onRefresh} />}
+                {(targetBlockId === blockId) && !isHidden && <TextBox targetBlockId={targetBlockId} targetTextId={targetTextId} offset={offset} onRefresh={onRefresh} />}
             </>
         );
     }

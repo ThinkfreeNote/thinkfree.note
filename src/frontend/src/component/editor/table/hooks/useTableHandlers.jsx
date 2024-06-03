@@ -1,18 +1,18 @@
 import {useEditorEventListener} from "../../hooks/useEditHandler";
 import {useCallback, useContext} from "react";
-import {getClosestBlockId, getElementBySelection} from "../../../../utils/editor";
 import {getCellIds, isCell} from "../../../../utils/table";
 import {removeBOM} from "../../../../utils/common";
 import {useTableData} from "./useTableData";
 import {BlockContext} from "../../BlockContextProvider";
+import {editorSelection} from "../../../../App";
 
 export function useTableHandlers() {
     const tableData = useTableData();
     const {blockId} = useContext(BlockContext);
 
     const cellHandler = useCallback((e) => {
-        const $cell = getElementBySelection();
-        if (!isCell($cell) || getClosestBlockId($cell) !== blockId ) return;
+        const $cell = editorSelection.getElement().startElement;
+        if (!isCell($cell) || editorSelection.getClosestId("block").start !== blockId ) return;
 
         let value = $cell.textContent.length === 0 ? `\uFEFF` : removeBOM($cell.textContent);
 

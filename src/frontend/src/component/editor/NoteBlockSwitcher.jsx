@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {BlockStoreContext} from "../container/NoteEditorContainer";
+import {BlockStoreContext} from "./context/BlockIdListProvider";
 import BlockWrapper from "./BlockWrapper";
 import TextBlock from "./text/TextBlock";
 import TableBlock from "./table/TableBlock";

@@ -8,7 +8,7 @@ function CellWrapper({children,colIdx,cellId,rowIdx}) {
     const isHeader = colIdx === 0 && tableData.getHeaderByType("column");
 
     return (
-        <td data-cell-id={cellId} className={`cell ${isHeader ? "table-header" : ""}`}>
+        <td data-cell-id={cellId} className={`cell ${isHeader ? "table-header" : ""}`} data-leaf={true}>
             <TableSelector colIdx={colIdx} rowIdx={rowIdx}/>
             {children}
             <CellRight columnId={cellId}/>

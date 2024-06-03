@@ -1,9 +1,6 @@
-import {useCallback, useContext} from 'react';
-import {getCellIds, isCell} from "../../../../utils/table";
-import {removeBOM} from "../../../../utils/common";
-import {getElementBySelection} from "../../../../utils/editor";
-import {BlockIdContext} from "../../BlockWrapper";
+import {useContext} from 'react';
 import {useTableData} from "./useTableData";
+import {BlockContext} from "../../BlockContextProvider";
 
 /**
  * @desc 테이블 조작 함수 반환 커스텀 훅
@@ -11,7 +8,7 @@ import {useTableData} from "./useTableData";
  */
 function useTable() {
     const tableData = useTableData();
-    const {reRender} = useContext(BlockIdContext);
+    const {reRender} = useContext(BlockContext);
 
     const addColumn = (index) => {
         tableData.addColumn(index);

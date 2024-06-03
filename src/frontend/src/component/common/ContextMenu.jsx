@@ -1,7 +1,9 @@
 import React, {useContext, useLayoutEffect, useRef, useState} from 'react';
-import {ReactComponent as ToggleOn} from "../../assets/icon_check.svg";
 import {MenuContext} from "./MenuContext";
 
+// 아이콘 에셋
+import {ReactComponent as ToggleOn} from "../../assets/icon_check.svg";
+import {ReactComponent as ArrowRightIcon} from "../../assets/icon_arrow_right.svg";
 
 function ContextMenuMain({children, closeMenu}) {
     const menuRef = useRef(null);
@@ -37,13 +39,16 @@ function ContextMenuMain({children, closeMenu}) {
     );
 }
 
+// 기본 메뉴 아이템
 function ContextMenuItemPlain({name, handler, disable = false}) {
-    return <div className={`context-menu-item ${disable && "context-menu-disable"}`} onClick={disable ? () =>{} : handler} style={{color : disable ? "grey" : "inherit"}}>{name}</div>
+    return <div className={`context-menu-item ${disable && "context-menu-disable"}`} onClick={disable ? () => {
+    } : handler} style={{color: disable ? "grey" : "inherit"}}>{name}</div>
 }
 
+// 토글 메뉴 아이템
 function ContextMenuItemToggle({name, handler, init = false}) {
-    const [on,setOn] = useState(init);
-    return <div className="context-menu-item" onClick={()=>{
+    const [on, setOn] = useState(init);
+    return <div className="context-menu-item" onClick={() => {
         handler()
         setOn(!on);
     }}>
@@ -52,8 +57,24 @@ function ContextMenuItemToggle({name, handler, init = false}) {
     </div>
 }
 
+// 구분선
 function ContextMenuItemDivider() {
-    return <hr style={{margin:"0 10px"}}></hr>
+    return <hr style={{margin: "0 10px"}}></hr>
+}
+
+//
+function ContextMenuItemDropDown({children, name}) {
+    return <div className="context-menu-item context-menu-dropDown" style={{position: "relative"}}>
+        <span>{name}</span>
+        <ArrowRightIcon width="18" height="18" style={{marginLeft: "auto"}}/>
+        <div style={{position: "absolute", transform: "translateX(90%)"}} className="context-menu">
+            {children}
+        </div>
+    </div>
+}
+
+function ContextMenuSubTitle({text}) {
+    return <div style={{fontSize:"12px", color:"grey", background : "none", cursor:"initial", padding : ".5em 1em"} } className="context-menu-item">{text}</div>
 }
 
 /**
@@ -67,5 +88,7 @@ function ContextMenuItemDivider() {
 export const ContextMenu = Object.assign(ContextMenuMain, {
     Plain: ContextMenuItemPlain,
     Toggle: ContextMenuItemToggle,
-    Divider : ContextMenuItemDivider
+    Divider: ContextMenuItemDivider,
+    DropDown: ContextMenuItemDropDown,
+    SubTitle : ContextMenuSubTitle,
 })

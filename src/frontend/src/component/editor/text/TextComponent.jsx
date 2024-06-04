@@ -3,9 +3,9 @@ import React from 'react';
 
 function TextComponent({textId, text}) {
     return (
-        <div data-text-id={textId} style={text.fontStyle}>
+        <span data-leaf={true} data-text-id={textId} style={text.fontStyle}>
             {text.value}
-        </div>
+        </span>
     )
 }
 

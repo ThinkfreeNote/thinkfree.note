@@ -1,10 +1,16 @@
 export class EditorSelection {
     constructor() {
         this.selection = window.getSelection();
+        this.prevRange  = null;
     }
 
     isCaret() {
         return this.selection.isCollapsed;
+    }
+
+    isNullSelection () {
+        const {anchorNode, focusNode} = this.selection;
+        return (anchorNode === null || focusNode === null);
     }
 
     getStartNode() {

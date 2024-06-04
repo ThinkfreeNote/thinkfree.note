@@ -9,7 +9,20 @@ function TextBox({targetBlockId, onRefresh}) {
         const textIds = editorSelection.getClosestId("text");
         let startIdx = textBlock.getTextIdx(textIds.start);
         let endIdx = textBlock.getTextIdx(textIds.end);
-        const offset = editorSelection.getSelectOffset();
+
+        // 다른 텍스트가 셀랙션 되었으면 분리
+        if (startIdx !== endIdx) {
+            const dividedTextValues = editorSelection.getDividedTextValues();
+            if (dividedTextValues.startNode[0] !== "") {
+                textBlock.divideText(startIdx, dividedTextValues.startNode[0], dividedTextValues.startNode[1]);
+                startIdx++;
+                endIdx++;
+            }
+
+            if (dividedTextValues.endNode[1] !== "") {
+                textBlock.divideText(endIdx, dividedTextValues.endNode[0], dividedTextValues.endNode[1]);
+            }
+        }
 
         for (let i = startIdx; i <= endIdx; i++) {
             const curText = textBlock.getTextFromIdx(i);
@@ -18,7 +31,7 @@ function TextBox({targetBlockId, onRefresh}) {
 
         onRefresh();
     }
-    
+
     return (
         <div contentEditable={false} style={{userSelect: "none"}}>
             <button onClick={() => updateFontStyles("color", "black")}>black</button>

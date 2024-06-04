@@ -21,14 +21,14 @@ const createTest = () => {
     // 폰트 스타일
     const fontStyle1 = new FontStyle(
         "red",
-        "30px",
+        "20px",
         "Noto Sans KR",
         "bold", "italic",
         "underline"
     );
     const fontStyle2 = new FontStyle(
         "blue",
-        "30px",
+        "20px",
         "Noto Sans KR",
         "underline"
     );
@@ -38,6 +38,8 @@ const createTest = () => {
     const text2 = new Text(getRandomId(), "테스트입니다2", fontStyle2);
     const text3 = new Text(getRandomId(), "테스트입니다3", fontStyle1);
     const text4 = new Text(getRandomId(), "테스트입니다4", fontStyle2);
+    const text5 = new Text(getRandomId(), "테스트입니다5", fontStyle1);
+    const text6 = new Text(getRandomId(), "테스트입니다6", fontStyle2);
 
     // 텍스트 블럭
     const textBlock1 = new TextBlock(blockId1, "text", {});
@@ -47,6 +49,8 @@ const createTest = () => {
     const textBlock2 = new TextBlock(blockId3, "text", {});
     textBlock2.addText(text3);
     textBlock2.addText(text4);
+    textBlock2.addText(text5);
+    textBlock2.addText(text6);
 
     // 블럭 스토어
     testBlockStore.addBlock(textBlock1);

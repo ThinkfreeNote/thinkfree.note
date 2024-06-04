@@ -1,16 +1,13 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import TextComponent from "./TextComponent";
 import {useEditorEventListener} from "../hooks/useEditHandler";
 import {useBlockData} from "../hooks/useBlockHooks";
 import TextBox from "./TextBox";
 import {editorSelection} from "../../../App";
-import {BlockStoreContext} from "../context/BlockIdListProvider";
 
 function TextBlock({blockId}) {
     const textBlock = useBlockData(blockId);
     const [targetBlockId, setTargetBlockId] = useState(null);
-    const [targetTextId, setTargetTextId] = useState(null);
-    const [offset, setOffset] = useState({start: -1, end: -1});
     const [isHidden, setIsHidden] = useState(true);
     const [refresh, setRefresh] = useState(true);
 
@@ -32,8 +29,6 @@ function TextBlock({blockId}) {
     };
 
     const checkTextSelection = () => {
-        const range = editorSelection.getRange();
-
         // mouseup이 발생했을 때 기본적으로 텍스트 박스를 숨김
         setIsHidden(true);
 
@@ -44,12 +39,9 @@ function TextBlock({blockId}) {
         const {start: startNodeBlockId, end: endNodeBlockId} = editorSelection.getClosestId("block");
         const textId = editorSelection.getClosestId("text").start;
         // startNode와 endNode가 다른 블럭일 경우
-        if (startNodeBlockId !== endNodeBlockId) {
-            return;
-        }
+        if (startNodeBlockId !== endNodeBlockId) return;
 
         setTargetBlockId(startNodeBlockId);
-        setTargetTextId(textId);
         setIsHidden(false);// 텍스트 박스 표시
     };
 
@@ -72,7 +64,6 @@ function TextBlock({blockId}) {
             {(targetBlockId === blockId) && !isHidden &&
                 <TextBox
                     targetBlockId={targetBlockId}
-                    targetTextId={targetTextId}
                     onRefresh={onRefresh}
                 />}
         </>

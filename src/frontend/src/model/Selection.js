@@ -1,3 +1,5 @@
+import {editorSelection} from "../App";
+
 export class EditorSelection {
     constructor() {
         this.selection = window.getSelection();
@@ -30,18 +32,18 @@ export class EditorSelection {
     }
 
     getClosestId(type) {
-        const {startElement,endElement} = this.getElement();
+        const {startElement, endElement} = this.getElement();
         return {
-            start : startElement.closest(`[data-${type}-id]`).dataset[`${type}Id`],
-            end : endElement.closest(`[data-${type}-id]`).dataset[`${type}Id`]
+            start: startElement.closest(`[data-${type}-id]`).dataset[`${type}Id`],
+            end: endElement.closest(`[data-${type}-id]`).dataset[`${type}Id`]
         }
     }
 
     getClosestElement(type) {
-        const {startElement,endElement} = this.getElement();
+        const {startElement, endElement} = this.getElement();
         return {
-            start : startElement.closest(`[data-${type}-id]`),
-            end : endElement.closest(`[data-${type}-id]`)
+            start: startElement.closest(`[data-${type}-id]`),
+            end: endElement.closest(`[data-${type}-id]`)
         }
     }
 
@@ -49,8 +51,8 @@ export class EditorSelection {
         const startNode = this.getStartNode();
         const endNode = this.getEndNode();
         return {
-            startElement : startNode.nodeType === Node.TEXT_NODE ? startNode.parentElement : startNode,
-            endElement : endNode.nodeType === Node.TEXT_NODE ? endNode.parentElement : endNode,
+            startElement: startNode.nodeType === Node.TEXT_NODE ? startNode.parentElement : startNode,
+            endElement: endNode.nodeType === Node.TEXT_NODE ? endNode.parentElement : endNode,
         }
     }
 
@@ -84,7 +86,7 @@ export class EditorSelection {
      * 셀랙션된 오프셋 객체 반환(캐럿일 경우 null)
      * @returns {{start: number, end: number}|null}
      */
-    getSelectOffset() {
+    getOffset() {
         if (this.isCaret()) return null;
         const range = this.getRange();
 
@@ -97,5 +99,25 @@ export class EditorSelection {
      */
     isTextSelection() {
         return this.getStartNode().nodeType === Node.TEXT_NODE || this.getEndNode().nodeType === Node.TEXT_NODE;
+    }
+
+    getDividedTextValues() {
+        const startNode = this.getStartNode();
+        const endNode = this.getEndNode();
+        const startNodeTextContent = startNode.textContent;
+        const endNodeTextContent = endNode.textContent;
+        const offset = this.getOffset();
+
+        const startTextBefore = startNodeTextContent.slice(0, offset.start);
+        const startTextSelected = startNodeTextContent.slice(offset.start);
+
+        const endTextSelected = endNodeTextContent.slice(0, offset.end);
+        const endTextAfter = endNodeTextContent.slice(offset.end);
+
+        return {
+            startNode: [startTextBefore, startTextSelected],
+            endNode: [endTextSelected, endTextAfter],
+            isSameNode: startNode === endNode
+        };
     }
 }

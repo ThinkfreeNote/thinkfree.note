@@ -26,8 +26,23 @@ function useBlockIdList() {
         return blockIdList.indexOf(blockId);
     }
 
+    /**
+     * @param blockId
+     * @returns {boolean} 삭제 성공 실패 여부
+     */
+    const deleteBlock = (blockId) => {
+        const index = getIndexOfBlock(blockId);
+        if (index === -1 || blockIdList.length === 1) return false;
+
+        const newBlockIdList = [...blockIdList];
+        newBlockIdList.splice(index, 1);
+        setBlockIdList(newBlockIdList);
+
+        return true;
+    }
+
     return {
-        blockIdList, addBlockId, getIndexOfBlock
+        blockIdList, addBlockId, getIndexOfBlock, deleteBlock
     }
 }
 

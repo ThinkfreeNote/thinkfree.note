@@ -24,4 +24,16 @@ export class BlockStore {
             return table;
         }
     }
+
+    duplicateBlock(originId) {
+        const blockId = getRandomId();
+
+        const newBlock = {...this[originId]}
+        Object.setPrototypeOf(newBlock, Object.getPrototypeOf(this[originId]));
+
+        newBlock.id = blockId;
+        this[blockId] = newBlock;
+
+        return blockId;
+    }
 }

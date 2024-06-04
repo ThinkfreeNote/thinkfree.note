@@ -53,19 +53,22 @@ function TextBlock({blockId}) {
     // 비어있는 블록
     return (
         <>
-            {textBlock.textIdList.map(textId => (
-                <TextComponent
-                    key={textId}
-                    textId={textId}
-                    text={textBlock.contents[textId]}
-                />
-            ))}
+            <p>
+                {textBlock.textIdList.map(textId => (
+                    <TextComponent
+                        key={textId}
+                        textId={textId}
+                        text={textBlock.contents[textId]}
+                    />
+                ))}
+            </p>
 
             {(targetBlockId === blockId) && !isHidden &&
                 <TextBox
                     targetBlockId={targetBlockId}
                     onRefresh={onRefresh}
-                />}
+                />
+            }
         </>
     );
 }

@@ -33,19 +33,16 @@ function TextBlock({blockId}) {
 
     const checkTextSelection = () => {
         const range = editorSelection.getRange();
-        const startNode = range.startContainer;
-        const endNode = range.endContainer;
 
         // mouseup이 발생했을 때 기본적으로 텍스트 박스를 숨김
         setIsHidden(true);
 
         // 셀렉션이 아닌 경우 (클릭)
-        if (range.collapsed) return;
+        if (editorSelection.isCaret()) return;
         // 시작 또는 끝 노드가 텍스트가 아닌 경우
-        if (startNode.nodeType !== Node.TEXT_NODE || endNode.nodeType !== Node.TEXT_NODE) return;
-        const {start : startNodeBlockId, end:endNodeBlockId} = editorSelection.getClosestId("block");
+        if (!editorSelection.isTextSelection()) return;
+        const {start: startNodeBlockId, end: endNodeBlockId} = editorSelection.getClosestId("block");
         const textId = editorSelection.getClosestId("text").start;
-
         // startNode와 endNode가 다른 블럭일 경우
         if (startNodeBlockId !== endNodeBlockId) {
             return;
@@ -53,7 +50,6 @@ function TextBlock({blockId}) {
 
         setTargetBlockId(startNodeBlockId);
         setTargetTextId(textId);
-        setOffset({start: range.startOffset, end: range.endOffset });
         setIsHidden(false);// 텍스트 박스 표시
     };
 
@@ -77,7 +73,6 @@ function TextBlock({blockId}) {
                 <TextBox
                     targetBlockId={targetBlockId}
                     targetTextId={targetTextId}
-                    offset={offset}
                     onRefresh={onRefresh}
                 />}
         </>

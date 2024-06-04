@@ -15,12 +15,12 @@ export class TextBlock extends Block {
         this.contents[textId] = value;
     }
 
-    getText(textId) {
+    getTextFromId(textId) {
         return this.contents[textId];
     }
 
     getTextFromIdx(idx) {
-        return this.getText(this.textIdList[idx]);
+        return this.getTextFromId(this.textIdList[idx]);
     }
 
     getTextIdx(textId) {

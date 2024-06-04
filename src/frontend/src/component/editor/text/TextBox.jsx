@@ -2,13 +2,14 @@ import React from 'react';
 import {useBlockData} from "../hooks/useBlockHooks";
 import {editorSelection} from "../../../App";
 
-function TextBox({targetBlockId, onRefresh, offset}) {
+function TextBox({targetBlockId, onRefresh}) {
     const textBlock = useBlockData(targetBlockId);
 
     function updateFontStyles(styleName, value) {
         const textIds = editorSelection.getClosestId("text");
         let startIdx = textBlock.getTextIdx(textIds.start);
         let endIdx = textBlock.getTextIdx(textIds.end);
+        const offset = editorSelection.getSelectOffset();
 
         for (let i = startIdx; i <= endIdx; i++) {
             const curText = textBlock.getTextFromIdx(i);

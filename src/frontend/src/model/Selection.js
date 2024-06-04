@@ -72,7 +72,30 @@ export class EditorSelection {
         this.selection.addRange(range);
     }
 
+    /**
+     * Range 반환
+     * @returns {Range}
+     */
     getRange() {
         return this.selection.getRangeAt(0);
+    }
+
+    /**
+     * 셀랙션된 오프셋 객체 반환(캐럿일 경우 null)
+     * @returns {{start: number, end: number}|null}
+     */
+    getSelectOffset() {
+        if (this.isCaret()) return null;
+        const range = this.getRange();
+
+        return {start: range.startOffset, end: range.endOffset};
+    }
+
+    /**
+     * 셀랙션된 첫 노드와 끝 노드가 Text인지 확인
+     * @returns {boolean}
+     */
+    isTextSelection() {
+        return this.getStartNode().nodeType === Node.TEXT_NODE || this.getEndNode().nodeType === Node.TEXT_NODE;
     }
 }

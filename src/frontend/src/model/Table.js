@@ -40,7 +40,9 @@ export class Table extends Block {
 
         const rowObj = {};
         this.format.forEach(item => {
-            rowObj[item] = "";
+            rowObj[item] = {
+                value : "",
+            };
         })
 
         this.rows[id] = rowObj;
@@ -59,7 +61,9 @@ export class Table extends Block {
         const rowIds = Object.keys(this.rows);
 
         rowIds.forEach(item => {
-            this.rows[item][columnId] = ""
+            this.rows[item][columnId] = {
+                value : ""
+            }
         })
     }
 
@@ -85,11 +89,22 @@ export class Table extends Block {
     }
 
     updateCell(rowId, colId, value) {
-        this.rows[rowId][colId] = value;
+        this.rows[rowId][colId].value = value;
     }
 
     getCellValue(rowId, colId) {
         return this.rows[rowId][colId];
+    }
+
+    setCellColor(rowId,colId,color) {
+        this.rows[rowId][colId].color = color;
+    }
+    toggleBold(rowId,colId) {
+        this.rows[rowId][colId].bold = !this.rows[rowId][colId].bold ?? true;
+    }
+
+    setCellBackgroundColor(rowId,colId,color) {
+        this.rows[rowId][colId].bgColor = color;
     }
 
     getFormat() {
@@ -147,5 +162,14 @@ export class Table extends Block {
         const prevWidth = this.columnFormat[columnId].width;
         const nextWidth = prevWidth + number;
         this.columnFormat[columnId].width = nextWidth > 30 ? nextWidth : 30;
+    }
+
+    getPrevRowId(rowId) {
+        const index = this.contents.indexOf(rowId);
+        return this.contents[index-1];
+    }
+    getNextRowId(rowId) {
+        const index = this.contents.indexOf(rowId);
+        return this.contents[index+1];
     }
 }

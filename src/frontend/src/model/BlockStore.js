@@ -28,7 +28,7 @@ export class BlockStore {
     duplicateBlock(originId) {
         const blockId = getRandomId();
 
-        const newBlock = {...this[originId]}
+        const newBlock = JSON.parse(JSON.stringify({...this[originId]}));
         Object.setPrototypeOf(newBlock, Object.getPrototypeOf(this[originId]));
 
         newBlock.id = blockId;

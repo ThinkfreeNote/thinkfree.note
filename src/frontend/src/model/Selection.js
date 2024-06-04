@@ -1,8 +1,10 @@
-import {editorSelection} from "../App";
-
 export class EditorSelection {
     constructor() {
         this.selection = window.getSelection();
+    }
+
+    collapseToEnd() {
+        this.selection.collapseToEnd();
     }
 
     isCaret() {
@@ -101,7 +103,11 @@ export class EditorSelection {
         return this.getStartNode().nodeType === Node.TEXT_NODE || this.getEndNode().nodeType === Node.TEXT_NODE;
     }
 
-    getDividedTextValues() {
+    /**
+     * startNode와 endNode의 분리된 TextContent를 가져옴
+     * @returns {{startNode: string[], endNode: string[]}}
+     */
+    getDividedTextContents() {
         const startNode = this.getStartNode();
         const endNode = this.getEndNode();
         const startNodeTextContent = startNode.textContent;
@@ -116,8 +122,7 @@ export class EditorSelection {
 
         return {
             startNode: [startTextBefore, startTextSelected],
-            endNode: [endTextSelected, endTextAfter],
-            isSameNode: startNode === endNode
+            endNode: [endTextSelected, endTextAfter]
         };
     }
 }

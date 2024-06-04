@@ -9,10 +9,11 @@ function TextBox({targetBlockId, onRefresh}) {
         const textIds = editorSelection.getClosestId("text");
         let startIdx = textBlock.getTextIdx(textIds.start);
         let endIdx = textBlock.getTextIdx(textIds.end);
+        const isMultiSelectedText = startIdx !== endIdx;
 
-        // 다른 텍스트가 셀랙션 되었으면 분리
-        if (startIdx !== endIdx) {
-            const dividedTextValues = editorSelection.getDividedTextValues();
+        // 여러 텍스트가 셀랙션 되었으면 분리
+        if (isMultiSelectedText) {
+            const dividedTextValues = editorSelection.getDividedTextContents();
             if (dividedTextValues.startNode[0] !== "") {
                 textBlock.divideText(startIdx, dividedTextValues.startNode[0], dividedTextValues.startNode[1]);
                 startIdx++;
@@ -24,11 +25,13 @@ function TextBox({targetBlockId, onRefresh}) {
             }
         }
 
+        // FontStyle Update
         for (let i = startIdx; i <= endIdx; i++) {
             const curText = textBlock.getTextFromIdx(i);
-            curText.updateFontStyle(styleName, value);
+            curText.updateFontStyle(styleName, value, isMultiSelectedText);
         }
 
+        // 리렌더링
         onRefresh();
     }
 

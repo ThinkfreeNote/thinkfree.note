@@ -5,18 +5,17 @@ export class Text {
         this.fontStyle = fontStyle;
     }
 
-    updateFontStyle(styleName, value, onRefresh) {
+    updateFontStyle(styleName, value, isMultiSelectedText) {
         let newStyleValue = value;
 
-        if (this.fontStyle[styleName] === value) {
-            newStyleValue = "";  // 현재 값과 동일하면 빈 문자열로 설정
+        // 텍스트가 하나만 선택되고 value가 같으면 "" 적용 (off 기능)
+        if (this.fontStyle[styleName] === value && !isMultiSelectedText) {
+            newStyleValue = "";
         }
 
         this.fontStyle = {
             ...this.fontStyle,
             [styleName]: newStyleValue
         };
-
-        onRefresh();
     }
 }

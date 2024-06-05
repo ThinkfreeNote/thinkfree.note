@@ -14,7 +14,7 @@ export class TextBlock extends Block {
     }
 
     updateTextValue(textId, value) {
-        this.contents[textId] = value;
+        this.contents[textId].value = value;
     }
 
     getTextFromId(textId) {

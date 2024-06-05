@@ -42,8 +42,8 @@ export class EditorSelection {
     getClosestId(type) {
         const {startElement, endElement} = this.getElement();
         return {
-            start: startElement.closest(`[data-${type}-id]`).dataset[`${type}Id`],
-            end: endElement.closest(`[data-${type}-id]`).dataset[`${type}Id`]
+            start: startElement.closest(`[data-${type}-id]`)?.dataset[`${type}Id`],
+            end: endElement.closest(`[data-${type}-id]`)?.dataset[`${type}Id`]
         }
     }
 

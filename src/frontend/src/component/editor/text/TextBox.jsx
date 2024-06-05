@@ -1,8 +1,19 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {useBlockData} from "../hooks/useBlockHooks";
 import {editorSelection} from "../../../App";
+import {ToolBox} from "../../common/ToolBox";
+import {ReactComponent as FontColorIcon} from "../../../assets/icon_fontColor.svg";
+import {ReactComponent as BoldIcon} from "../../../assets/icon_bold.svg";
+import {ReactComponent as ItalicIcon} from "../../../assets/icon_italic.svg";
+import {ReactComponent as UnderlineIcon} from "../../../assets/icon_underline.svg";
+import {ReactComponent as LineThroghIcon} from "../../../assets/icon_lineThrough.svg";
+import {BlockReRenderContext} from "../context/BlockReRenderContext";
 
-function TextBox({targetBlockId, onRefresh}) {
+
+const FONT_SIZE_LIST = [8,10,12,14,16,18,20,24,30,36,48];
+
+function TextBox({targetBlockId, offset}) {
+    const {setReRenderTargetId} = useContext(BlockReRenderContext);
     const textBlock = useBlockData(targetBlockId);
 
     function updateFontStyles(styleName, value) {
@@ -32,27 +43,30 @@ function TextBox({targetBlockId, onRefresh}) {
         }
 
         // 리렌더링
-        onRefresh();
+        setReRenderTargetId(targetBlockId);
+        window.getSelection().removeAllRanges();
+    }
+
+    const colorUpdate = (color) => {
+        updateFontStyles("color", color);
+    }
+
+    const styleUpdate = (type) => {
+        updateFontStyles("textDecoration",type)
     }
 
     return (
-        <div contentEditable={false} style={{userSelect: "none"}}>
-            <button onClick={() => updateFontStyles("color", "black")}>black</button>
-            <button onClick={() => updateFontStyles("color", "red")}>red</button>
-            <button onClick={() => updateFontStyles("color", "orange")}>orange</button>
-            <button onClick={() => updateFontStyles("color", "yellow")}>yellow</button>
-            <button onClick={() => updateFontStyles("color", "green")}>green</button>
-            <button onClick={() => updateFontStyles("color", "blue")}>blue</button>
-            <button onClick={() => updateFontStyles("fontSize", 12)}>12</button>
-            <button onClick={() => updateFontStyles("fontSize", 16)}>16</button>
-            <button onClick={() => updateFontStyles("fontSize", 20)}>20</button>
-            <button onClick={() => updateFontStyles("fontSize", 30)}>30</button>
-            <button onClick={() => updateFontStyles("fontWeight", "bold")}>bold</button>
-            <button onClick={() => updateFontStyles("fontStyle", "italic")}>italic</button>
-            <button onClick={() => updateFontStyles("textDecoration", "underline")}>underline</button>
-            <button onClick={() => updateFontStyles("textDecoration", "line-through")}>line-through</button>
-        </div>
-    );
+        <ToolBox top={offset.y} left={offset.x}>
+            <ToolBox.Color icon={<FontColorIcon/>} handler={colorUpdate}/>
+            <ToolBox.Plain icon={<BoldIcon/>} handler={() => updateFontStyles("fontWeight","bold")}/>
+            <ToolBox.Plain icon={<ItalicIcon/>} handler={() => updateFontStyles("fontStyle","italic")}/>
+            <ToolBox.Plain icon={<UnderlineIcon/>}  handler={()=>styleUpdate("underline")}/>
+            <ToolBox.Plain icon={<LineThroghIcon/>}  handler={()=>styleUpdate("line-through")}/>
+            <ToolBox.DropDownBox handler={(value) => updateFontStyles("fontSize", `${value}px`) }>
+                {FONT_SIZE_LIST.map((fontSize)=> <ToolBox.DropDownItem key={fontSize} value={fontSize} unit={"px"}/>)}
+            </ToolBox.DropDownBox>
+        </ToolBox>
+    )
 }
 
 export default TextBox;

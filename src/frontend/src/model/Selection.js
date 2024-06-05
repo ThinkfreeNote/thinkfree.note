@@ -8,6 +8,14 @@ export class EditorSelection {
         return this.selection.isCollapsed;
     }
 
+    isEditorLeaf() {
+        if(this.isNullSelection()) return false;
+
+        const {startElement,endElement}  = this.getElement();
+        // boolean 형변환
+        return !!(startElement.closest("[data-leaf]") && endElement.closest("[data-leaf]"));
+    }
+
     isNullSelection () {
         const {anchorNode, focusNode} = this.selection;
         return (anchorNode === null || focusNode === null);
@@ -58,6 +66,12 @@ export class EditorSelection {
             startElement: startNode.nodeType === Node.TEXT_NODE ? startNode.parentElement : startNode,
             endElement: endNode.nodeType === Node.TEXT_NODE ? endNode.parentElement : endNode,
         }
+    }
+
+    isSelectionSameElement() {
+        const {startElement,endElement} = this.getElement();
+        if(this.isNullSelection()) return false;
+        return startElement === endElement;
     }
 
     /**

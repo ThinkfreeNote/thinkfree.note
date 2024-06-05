@@ -2,17 +2,18 @@ import React, {useContext} from 'react';
 import {ToolBox} from "../../common/ToolBox";
 import {editorSelection} from "../../../App";
 import {getCellIds, isCell} from "../../../utils/table";
-import {useTableData} from "./hooks/useTableData";
-import {BlockContext} from "../BlockContextProvider";
 
 import {ReactComponent as BgColorIcon} from "../../../assets/icon_bgColor.svg";
 import {ReactComponent as FontColorIcon} from "../../../assets/icon_fontColor.svg";
 import {ReactComponent as BoldIcon} from "../../../assets/icon_bold.svg";
+import {useBlockData} from "../hooks/useBlockHooks";
+import {BlockReRenderContext} from "../context/BlockReRenderContext";
 
-function TableToolBox() {
-    const tableData = useTableData();
-    const {reRender} = useContext(BlockContext);
-    
+function TableToolBox({blockId, offset}) {
+    const tableData = useBlockData(blockId);
+    const {setReRenderTargetId} = useContext(BlockReRenderContext);
+
+
     const toolHandler = (tableMethod) => {
         return (color) => {
             if (editorSelection.isNullSelection()) return;
@@ -20,13 +21,13 @@ function TableToolBox() {
             if (isCell($element)) {
                 const {cellId, rowId} = getCellIds($element);
                 tableMethod(rowId, cellId, color);
-                reRender();
+                setReRenderTargetId(blockId);
             }
         }
     }
 
     return (
-        <ToolBox style={{left: "50%", top:"-10%"}}>
+        <ToolBox top={offset.y} left={offset.x}>
             <ToolBox.Color icon={<FontColorIcon/>} handler={toolHandler((rowId,cellId,color)=>{tableData.setCellColor(rowId,cellId,color)})}/>
             <ToolBox.Color icon={<BgColorIcon/>} handler={toolHandler((rowId,cellId,color)=>{tableData.setCellBackgroundColor(rowId,cellId,color)})}/>
             <ToolBox.Plain icon={<BoldIcon/>} handler={toolHandler((rowId,cellId)=>{tableData.toggleBold(rowId,cellId)})}/>

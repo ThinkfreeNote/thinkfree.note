@@ -4,13 +4,7 @@ import useBlockIdList from "./useBlockIdList";
 import {editorSelection} from "../../../App";
 import {BlockContext} from "../BlockContextProvider";
 import {useBlockStore} from "./useBlockHooks";
-import {Text} from "../../../model/Text";
 
-
-/**
- * @todo 리팩토링 필요
- * @returns {{onKeyDownHandler: (event) => {}}
- */
 function useEditHandler() {
     const blockStore = useBlockStore();
     const note = useBlockIdList();
@@ -20,23 +14,27 @@ function useEditHandler() {
             e.preventDefault();
             // 캐럿인지 확인
             if (!editorSelection.isCaret()) return;
-
             // 텍스트가 선택됐는지 확인
             const textBlock = blockStore.getBlock(editorSelection.getClosestId("block").start);
             const text = textBlock.getTextFromId(editorSelection.getClosestId("text").start);
             if (!text) return;
 
-            // 분리하고 업데이트된 textIdx 구해옴
+            // 분리하고 업데이트된 textIdx 구함
             const {startNode: dividedTextContents} = editorSelection.getDividedTextContents();
             let textIdx = textBlock.getTextIdx(text.id);
             textBlock.divideText(textIdx, dividedTextContents[0], dividedTextContents[1]);
             textIdx++;
 
-            // 기존 삭제
-            const removedText = textBlock.removeText(textIdx);
+            // 기존 textBlock에 있는 text들 삭제
+            const removedTextList = [];
+            while(true) {
+                const text = textBlock.removeText(textIdx);
+                if(!text) break;
+                removedTextList.push(text);
+            }
 
-            // 새로운 블럭 삽입
-            note.addBlockId(blockStore.createBlock("text", removedText).id,note.getIndexOfBlock(textBlock.id) + 1);
+            // 새로운 Text들을 담은 TextBlock을 추가
+            note.addBlockId(blockStore.createBlock("text", removedTextList).id,note.getIndexOfBlock(textBlock.id) + 1);
 
         } else if(e.key === "Backspace") {
             if (editorSelection.isCaret()) {
@@ -46,6 +44,7 @@ function useEditHandler() {
             }
         }
     }
+
     return {onKeyDownHandler};
 }
 

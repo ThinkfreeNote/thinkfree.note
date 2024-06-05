@@ -16,20 +16,21 @@ export class BlockStore {
     }
 
     // 블럭을 생성하여 스토어에 추가
-    createBlock(type, text = null) {
+    createBlock(type, textList = []) {
         const blockId = getRandomId();
 
         if (type === "text") {
             const textBlock = new TextBlock(blockId, type, {});
 
             // 인자로 들어온 텍스트가 없으면 기본값
-            text === null ?
+            textList.length === 0 ?
                 textBlock.addText(new Text(getRandomId(), "", new FontStyle())) :
-                textBlock.addText(text);
+                textList.forEach((text) => textBlock.addText(text));
 
             this.addBlock(textBlock);
 
             return textBlock;
+
         } else if (type === "table") {
             const table = new Table(blockId, type, []);
             this.addBlock(table);

@@ -16,10 +16,12 @@ export class TextBlock extends Block {
     /**
      * 텍스트를 제거하고 삭제된 Text를 반환
      * @param textIdx
-     * @returns {{[p: string]: *}}
+     * @returns {{[p: string]: *}|null}
      */
     removeText(textIdx) {
         const text = this.getTextFromIdx(textIdx);
+        if (!text) return null;
+
         const removedFontStyle = {...text.fontStyle};
         const removedText = {...text, id: getRandomId(), fontStyle: removedFontStyle};
         Object.setPrototypeOf(removedText, Text.prototype);

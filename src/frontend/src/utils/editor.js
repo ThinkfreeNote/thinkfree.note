@@ -10,7 +10,7 @@ const isCaretAtEnd = (selection) => {
 
     const {endContainer, endOffset} = selection.getRangeAt(0);
 
-    const {anchorBlock} = editorSelection.getClosestElement("block").start;
+    const anchorBlock = editorSelection.getClosestElement("block").start;
 
     // Block 에서 BlockWrapper를 제외하고 탐색하기 위한 과정
     const children = [...anchorBlock.children];

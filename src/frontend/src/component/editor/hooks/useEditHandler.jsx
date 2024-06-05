@@ -1,45 +1,50 @@
-import {isCaretAtEnd} from "../../../utils/editor";
 import {useContext, useEffect} from "react";
 import {EditorContext} from "../NoteEditor";
-import {BlockStoreContext} from "../context/BlockIdListProvider";
 import useBlockIdList from "./useBlockIdList";
 import {editorSelection} from "../../../App";
 import {BlockContext} from "../BlockContextProvider";
+import {useBlockStore} from "./useBlockHooks";
 
-
-/**
- * @todo 리팩토링 필요
- * @returns {{onKeyDownHandler: (event) => {}}
- */
 function useEditHandler() {
-    const blockStore = useContext(BlockStoreContext);
+    const blockStore = useBlockStore();
     const note = useBlockIdList();
 
     const onKeyDownHandler = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
+            // 캐럿인지 확인
+            if (!editorSelection.isCaret()) return;
+            // 텍스트가 선택됐는지 확인
+            const textBlock = blockStore.getBlock(editorSelection.getClosestId("block").start);
+            const text = textBlock.getTextFromId(editorSelection.getClosestId("text").start);
+            if (!text) return;
 
-            // 캐럿이 마지막 텍스트 노드에 위치한 경우에만 새로운 Block 추가
-            if (editorSelection.isCaret() && isCaretAtEnd(window.getSelection())) {
-                const {start : startBlockId} = editorSelection.getClosestId("block");
-                const newBlockId = blockStore.createBlock("text").id;
-                
-                // 현재 커서의 blockId 뒤에 새로운 block 추가
-                note.addBlockId(newBlockId, note.getIndexOfBlock(startBlockId) + 1);
+            // 분리하고 업데이트된 textIdx 구함
+            const {startNode: dividedTextContents} = editorSelection.getDividedTextContents();
+            let textIdx = textBlock.getTextIdx(text.id);
+            textBlock.divideText(textIdx, dividedTextContents[0], dividedTextContents[1]);
+            textIdx++;
+
+            // 기존 textBlock에 있는 text들 삭제
+            const removedTextList = [];
+            while(true) {
+                const text = textBlock.removeText(textIdx);
+                if(!text) break;
+                removedTextList.push(text);
             }
-        }
-        else if(e.key === "Backspace") {
-            if(editorSelection.isCaret()){
+
+            // 새로운 Text들을 담은 TextBlock을 추가
+            note.addBlockId(blockStore.createBlock("text", removedTextList).id,note.getIndexOfBlock(textBlock.id) + 1);
+
+        } else if(e.key === "Backspace") {
+            if (editorSelection.isCaret()) {
                 // editorSelection.getStartNode().textContent.length === 1 && e.preventDefault();
-            }
-            else {
+            } else {
                 e.preventDefault();
             }
-            // 캐럿인 경우
-            // 셀렉션인 경우
-
         }
     }
+
     return {onKeyDownHandler};
 }
 

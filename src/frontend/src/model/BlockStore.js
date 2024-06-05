@@ -5,23 +5,36 @@ import {Text} from "./Text";
 import {FontStyle} from "./FontStyle";
 
 export class BlockStore {
+    // 블럭 조회
+    getBlock(blockId) {
+        return this[blockId];
+    }
+
     // 블럭을 스토어에 추가
     addBlock(block) {
         this[block.id] = block;
     }
 
     // 블럭을 생성하여 스토어에 추가
-    createBlock(type) {
+    createBlock(type, textList = []) {
         const blockId = getRandomId();
 
         if (type === "text") {
             const textBlock = new TextBlock(blockId, type, {});
-            textBlock.addText(new Text(getRandomId(), "", new FontStyle()));
+
+            // 인자로 들어온 텍스트가 없으면 기본값
+            textList.length === 0 ?
+                textBlock.addText(new Text(getRandomId(), "", new FontStyle())) :
+                textList.forEach((text) => textBlock.addText(text));
+
             this.addBlock(textBlock);
+
             return textBlock;
+
         } else if (type === "table") {
             const table = new Table(blockId, type, []);
             this.addBlock(table);
+
             return table;
         }
     }

@@ -4,10 +4,6 @@ export class EditorSelection {
         this.prevRange  = null;
     }
 
-    collapseToEnd() {
-        this.selection.collapseToEnd();
-    }
-
     isCaret() {
         return this.selection.isCollapsed;
     }
@@ -105,11 +101,10 @@ export class EditorSelection {
     }
 
     /**
-     * 셀랙션된 오프셋 객체 반환(캐럿일 경우 null)
+     * 오프셋 객체 반환
      * @returns {{start: number, end: number}|null}
      */
     getOffset() {
-        if (this.isCaret()) return null;
         const range = this.getRange();
 
         return {start: range.startOffset, end: range.endOffset};

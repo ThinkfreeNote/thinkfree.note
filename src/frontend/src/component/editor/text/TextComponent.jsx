@@ -4,7 +4,7 @@ import React from 'react';
 function TextComponent({textId, text}) {
     return (
         <span key={text.value} data-leaf={true} data-text-id={textId} style={text.fontStyle}>
-            {text.value}
+            {text.value.length !==0 ? text.value : <br/>}
         </span>
     )
 }

@@ -14,7 +14,10 @@ export function useTableHandlers() {
         const $cell = editorSelection.getElement().startElement;
         if (!isCell($cell) || editorSelection.getClosestId("block").start !== blockId ) return;
 
-        let value = $cell.textContent.length === 0 ? `\uFEFF` : removeBOM($cell.textContent);
+        const textNode = [...$cell.childNodes].find((item)=> item.nodeType === Node.TEXT_NODE);
+        if(!textNode) return;
+
+        let value = removeBOM(textNode.textContent);
 
         const {rowId, cellId} = getCellIds($cell);
         tableData.updateCell(rowId, cellId, value);

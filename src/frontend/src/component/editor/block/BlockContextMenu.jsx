@@ -18,7 +18,7 @@ function BlockContextMenu({closeMenu}) {
 
     const duplicateHandler = () => {
         const duplicatedBlockId = blockStore.duplicateBlock(blockId)
-        addBlockId(duplicatedBlockId,getIndexOfBlock(blockId));
+        addBlockId(duplicatedBlockId,getIndexOfBlock(blockId)+1);
         reRender();
         closeMenu();
     }

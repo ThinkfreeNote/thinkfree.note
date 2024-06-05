@@ -1,9 +1,8 @@
-import {isCaretAtEnd} from "../../../utils/editor";
 import {useContext, useEffect} from "react";
 import {EditorContext} from "../NoteEditor";
-import {BlockStoreContext} from "../context/BlockIdListProvider";
 import useBlockIdList from "./useBlockIdList";
 import {editorSelection} from "../../../App";
+import {useBlockStore} from "./useBlockHooks";
 
 
 /**
@@ -11,21 +10,29 @@ import {editorSelection} from "../../../App";
  * @returns {{onKeyDownHandler: (event) => {}}
  */
 function useEditHandler() {
-    const blockStore = useContext(BlockStoreContext);
+    const blockStore = useBlockStore();
     const note = useBlockIdList();
 
     const onKeyDownHandler = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
+            // 캐럿인지 확인
+            if (!editorSelection.isCaret()) return;
+            // 텍스트가 선택됐는지 확인
+            if (!editorSelection.isTextSelection()) return;
 
-            // 캐럿이 마지막 텍스트 노드에 위치한 경우에만 새로운 Block 추가
-            if (editorSelection.isCaret() && isCaretAtEnd(window.getSelection())) {
-                const {start : startBlockId} = editorSelection.getClosestId("block");
-                const newBlockId = blockStore.createBlock("text").id;
-                
-                // 현재 커서의 blockId 뒤에 새로운 block 추가
-                note.addBlockId(newBlockId, note.getIndexOfBlock(startBlockId) + 1);
-            }
+            // 분리하고 업데이트된 textIdx 구해옴
+            const textBlock = blockStore.getBlock(editorSelection.getClosestId("block").start);
+            const {startNode: dividedTextContents} = editorSelection.getDividedTextContents();
+            const text = textBlock.getTextFromId(editorSelection.getClosestId("text").start);
+            let textIdx = textBlock.getTextIdx(text.id);
+            textBlock.divideText(textIdx, dividedTextContents[0], dividedTextContents[1]);
+            textIdx++;
+
+            // 기존 삭제 삽입
+
+
+
         }
     }
     return {onKeyDownHandler};

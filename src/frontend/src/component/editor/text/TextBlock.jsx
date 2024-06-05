@@ -37,7 +37,6 @@ function TextBlock({blockId}) {
         // 시작 또는 끝 노드가 텍스트가 아닌 경우
         if (!editorSelection.isTextSelection()) return;
         const {start: startNodeBlockId, end: endNodeBlockId} = editorSelection.getClosestId("block");
-        const textId = editorSelection.getClosestId("text").start;
         // startNode와 endNode가 다른 블럭일 경우
         if (startNodeBlockId !== endNodeBlockId) return;
 

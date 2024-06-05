@@ -4,6 +4,11 @@ import {Table} from "./Table";
 import {Text} from "./Text";
 
 export class BlockStore {
+    // 블럭 조회
+    getBlock(blockId) {
+        return this[blockId];
+    }
+
     // 블럭을 스토어에 추가
     addBlock(block) {
         this[block.id] = block;

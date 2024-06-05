@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import TextComponent from "./TextComponent";
 import {useEditorEventListener} from "../hooks/useEditHandler";
 import {useBlockData} from "../hooks/useBlockHooks";
 import TextBox from "./TextBox";
 import {editorSelection} from "../../../App";
+import {BlockContext} from "../BlockContextProvider";
 
-function TextBlock({blockId}) {
+function TextBlock() {
+    const {blockId} = useContext(BlockContext);
     const textBlock = useBlockData(blockId);
     const [targetBlockId, setTargetBlockId] = useState(null);
     const [isHidden, setIsHidden] = useState(true);
@@ -21,7 +23,7 @@ function TextBlock({blockId}) {
         // 실제돔 불러오기
         const textNode = editorSelection.getStartNode();
         if (textNode.nodeType !== Node.TEXT_NODE) return;
-        const element = editorSelection.getElement()
+        const element = editorSelection.getElement().startElement;
         const textId = editorSelection.getClosestId("text").start;
 
         // 모델 가져오고 저장하기
@@ -46,20 +48,22 @@ function TextBlock({blockId}) {
     };
 
     // input이 발생했을 때 BlockStore의 value를 변경해줌
-    useEditorEventListener("input", updateTextValue, [updateTextValue]);
+    useEditorEventListener("input", updateTextValue);
     // 마우스 뗄 때 text selection range 정보를 반환
-    useEditorEventListener("mouseup", checkTextSelection, [checkTextSelection]);
+    useEditorEventListener("mouseup", checkTextSelection);
 
     // 비어있는 블록
     return (
         <>
-            {textBlock.textIdList.map(textId => (
-                <TextComponent
-                    key={textId}
-                    textId={textId}
-                    text={textBlock.contents[textId]}
-                />
-            ))}
+           <p>
+               {textBlock.textIdList.map(textId => (
+                   <TextComponent
+                       key={textId}
+                       textId={textId}
+                       text={textBlock.contents[textId]}
+                   />
+               ))}
+           </p>
 
             {(targetBlockId === blockId) && !isHidden &&
                 <TextBox

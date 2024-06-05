@@ -4,6 +4,7 @@ import {EditorContext} from "../NoteEditor";
 import {BlockStoreContext} from "../context/BlockIdListProvider";
 import useBlockIdList from "./useBlockIdList";
 import {editorSelection} from "../../../App";
+import {BlockContext} from "../BlockContextProvider";
 
 
 /**
@@ -27,6 +28,17 @@ function useEditHandler() {
                 note.addBlockId(newBlockId, note.getIndexOfBlock(startBlockId) + 1);
             }
         }
+        else if(e.key === "Backspace") {
+            if(editorSelection.isCaret()){
+                // editorSelection.getStartNode().textContent.length === 1 && e.preventDefault();
+            }
+            else {
+                e.preventDefault();
+            }
+            // 캐럿인 경우
+            // 셀렉션인 경우
+
+        }
     }
     return {onKeyDownHandler};
 }
@@ -39,15 +51,22 @@ function useEditHandler() {
  */
 export function useEditorEventListener(eventType, handler) {
     const editorRef = useContext(EditorContext);
+    const {blockId} = useContext(BlockContext);
 
     useEffect(() => {
         const $editor = editorRef.current;
         if (!($editor instanceof HTMLElement)) return;
 
-        $editor.addEventListener(eventType, handler);
+        const handlerWrapper = (e)=> {
+            // 해당 블록에 속할 때만 핸들러 실행
+            if(editorSelection.isNullSelection() || blockId !== editorSelection.getClosestId("block").start) return;
+            handler(e);
+        }
+
+        $editor.addEventListener(eventType, handlerWrapper);
 
         return () => {
-            $editor.removeEventListener(eventType, handler);
+            $editor.removeEventListener(eventType, handlerWrapper);
         }
     }, [editorRef, eventType, handler]);
 }

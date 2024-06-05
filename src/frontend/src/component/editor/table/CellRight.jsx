@@ -24,7 +24,7 @@ function CellRight({columnId}) {
             height: "100%",
             opacity: `0`,
             cursor: "col-resize",
-        }}>_</div>
+        }}>&#xFEFF;</div>
     );
 }
 

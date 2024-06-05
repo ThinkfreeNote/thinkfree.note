@@ -2,6 +2,7 @@ import {useContext, useEffect} from "react";
 import {EditorContext} from "../NoteEditor";
 import useBlockIdList from "./useBlockIdList";
 import {editorSelection} from "../../../App";
+import {BlockContext} from "../BlockContextProvider";
 import {useBlockStore} from "./useBlockHooks";
 
 
@@ -33,7 +34,14 @@ function useEditHandler() {
             const removedText = textBlock.removeText(textIdx);
 
             // 새로운 블럭 삽입
-            note.addBlockId(blockStore.createBlock("text", removedText).id);
+            note.addBlockId(blockStore.createBlock("text", removedText).id,note.getIndexOfBlock(textBlock.id) + 1);
+
+        } else if(e.key === "Backspace") {
+            if (editorSelection.isCaret()) {
+                // editorSelection.getStartNode().textContent.length === 1 && e.preventDefault();
+            } else {
+                e.preventDefault();
+            }
         }
     }
     return {onKeyDownHandler};
@@ -47,15 +55,22 @@ function useEditHandler() {
  */
 export function useEditorEventListener(eventType, handler) {
     const editorRef = useContext(EditorContext);
+    const {blockId} = useContext(BlockContext);
 
     useEffect(() => {
         const $editor = editorRef.current;
         if (!($editor instanceof HTMLElement)) return;
 
-        $editor.addEventListener(eventType, handler);
+        const handlerWrapper = (e)=> {
+            // 해당 블록에 속할 때만 핸들러 실행
+            if(editorSelection.isNullSelection() || blockId !== editorSelection.getClosestId("block").start) return;
+            handler(e);
+        }
+
+        $editor.addEventListener(eventType, handlerWrapper);
 
         return () => {
-            $editor.removeEventListener(eventType, handler);
+            $editor.removeEventListener(eventType, handlerWrapper);
         }
     }, [editorRef, eventType, handler]);
 }

@@ -2,6 +2,7 @@ import {getRandomId} from "../utils/id";
 import {TextBlock} from "./TextBlock";
 import {Table} from "./Table";
 import {Text} from "./Text";
+import {FontStyle} from "./FontStyle";
 
 export class BlockStore {
     // 블럭 조회
@@ -23,7 +24,7 @@ export class BlockStore {
 
             // 인자로 들어온 텍스트가 없으면 기본값
             text === null ?
-                textBlock.addText(new Text(getRandomId(), "", null)) :
+                textBlock.addText(new Text(getRandomId(), "", new FontStyle())) :
                 textBlock.addText(text);
 
             this.addBlock(textBlock);

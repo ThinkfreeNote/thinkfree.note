@@ -1,5 +1,5 @@
 export class FontStyle {
-    constructor(color, fontSize, fontFamily, fontWeight, fontStyle, textDecoration) {
+    constructor(color = "black", fontSize ="14px", fontFamily = "Noto Sans KR", fontWeight, fontStyle = "normal", textDecoration) {
         this.color = color;
         this.fontSize = fontSize;
         this.fontFamily = fontFamily;

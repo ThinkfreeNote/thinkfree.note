@@ -13,6 +13,22 @@ export class TextBlock extends Block {
         this.textIdList.push(text.id);
     }
 
+    /**
+     * 텍스트를 제거하고 삭제된 Text를 반환
+     * @param textIdx
+     * @returns {{[p: string]: *}}
+     */
+    removeText(textIdx) {
+        const text = this.getTextFromIdx(textIdx);
+        const removedFontStyle = {...text.fontStyle};
+        const removedText = {...text, id: getRandomId(), fontStyle: removedFontStyle};
+        Object.setPrototypeOf(removedText, Text.prototype);
+        this.textIdList.splice(textIdx, 1);
+        delete this.contents[text.id];
+
+        return removedText;
+    }
+
     updateTextValue(textId, value) {
         this.contents[textId] = value;
     }

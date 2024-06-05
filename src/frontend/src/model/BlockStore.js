@@ -15,17 +15,24 @@ export class BlockStore {
     }
 
     // 블럭을 생성하여 스토어에 추가
-    createBlock(type) {
+    createBlock(type, text = null) {
         const blockId = getRandomId();
 
         if (type === "text") {
             const textBlock = new TextBlock(blockId, type, {});
-            textBlock.addText(new Text(getRandomId(), "", null));
+
+            // 인자로 들어온 텍스트가 없으면 기본값
+            text === null ?
+                textBlock.addText(new Text(getRandomId(), "", null)) :
+                textBlock.addText(text);
+
             this.addBlock(textBlock);
+
             return textBlock;
         } else if (type === "table") {
             const table = new Table(blockId, type, []);
             this.addBlock(table);
+
             return table;
         }
     }

@@ -8,6 +8,7 @@ function BlockSelectMenu({closeMenu, blockId}) {
     const blockStore = useBlockStore();
 
     const addBlock = (type) => {
+        // TODO: 만들고 아이디 반환
         addBlockId(blockStore.createBlock(type).id, getIndexOfBlock(blockId) + 1);
         closeMenu();
     }

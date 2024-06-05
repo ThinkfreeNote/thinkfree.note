@@ -29,10 +29,11 @@ function useEditHandler() {
             textBlock.divideText(textIdx, dividedTextContents[0], dividedTextContents[1]);
             textIdx++;
 
-            // 기존 삭제 삽입
+            // 기존 삭제
+            const removedText = textBlock.removeText(textIdx);
 
-
-
+            // 새로운 블럭 삽입
+            note.addBlockId(blockStore.createBlock("text", removedText).id);
         }
     }
     return {onKeyDownHandler};

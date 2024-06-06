@@ -47,6 +47,14 @@ export class TextBlock extends Block {
         return this.textIdList.indexOf(textId);
     }
 
+    getLastTextIdx() {
+        return this.textIdList.length - 1;
+    }
+
+    isLastText(textIdx) {
+        return textIdx === this.getLastTextIdx();
+    }
+
     divideText(textIdx, value1, value2) {
         const text = this.getTextFromIdx(textIdx);
         const newFontStyle1 = {...text.fontStyle};

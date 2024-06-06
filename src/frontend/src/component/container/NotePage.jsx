@@ -1,11 +1,21 @@
 import React from 'react';
 import NoteEditorContainer from "./NoteEditorContainer";
+import SideNavigation from "../SideNavigation";
+import Header from "../Header";
 
-function NotePage(props) {
+function NotePage() {
     return (
         <div>
-            {/*  헤더, 사이드 컴포넌트 예정  */}
-            <NoteEditorContainer/>
+            {/*<Header/>*/}
+            <div style={{display : "flex"}}>
+                <SideNavigation/>
+                <main className="note-box">
+                    <header className="header">
+                        헤더
+                    </header>
+                    <NoteEditorContainer/>
+                </main>
+            </div>
         </div>
     );
 }

@@ -39,6 +39,11 @@ function useEditHandler() {
             const {startNode: dividedTextContents} = editorSelection.getDividedTextContents();
             let textIdx = textBlock.getTextIdx(text.id);
             textBlock.divideText(textIdx, dividedTextContents[0], dividedTextContents[1]);
+
+            // text들 사이에 있는 캐럿 오류 해결
+            if (!textBlock.isLastText(textIdx) && dividedTextContents[1] === "") {
+                textBlock.removeText(textIdx + 1);
+            }
             textIdx++;
 
             // 기존 textBlock에 있는 text들 삭제

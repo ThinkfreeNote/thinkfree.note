@@ -2,10 +2,8 @@ import {useContext} from 'react';
 import {BlockIdListContext} from "../context/BlockIdListProvider";
 
 /**
- * @desc noteContents 관리 훅
- * @desc noteContents 를 조작하는 메서드들을 이 커스텀 훅 내에 작성
- * @todo noteContents 이름이 가독성이 좋지 않아서 변경해야 하지 않을까 하는 생각
- * @returns {{addBlockId : function, noteContents, setNoteContents, getIndexOfBlock: function}}
+ * @desc BlockIdList 관리 훅
+ * @returns {{addBlockId: addBlockId, deleteBlock: ((function(*): boolean)|*), getIndexOfBlock: (function(*): *), blockIdList}}
  */
 function useBlockIdList() {
     const {blockIdList, setBlockIdList} = useContext(BlockIdListContext);

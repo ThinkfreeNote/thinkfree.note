@@ -3,6 +3,7 @@ import NoteBlockSwitcher from "./NoteBlockSwitcher";
 import useEditHandler from "./hooks/useEditHandler";
 import useBlockIdList from "./hooks/useBlockIdList";
 import Title from "./Title";
+import useEditorSelection from "./hooks/useEditorSelection";
 
 export const EditorContext = createContext(null);
 
@@ -11,6 +12,8 @@ function NoteEditor() {
     const {onKeyDownHandler} = useEditHandler();
     // 하위 컴포넌트에서 에디터에 핸들러 등록하기 위한 ref
     const editorRef = useRef(null);
+
+    useEditorSelection(blockIdList);
 
     return (
         <EditorContext.Provider value={editorRef}>

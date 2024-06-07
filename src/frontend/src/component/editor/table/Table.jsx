@@ -5,7 +5,7 @@ import {useTableData} from "./hooks/useTableData";
 import Colgroup from "./Colgroup";
 import ColgroupProvider from "./contexts/ColgroupProvider";
 
-export default function Table() {
+function Table() {
     const tableData = useTableData();
     return (
         <ColgroupProvider>
@@ -20,3 +20,5 @@ export default function Table() {
         </ColgroupProvider>
     )
 }
+
+export default React.memo(Table);

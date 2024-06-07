@@ -10,7 +10,7 @@ import {ReactComponent as LineThroghIcon} from "../../../assets/icon_lineThrough
 import {BlockReRenderContext} from "../context/BlockReRenderContext";
 
 
-const FONT_SIZE_LIST = [8,10,12,14,16,18,20,24,30,36,48];
+const FONT_SIZE_LIST = [8, 10, 12, 14, 16, 18, 20, 24, 30, 36, 48];
 
 function TextBox({targetBlockId, offset}) {
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
@@ -52,18 +52,18 @@ function TextBox({targetBlockId, offset}) {
     }
 
     const styleUpdate = (type) => {
-        updateFontStyles("textDecoration",type)
+        updateFontStyles("textDecoration", type)
     }
 
     return (
         <ToolBox top={offset.y} left={offset.x}>
             <ToolBox.Color icon={<FontColorIcon/>} handler={colorUpdate}/>
-            <ToolBox.Plain icon={<BoldIcon/>} handler={() => updateFontStyles("fontWeight","bold")}/>
-            <ToolBox.Plain icon={<ItalicIcon/>} handler={() => updateFontStyles("fontStyle","italic")}/>
-            <ToolBox.Plain icon={<UnderlineIcon/>}  handler={()=>styleUpdate("underline")}/>
-            <ToolBox.Plain icon={<LineThroghIcon/>}  handler={()=>styleUpdate("line-through")}/>
-            <ToolBox.DropDownBox handler={(value) => updateFontStyles("fontSize", `${value}px`) }>
-                {FONT_SIZE_LIST.map((fontSize)=> <ToolBox.DropDownItem key={fontSize} value={fontSize} unit={"px"}/>)}
+            <ToolBox.Plain icon={<BoldIcon/>} handler={() => updateFontStyles("fontWeight", "bold")}/>
+            <ToolBox.Plain icon={<ItalicIcon/>} handler={() => updateFontStyles("fontStyle", "italic")}/>
+            <ToolBox.Plain icon={<UnderlineIcon/>} handler={() => styleUpdate("underline")}/>
+            <ToolBox.Plain icon={<LineThroghIcon/>} handler={() => styleUpdate("line-through")}/>
+            <ToolBox.DropDownBox handler={(value) => updateFontStyles("fontSize", `${value}px`)}>
+                {FONT_SIZE_LIST.map((fontSize) => <ToolBox.DropDownItem key={fontSize} value={fontSize} unit={"px"}/>)}
             </ToolBox.DropDownBox>
         </ToolBox>
     )

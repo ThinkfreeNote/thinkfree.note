@@ -116,7 +116,7 @@ export class EditorSelection {
      * startNode와 endNode의 분리된 TextContent를 가져옴
      * @returns {{startNode: string[], endNode: string[]}}
      */
-    getDividedTextContents() {
+    getDividedMultiTextContents() {
         const startNode = this.getStartNode();
         const endNode = this.getEndNode();
         const startNodeTextContent = startNode.textContent;
@@ -134,6 +134,28 @@ export class EditorSelection {
             endNode: [endTextSelected, endTextAfter]
         };
     }
+
+    /**
+     * Node의 분리된 TextContent를 가져옴
+     */
+    getDividedTextContents() {
+        const startNode = this.getStartNode();
+        const endNode = this.getEndNode();
+        if (startNode !== endNode) return;
+        const textContent = startNode.textContent;
+        const offset = this.getOffset();
+
+        const beforeText = textContent.slice(0, offset.start);
+        const selectedText = textContent.slice(offset.start, offset.end);
+        const afterText = textContent.slice(offset.end, textContent.length);
+
+        return {
+            before: beforeText,
+            selected: selectedText,
+            after: afterText
+        };
+    }
+
 
 
     /**

@@ -47,27 +47,33 @@ export class TextBlock extends Block {
         return this.textIdList.indexOf(textId);
     }
 
-    getLastTextIdx() {
-        return this.textIdList.length - 1;
-    }
-
-    isLastText(textIdx) {
-        return textIdx === this.getLastTextIdx();
-    }
-
-    divideText(textIdx, value1, value2) {
+    divideText(textIdx, value1, value2, value3 = "") {
         const text = this.getTextFromIdx(textIdx);
+
+        // 복사 객체 생성
         const newFontStyle1 = {...text.fontStyle};
         const newFontStyle2 = {...text.fontStyle};
+        const newFontStyle3 = {...text.fontStyle};
         const newText1 = {...text, id: getRandomId(), value: value1, fontStyle: newFontStyle1};
         Object.setPrototypeOf(newText1, Text.prototype);
         const newText2 = {...text, id: getRandomId(), value: value2, fontStyle: newFontStyle2};
         Object.setPrototypeOf(newText2, Text.prototype);
 
-        this.textIdList.splice(textIdx, 1, newText1.id, newText2.id);
-
+        // 기존 객체, idList 삭제 및 추가
         delete this.contents[text.id];
         this.contents[newText1.id] = newText1;
         this.contents[newText2.id] = newText2;
+
+        // value가 2개인 경우
+        if (value3 === "") {
+            this.textIdList.splice(textIdx, 1, newText1.id, newText2.id);
+            return;
+        }
+
+        // value가 3개인 경우
+        const newText3 = {...text, id: getRandomId(), value: value3, fontStyle: newFontStyle3};
+        Object.setPrototypeOf(newText3, Text.prototype);
+        this.textIdList.splice(textIdx, 1, newText1.id, newText2.id, newText3.id);
+        this.contents[newText3.id] = newText3;
     }
 }

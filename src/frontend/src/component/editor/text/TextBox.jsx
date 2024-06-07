@@ -8,6 +8,9 @@ import {ReactComponent as ItalicIcon} from "../../../assets/icon_italic.svg";
 import {ReactComponent as UnderlineIcon} from "../../../assets/icon_underline.svg";
 import {ReactComponent as LineThroghIcon} from "../../../assets/icon_lineThrough.svg";
 import {BlockReRenderContext} from "../context/BlockReRenderContext";
+import {Text} from "../../../model/Text";
+import {getRandomId} from "../../../utils/id";
+import {FontStyle} from "../../../model/FontStyle";
 
 
 const FONT_SIZE_LIST = [8, 10, 12, 14, 16, 18, 20, 24, 30, 36, 48];
@@ -24,7 +27,8 @@ function TextBox({targetBlockId, offset}) {
 
         // 여러 텍스트가 셀랙션 되었으면 분리
         if (isMultiSelectedText) {
-            const dividedTextValues = editorSelection.getDividedTextContents();
+            const dividedTextValues = editorSelection.getDividedMultiTextContents();
+
             if (dividedTextValues.startNode[0] !== "") {
                 textBlock.divideText(startIdx, dividedTextValues.startNode[0], dividedTextValues.startNode[1]);
                 startIdx++;
@@ -34,6 +38,11 @@ function TextBox({targetBlockId, offset}) {
             if (dividedTextValues.endNode[1] !== "") {
                 textBlock.divideText(endIdx, dividedTextValues.endNode[0], dividedTextValues.endNode[1]);
             }
+        } else {
+            const dividedTextValues = editorSelection.getDividedTextContents();
+            textBlock.divideText(startIdx, dividedTextValues.before, dividedTextValues.selected, dividedTextValues.after);
+            startIdx++;
+            endIdx = startIdx;
         }
 
         // FontStyle Update

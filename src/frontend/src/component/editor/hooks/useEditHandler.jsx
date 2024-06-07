@@ -36,7 +36,7 @@ function useEditHandler() {
             if (!text) return;
 
             // 분리하고 업데이트된 textIdx 구함
-            const {startNode: dividedTextContents} = editorSelection.getDividedTextContents();
+            const {startNode: dividedTextContents} = editorSelection.getDividedMultiTextContents();
             let textIdx = textBlock.getTextIdx(text.id);
             textBlock.divideText(textIdx, dividedTextContents[0], dividedTextContents[1]);
 

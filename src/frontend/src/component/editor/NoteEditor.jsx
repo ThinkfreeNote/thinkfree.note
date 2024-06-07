@@ -5,6 +5,7 @@ import useBlockIdList from "./hooks/useBlockIdList";
 import Title from "./Title";
 import useEditorSelection from "./hooks/useEditorSelection";
 import CommandWindow from "./CommandWindow";
+import {editorSelection} from "../../App";
 
 export const EditorContext = createContext(null);
 

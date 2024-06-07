@@ -2,6 +2,7 @@ import React, {createContext, useRef} from 'react';
 import NoteBlockSwitcher from "./NoteBlockSwitcher";
 import useEditHandler from "./hooks/useEditHandler";
 import useBlockIdList from "./hooks/useBlockIdList";
+import Title from "./Title";
 
 export const EditorContext = createContext(null);
 
@@ -16,6 +17,7 @@ function NoteEditor() {
             <div className="editor" spellCheck={false} ref={editorRef} onKeyDown={onKeyDownHandler}
                  contentEditable={true}
                  suppressContentEditableWarning={true}>
+                <Title/>
                 {blockIdList.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}
             </div>
         </EditorContext.Provider>

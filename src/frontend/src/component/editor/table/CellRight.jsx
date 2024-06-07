@@ -24,7 +24,7 @@ function CellRight({columnId}) {
             height: "100%",
             opacity: `0`,
             cursor: "col-resize",
-        }}>&#xFEFF;</div>
+        }}><svg style={{height:0}}/></div>
     );
 }
 

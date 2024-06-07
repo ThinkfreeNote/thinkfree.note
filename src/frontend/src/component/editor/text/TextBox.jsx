@@ -40,8 +40,10 @@ function TextBox({targetBlockId, offset}) {
             }
         } else {
             const dividedTextValues = editorSelection.getDividedTextContents();
-            textBlock.divideText(startIdx, dividedTextValues.before, dividedTextValues.selected, dividedTextValues.after);
-            startIdx++;
+            const cnt = textBlock.divideText(startIdx, dividedTextValues.before, dividedTextValues.selected, dividedTextValues.after);
+
+            startIdx += cnt - 1;
+            if (dividedTextValues.after === "") startIdx++;
             endIdx = startIdx;
         }
 

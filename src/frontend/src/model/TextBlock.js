@@ -51,6 +51,7 @@ export class TextBlock extends Block {
         const text = this.getTextFromIdx(textIdx);
         const valueList = [value1, value2, value3];
         let idx = textIdx;
+        let cnt = 0;
 
         // idx 기준 text를 제거
         delete this.contents[text.id];
@@ -67,6 +68,10 @@ export class TextBlock extends Block {
             this.contents[newText.id] = newText;
 
             this.textIdList.splice(idx++, 0, newText.id);
+            cnt++;
         })
+
+        // 총 증가된 개수 반환
+        return cnt - 1;
     }
 }

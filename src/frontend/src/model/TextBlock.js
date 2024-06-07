@@ -47,33 +47,26 @@ export class TextBlock extends Block {
         return this.textIdList.indexOf(textId);
     }
 
-    divideText(textIdx, value1, value2, value3 = "") {
+    divideText(textIdx, value1 = "", value2 = "", value3 = "") {
         const text = this.getTextFromIdx(textIdx);
+        const valueList = [value1, value2, value3];
+        let idx = textIdx;
 
-        // 복사 객체 생성
-        const newFontStyle1 = {...text.fontStyle};
-        const newFontStyle2 = {...text.fontStyle};
-        const newFontStyle3 = {...text.fontStyle};
-        const newText1 = {...text, id: getRandomId(), value: value1, fontStyle: newFontStyle1};
-        Object.setPrototypeOf(newText1, Text.prototype);
-        const newText2 = {...text, id: getRandomId(), value: value2, fontStyle: newFontStyle2};
-        Object.setPrototypeOf(newText2, Text.prototype);
-
-        // 기존 객체, idList 삭제 및 추가
+        // idx 기준 text를 제거
         delete this.contents[text.id];
-        this.contents[newText1.id] = newText1;
-        this.contents[newText2.id] = newText2;
+        this.textIdList.splice(textIdx, 1);
 
-        // value가 2개인 경우
-        if (value3 === "") {
-            this.textIdList.splice(textIdx, 1, newText1.id, newText2.id);
-            return;
-        }
+        // idx 기준 루프 돌면서 text를 추가
+        valueList.forEach((value) => {
+            if (value === "") return;
 
-        // value가 3개인 경우
-        const newText3 = {...text, id: getRandomId(), value: value3, fontStyle: newFontStyle3};
-        Object.setPrototypeOf(newText3, Text.prototype);
-        this.textIdList.splice(textIdx, 1, newText1.id, newText2.id, newText3.id);
-        this.contents[newText3.id] = newText3;
+            const newFontStyle = {...text.fontStyle};
+            const newText = {...text, id: getRandomId(), value: value, fontStyle: newFontStyle};
+
+            Object.setPrototypeOf(newText, Text.prototype);
+            this.contents[newText.id] = newText;
+
+            this.textIdList.splice(idx++, 0, newText.id);
+        })
     }
 }

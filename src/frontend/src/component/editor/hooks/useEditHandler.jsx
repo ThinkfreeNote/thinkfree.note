@@ -9,6 +9,22 @@ function useEditHandler() {
     const blockStore = useBlockStore();
     const note = useBlockIdList();
 
+
+    const backspaceHandler = (e) => {
+        if(!editorSelection.isCaret()) {
+            e.preventDefault();
+            return;
+        }
+
+        // data leaf 속에 텍스트가 없는 상태에서 삭제 시 블록 삭제
+        if(editorSelection.isEmptyBlock()) {
+            const blockId =  editorSelection.blockId[0];
+            // table의 경우 leaf가 셀 단위기 때문에 동작하지 않도록 처리
+            if(blockStore.getBlockType(blockId) === "table") return;
+            note.deleteBlock(blockId);
+        }
+    }
+
     const onKeyDownHandler = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
@@ -41,13 +57,9 @@ function useEditHandler() {
             // 새로운 Text들을 담은 TextBlock을 추가
             note.addBlockId(blockStore.createBlock("text", removedTextList).id,note.getIndexOfBlock(textBlock.id) + 1);
 
-        } else if(e.key === "Backspace") {
-            if (editorSelection.isCaret()) {
-                // editorSelection.getStartNode().textContent.length === 1 && e.preventDefault();
-            } else {
-                e.preventDefault();
-            }
         }
+
+        e.key === "Backspace" && backspaceHandler(e);
     }
 
     return {onKeyDownHandler};

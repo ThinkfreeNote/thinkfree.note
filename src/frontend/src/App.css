@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+:root {
+    --header : 45px;
+    --side : 20px;
+}
+
+
+
+
 /* reset CSS */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -68,10 +80,21 @@ table, th, td {
 
 .editor {
     outline: none;
-    border: 1px solid black;
-    width: 100vw;
+    width: 100%;
+    overflow-x : hidden;
     min-height: 100vh;
-    padding: 40px 10vw;
+    padding: 40px calc(var(--side) * 8);
+    padding-top : var(--header);
+}
+.title {
+    margin-bottom: 50px;
+    font-size: 48px;
+    font-weight: 600;
+}
+
+.title:empty::after {
+    content: "제목을 입력하세요...";
+    color : lightgrey;
 }
 
 .block-wrapper {
@@ -356,3 +379,47 @@ table, th, td {
 /*[data-leaf="true"]:empty::after {*/
 /*    content :"/00A0"*/
 /*}*/
+
+.note-box {
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    height: var(--header);
+    justify-content: space-between;
+    align-items: center;
+    padding : 0  var(--side);
+    font-size : 14px;
+}
+.header:hover{
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+
+.header h1 {
+    font-size: 40px;
+    font-weight: 600;
+    font-family: "Bebas Neue", sans-serif;
+    color : white;
+    text-shadow: 0 0 3px rgba(0,0,0,1);
+}
+
+.side-nav {
+    width: 260px;
+    flex-shrink: 0;
+    /*background-color: rgb(247, 247, 245);*/
+    background-color: rgb(64,64,64);
+    border-right: 1px solid rgba(0,0,0,.1);
+    box-shadow: 1px 0 3px rgba(0,0,0,.1);
+    padding : 10px;
+    color : white;
+}
+
+.user-dashboard-box {
+    display: flex;
+    gap : 10px;
+    align-items: center;
+    font-family: "Roboto", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+}

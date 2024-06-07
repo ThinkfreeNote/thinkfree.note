@@ -4,6 +4,7 @@ import useEditHandler from "./hooks/useEditHandler";
 import useBlockIdList from "./hooks/useBlockIdList";
 import Title from "./Title";
 import useEditorSelection from "./hooks/useEditorSelection";
+import CommandWindow from "./CommandWindow";
 
 export const EditorContext = createContext(null);
 
@@ -23,6 +24,7 @@ function NoteEditor() {
                 <Title/>
                 {blockIdList.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}
             </div>
+            <CommandWindow/>
         </EditorContext.Provider>
     );
 }

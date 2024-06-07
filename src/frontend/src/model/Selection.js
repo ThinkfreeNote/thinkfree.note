@@ -1,7 +1,7 @@
 export class EditorSelection {
     constructor() {
         this.selection = window.getSelection();
-        this.prevRange  = null;
+        this.blockId = [];
     }
 
     isCaret() {
@@ -9,14 +9,14 @@ export class EditorSelection {
     }
 
     isEditorLeaf() {
-        if(this.isNullSelection()) return false;
+        if (this.isNullSelection()) return false;
 
-        const {startElement,endElement}  = this.getElement();
+        const {startElement, endElement} = this.getElement();
         // boolean 형변환
         return !!(startElement.closest("[data-leaf]") && endElement.closest("[data-leaf]"));
     }
 
-    isNullSelection () {
+    isNullSelection() {
         const {anchorNode, focusNode} = this.selection;
         return (anchorNode === null || focusNode === null);
     }
@@ -69,17 +69,11 @@ export class EditorSelection {
     }
 
     isSelectionSameElement() {
-        const {startElement,endElement} = this.getElement();
-        if(this.isNullSelection()) return false;
+        const {startElement, endElement} = this.getElement();
+        if (this.isNullSelection()) return false;
         return startElement === endElement;
     }
 
-    /**
-     * 위치 비교
-     */
-    updateSelectionNodes() {
-
-    }
 
     setCaret(container, offset = 0) {
         if (!(container instanceof Node)) return;
@@ -139,5 +133,40 @@ export class EditorSelection {
             startNode: [startTextBefore, startTextSelected],
             endNode: [endTextSelected, endTextAfter]
         };
+    }
+
+
+    /**
+     * @desc 실시간으로 블록 아이디 추적
+     * @param blockIdList
+     */
+    updateEditorSelection(blockIdList) {
+        if (this.isNullSelection()) {
+            this.blockId = [];
+            return;
+        }
+        const {start, end} = this.getClosestId("block");
+
+        const startIndex = blockIdList.indexOf(start);
+        const endIndex = blockIdList.indexOf(end);
+
+        // 현재 셀렉션된 블록 리스트
+        this.blockId = blockIdList.slice(startIndex, endIndex + 1);
+    }
+
+    /**
+     * @return {boolean} 셀렉션이 같은 블록 내에 있는지
+     */
+    isCollapseBlock() {
+        return this.blockId.length === 1
+    }
+
+    isEmptyBlock() {
+        // leaf에서 캐럿인지 확인
+        if(this.isNullSelection() || !this.isEditorLeaf() || !this.isCaret()) return false;
+
+        const $leaf = this.getElement().startElement.closest("[data-leaf]");
+
+        if($leaf.textContent.length === 0) return true;
     }
 }

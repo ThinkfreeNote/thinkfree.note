@@ -11,16 +11,16 @@ function useEditHandler() {
 
 
     const backspaceHandler = (e) => {
-        if(!editorSelection.isCaret()) {
+        if (!editorSelection.isCaret()) {
             e.preventDefault();
             return;
         }
 
         // data leaf 속에 텍스트가 없는 상태에서 삭제 시 블록 삭제
-        if(editorSelection.isEmptyBlock()) {
-            const blockId =  editorSelection.blockId[0];
+        if (editorSelection.isEmptyBlock()) {
+            const blockId = editorSelection.blockId[0];
             // table의 경우 leaf가 셀 단위기 때문에 동작하지 않도록 처리
-            if(blockStore.getBlockType(blockId) === "table") return;
+            if (blockStore.getBlockType(blockId) === "table") return;
             note.deleteBlock(blockId);
         }
     }
@@ -36,27 +36,26 @@ function useEditHandler() {
             if (!text) return;
 
             // 분리하고 업데이트된 textIdx 구함
-            const {startNode: dividedTextContents} = editorSelection.getDividedTextContents();
+            const {startNode: dividedTextContents} = editorSelection.getDividedMultiTextContents();
             let textIdx = textBlock.getTextIdx(text.id);
             textBlock.divideText(textIdx, dividedTextContents[0], dividedTextContents[1]);
 
             // text들 사이에 있는 캐럿 오류 해결
-            if (!textBlock.isLastText(textIdx) && dividedTextContents[1] === "") {
+            if (dividedTextContents[1] === "") {
                 textBlock.removeText(textIdx + 1);
             }
             textIdx++;
 
             // 기존 textBlock에 있는 text들 삭제
             const removedTextList = [];
-            while(true) {
+            while (true) {
                 const text = textBlock.removeText(textIdx);
-                if(!text) break;
+                if (!text) break;
                 removedTextList.push(text);
             }
 
             // 새로운 Text들을 담은 TextBlock을 추가
-            note.addBlockId(blockStore.createBlock("text", removedTextList).id,note.getIndexOfBlock(textBlock.id) + 1);
-
+            note.addBlockId(blockStore.createBlock("text", removedTextList).id, note.getIndexOfBlock(textBlock.id) + 1);
         }
 
         e.key === "Backspace" && backspaceHandler(e);
@@ -79,9 +78,9 @@ export function useEditorEventListener(eventType, handler) {
         const $editor = editorRef.current;
         if (!($editor instanceof HTMLElement)) return;
 
-        const handlerWrapper = (e)=> {
+        const handlerWrapper = (e) => {
             // 해당 블록에 속할 때만 핸들러 실행
-            if(editorSelection.isNullSelection() || blockId !== editorSelection.getClosestId("block").start) return;
+            if (editorSelection.isNullSelection() || blockId !== editorSelection.getClosestId("block").start) return;
             handler(e);
         }
 

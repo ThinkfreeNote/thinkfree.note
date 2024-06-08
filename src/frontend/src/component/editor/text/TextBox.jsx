@@ -8,9 +8,12 @@ import {ReactComponent as ItalicIcon} from "../../../assets/icon_italic.svg";
 import {ReactComponent as UnderlineIcon} from "../../../assets/icon_underline.svg";
 import {ReactComponent as LineThroghIcon} from "../../../assets/icon_lineThrough.svg";
 import {BlockReRenderContext} from "../context/BlockReRenderContext";
+import {Text} from "../../../model/Text";
+import {getRandomId} from "../../../utils/id";
+import {FontStyle} from "../../../model/FontStyle";
 
 
-const FONT_SIZE_LIST = [8,10,12,14,16,18,20,24,30,36,48];
+const FONT_SIZE_LIST = [8, 10, 12, 14, 16, 18, 20, 24, 30, 36, 48];
 
 function TextBox({targetBlockId, offset}) {
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
@@ -24,7 +27,8 @@ function TextBox({targetBlockId, offset}) {
 
         // 여러 텍스트가 셀랙션 되었으면 분리
         if (isMultiSelectedText) {
-            const dividedTextValues = editorSelection.getDividedTextContents();
+            const dividedTextValues = editorSelection.getDividedMultiTextContents();
+
             if (dividedTextValues.startNode[0] !== "") {
                 textBlock.divideText(startIdx, dividedTextValues.startNode[0], dividedTextValues.startNode[1]);
                 startIdx++;
@@ -34,6 +38,13 @@ function TextBox({targetBlockId, offset}) {
             if (dividedTextValues.endNode[1] !== "") {
                 textBlock.divideText(endIdx, dividedTextValues.endNode[0], dividedTextValues.endNode[1]);
             }
+        } else {
+            const dividedTextValues = editorSelection.getDividedTextContents();
+            const cnt = textBlock.divideText(startIdx, dividedTextValues.before, dividedTextValues.selected, dividedTextValues.after);
+
+            startIdx += cnt - 1;
+            if (dividedTextValues.after === "") startIdx++;
+            endIdx = startIdx;
         }
 
         // FontStyle Update
@@ -52,18 +63,18 @@ function TextBox({targetBlockId, offset}) {
     }
 
     const styleUpdate = (type) => {
-        updateFontStyles("textDecoration",type)
+        updateFontStyles("textDecoration", type)
     }
 
     return (
         <ToolBox top={offset.y} left={offset.x}>
             <ToolBox.Color icon={<FontColorIcon/>} handler={colorUpdate}/>
-            <ToolBox.Plain icon={<BoldIcon/>} handler={() => updateFontStyles("fontWeight","bold")}/>
-            <ToolBox.Plain icon={<ItalicIcon/>} handler={() => updateFontStyles("fontStyle","italic")}/>
-            <ToolBox.Plain icon={<UnderlineIcon/>}  handler={()=>styleUpdate("underline")}/>
-            <ToolBox.Plain icon={<LineThroghIcon/>}  handler={()=>styleUpdate("line-through")}/>
-            <ToolBox.DropDownBox handler={(value) => updateFontStyles("fontSize", `${value}px`) }>
-                {FONT_SIZE_LIST.map((fontSize)=> <ToolBox.DropDownItem key={fontSize} value={fontSize} unit={"px"}/>)}
+            <ToolBox.Plain icon={<BoldIcon/>} handler={() => updateFontStyles("fontWeight", "bold")}/>
+            <ToolBox.Plain icon={<ItalicIcon/>} handler={() => updateFontStyles("fontStyle", "italic")}/>
+            <ToolBox.Plain icon={<UnderlineIcon/>} handler={() => styleUpdate("underline")}/>
+            <ToolBox.Plain icon={<LineThroghIcon/>} handler={() => styleUpdate("line-through")}/>
+            <ToolBox.DropDownBox handler={(value) => updateFontStyles("fontSize", `${value}px`)}>
+                {FONT_SIZE_LIST.map((fontSize) => <ToolBox.DropDownItem key={fontSize} value={fontSize} unit={"px"}/>)}
             </ToolBox.DropDownBox>
         </ToolBox>
     )

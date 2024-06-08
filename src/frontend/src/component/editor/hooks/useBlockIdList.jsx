@@ -3,7 +3,6 @@ import {BlockIdListContext} from "../context/BlockIdListProvider";
 
 /**
  * @desc BlockIdList 관리 훅
- * @returns {{addBlockId: addBlockId, deleteBlock: ((function(*): boolean)|*), getIndexOfBlock: (function(*): *), blockIdList}}
  */
 function useBlockIdList() {
     const {blockIdList, setBlockIdList} = useContext(BlockIdListContext);

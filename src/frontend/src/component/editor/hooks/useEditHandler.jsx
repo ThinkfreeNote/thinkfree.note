@@ -36,15 +36,15 @@ function useEditHandler() {
             if (!text) return;
 
             // 분리하고 업데이트된 textIdx 구함
-            const {startNode: dividedTextContents} = editorSelection.getDividedMultiTextContents();
+            const dividedTextContents = editorSelection.getDividedTextContentsFromCaret();
             let textIdx = textBlock.getTextIdx(text.id);
-            textBlock.divideText(textIdx, dividedTextContents[0], dividedTextContents[1]);
+            const cnt = textBlock.divideText(textIdx, dividedTextContents.before, dividedTextContents.after);
 
-            // text들 사이에 있는 캐럿 오류 해결
-            if (dividedTextContents[1] === "") {
-                textBlock.removeText(textIdx + 1);
-            }
-            textIdx++;
+            // text 마지막에 캐럿이 잡힐 경우 예외 처리
+            if (dividedTextContents.after === "") textIdx++;
+
+            // 추가된만큼 idx 증가
+            textIdx += cnt;
 
             // 기존 textBlock에 있는 text들 삭제
             const removedTextList = [];

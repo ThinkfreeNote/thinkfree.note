@@ -156,7 +156,21 @@ export class EditorSelection {
         };
     }
 
+    /**
+     * Node의 분리된 TextContent를 가져옴
+     */
+    getDividedTextContentsFromCaret() {
+        if (!this.isCaret()) return;
+        const textContent = this.getStartNode().textContent;
+        const offset = this.getOffset();
+        const beforeText = textContent.slice(0, offset.start);
+        const afterText = textContent.slice(offset.start, textContent.length);
 
+        return {
+            before: beforeText,
+            after: afterText
+        };
+    }
 
     /**
      * @desc 실시간으로 블록 아이디 추적

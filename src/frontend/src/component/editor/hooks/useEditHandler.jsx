@@ -28,8 +28,8 @@ function useEditHandler() {
     const onKeyDownHandler = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            // 캐럿인지 확인
-            if (!editorSelection.isCaret()) return;
+            // 캐럿이 아니거나, 테이블인 경우 return
+            if (!editorSelection.isCaret() || blockStore.getBlockType(editorSelection.blockId[0]) === "table") return;
             // 텍스트가 선택됐는지 확인
             const textBlock = blockStore.getBlock(editorSelection.getClosestId("block").start);
             const text = textBlock.getTextFromId(editorSelection.getClosestId("text").start);

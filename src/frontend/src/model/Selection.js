@@ -191,4 +191,17 @@ export class EditorSelection {
 
         if($leaf.textContent.length === 0) return true;
     }
+
+    isLeaf() {
+        if(this.isNullSelection()) return false;
+        const {startElement,endElement} = this.getElement();
+        return !(!startElement.closest("[data-leaf]") || !endElement.closest("[data-leaf]"));
+    }
+    removeSelection() {
+        this.selection.removeAllRanges();
+    }
+
+    isEditor() {
+        return this.blockId.length > 0
+    }
 }

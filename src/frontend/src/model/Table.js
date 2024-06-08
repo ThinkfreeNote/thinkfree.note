@@ -1,6 +1,6 @@
 import {Block} from "./Block";
 import {generate4wordId, getRandomId} from "../utils/id";
-import {isCell} from "../utils/table";
+import {checkCalc, getCalcValue, isCell} from "../utils/table";
 
 /**
  * @property {Array} format
@@ -171,5 +171,16 @@ export class Table extends Block {
     getNextRowId(rowId) {
         const index = this.contents.indexOf(rowId);
         return this.contents[index+1];
+    }
+
+    getIndexOfValue(rowIdx,colIdx) {
+        if(rowIdx >= this.contents.length || colIdx >= this.format.length) return null;
+        const rowId = this.contents[rowIdx]
+        const value = this.rows[rowId][this.format[colIdx]].value;
+
+        if(checkCalc(value)) {
+            return getCalcValue(this,value);
+        }
+        return value;
     }
 }

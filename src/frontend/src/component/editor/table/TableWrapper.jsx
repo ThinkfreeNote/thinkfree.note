@@ -5,6 +5,7 @@ import {useTableMousePositionSetter} from "./hooks/useTableMousePositionHooks";
 import {isCell} from "../../../utils/table";
 import ColumnResizer from "./ColumnResizer";
 import {BlockContext} from "../BlockContextProvider";
+import TableCursorPositionProvider from "./contexts/TableSelectionProvider";
 
 function TableWrapper({children}) {
     const {blockId} = useContext(BlockContext);
@@ -28,15 +29,17 @@ function TableWrapper({children}) {
 
 
     return (
-        <div className="table-block" onMouseLeave={mouseLeaveHandler}>
-            <div className="table-box" onMouseMove={mouseMove}>
-                {children}
-                <button onClick={() => addColumn()} contentEditable={false} className="btn_add btn_add_column">+
-                </button>
-                <button onClick={() => addRow()} contentEditable={false} className="btn_add btn_add_row">+</button>
-                <ColumnResizer/>
+        <TableCursorPositionProvider blockId={blockId}>
+            <div className="table-block" onMouseLeave={mouseLeaveHandler}>
+                <div className="table-box" onMouseMove={mouseMove}>
+                    {children}
+                    <button onClick={() => addColumn()} contentEditable={false} className="btn_add btn_add_column">+
+                    </button>
+                    <button onClick={() => addRow()} contentEditable={false} className="btn_add btn_add_row">+</button>
+                    <ColumnResizer/>
+                </div>
             </div>
-        </div>
+        </TableCursorPositionProvider>
     );
 }
 

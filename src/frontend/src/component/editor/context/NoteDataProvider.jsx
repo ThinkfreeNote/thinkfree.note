@@ -79,20 +79,30 @@ function NoteDataProvider({children,noteId}) {
     const blockStore = useRef(null);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/documents/${noteId}`)
-            .then(res => res.json())
-            .then(data => {
-                const parsedData = JSON.parse(data.content, (key,value) => {
-                    if(value.type === "table") return Object.setPrototypeOf(value, Table.prototype);
-                    if(value.type === "text") return Object.setPrototypeOf(value,TextBlock.prototype);
-                    if(Object.hasOwn(value,"fontSize")) return Object.setPrototypeOf(value,FontStyle.prototype);
-                    if(Object.hasOwn(value,"fontStyle")) return Object.setPrototypeOf(value,TextBlock.prototype);
-                    if(key === "blocks") return Object.setPrototypeOf(value,BlockStore.prototype);
-                    return value;
+        // noteId 없으면 새 노트
+        if(!noteId) {
+            blockStore.current = new BlockStore();
+            const firstBlock = blockStore.current.createBlock("text");
+            setBlockIdList([firstBlock.id]);
+        }
+        // noteId 있을 때는 데이터 불러와서 파싱
+        else {
+            fetch(`http://localhost:8080/documents/${noteId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const parsedData = JSON.parse(data.content, (key,value) => {
+                        if(value.type === "table") return Object.setPrototypeOf(value, Table.prototype);
+                        if(value.type === "text") return Object.setPrototypeOf(value,TextBlock.prototype);
+                        if(Object.hasOwn(value,"fontSize")) return Object.setPrototypeOf(value,FontStyle.prototype);
+                        if(Object.hasOwn(value,"fontStyle")) return Object.setPrototypeOf(value,TextBlock.prototype);
+                        if(key === "blocks") return Object.setPrototypeOf(value,BlockStore.prototype);
+                        return value;
+                    })
+                    blockStore.current = parsedData.blocks;
+                    setBlockIdList([...parsedData.blockIdList]);
+                    console.log(parsedData);
                 })
-                blockStore.current = parsedData.blocks;
-                setBlockIdList([...parsedData.blockIdList]);
-            })
+        }
     }, []);
 
     if(blockIdList.length === 0) return null;

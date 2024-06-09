@@ -23,6 +23,14 @@ const router = createBrowserRouter([
                 <NoteEditorContainer/>
             </NotePage>
         )
+    },
+    {
+        path:"/new",
+        element : (
+            <NotePage>
+                <NoteEditorContainer/>
+            </NotePage>
+        )
     }
 ])
 

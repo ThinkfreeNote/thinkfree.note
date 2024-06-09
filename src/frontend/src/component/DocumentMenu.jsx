@@ -8,7 +8,7 @@ function DocumentMenu({closeMenu,noteId}) {
         fetch(`http://localhost:8080/documents/${noteId}`,{
             method : "DELETE"
         }).then(res => res.json())
-            .then(data => navigate("/"));
+            .then(() => navigate("/"));
     }
 
     return (

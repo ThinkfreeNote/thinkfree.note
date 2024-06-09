@@ -181,10 +181,12 @@ table, th, td {
     font-weight: 800;
 }
 
-.noteList-nav {
-
+.noteList-nav h3 {
+    font-size: 12px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 600;
+    color: grey;
 }
-
 
 .noteList-item {
     display: flex;
@@ -228,7 +230,6 @@ table, th, td {
 .noteList-item-menu-box svg {
     width: 18px;
     height: 18px;
-    fill: rgba(0, 0, 0, .8)
 }
 
 .noteList-item-menu-box svg:hover {

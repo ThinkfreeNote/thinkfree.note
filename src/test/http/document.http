@@ -34,3 +34,16 @@ DELETE http://localhost:8080/documents/1
 Content-Type: application/json
 
 
+### Create BookMark
+POST http://localhost:8080/bookmark?userId=admin&documentId=1
+
+### Get BookMark
+GET http://localhost:8080/bookmark?userId=admin&documentId=1
+
+
+### DELETE BookMark
+DELETE http://localhost:8080/bookmark?userId=admin&documentId=1
+
+
+### GET BookMarkListByUserId
+GET http://localhost:8080/bookmark/admin

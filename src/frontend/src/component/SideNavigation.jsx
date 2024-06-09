@@ -3,6 +3,7 @@ import UserDashBoard from "./UserDashBoard";
 import NoteListNavigation from "./editor/NoteListNavigation";
 import {useParams} from "react-router-dom";
 import NewNoteButton from "./editor/NewNoteButton";
+import BookMarkProvider from "./context/BookMarkProvider";
 
 function SideNavigation() {
     const {noteId} = useParams();
@@ -16,12 +17,14 @@ function SideNavigation() {
             });
     }, [noteId]);
     return (
-        <aside className="side-nav">
-            <UserDashBoard/>
-            <hr/>
-            <NoteListNavigation noteList={documentList} />
-            <NewNoteButton/>
-        </aside>
+        <BookMarkProvider>
+            <aside className="side-nav">
+                <UserDashBoard/>
+                <hr/>
+                <NoteListNavigation noteList={documentList}/>
+                <NewNoteButton/>
+            </aside>
+        </BookMarkProvider>
     );
 }
 

@@ -1,13 +1,15 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {useBlockStore} from "./hooks/useBlockHooks";
 import useBlockIdList from "./hooks/useBlockIdList";
 import {useNavigate, useParams} from "react-router-dom";
+import {NoteTitleContext} from "./context/NoteTitleProvider";
 
 function SaveButton() {
     const {noteId} = useParams();
     const {blockIdList} = useBlockIdList();
     const blockStore = useBlockStore();
     const navigate = useNavigate();
+    const {title} = useContext(NoteTitleContext);
 
     const postData = {
         blockIdList,
@@ -19,7 +21,7 @@ function SaveButton() {
         fetch("http://localhost:8080/documents", {
             method: "POST",
             body: JSON.stringify({
-                title: "1",
+                title: title.length === 0 ? "Untitled" : title,
                 content: JSON.stringify(postData)
             }),
             headers: {
@@ -35,7 +37,7 @@ function SaveButton() {
             method: "PATCH",
             body: JSON.stringify({
                 id: noteId,
-                title: "1",
+                title: title.length === 0 ? "Untitled" : title,
                 content: JSON.stringify(postData),
             }),
             headers: {

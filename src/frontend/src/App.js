@@ -4,6 +4,7 @@ import {MenuContextProvider} from "./component/common/MenuContext";
 import {EditorSelection} from "./model/Selection";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import NoteEditorContainer from "./component/container/NoteEditorContainer";
+import HomePage from "./component/HomePage";
 
 export const editorSelection = new EditorSelection();
 
@@ -12,7 +13,7 @@ const router = createBrowserRouter([
         path: "/",
         element: (
             <NotePage>
-                <div>123</div>
+                <HomePage/>
             </NotePage>
         )
     },
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
         path:"/new",
         element : (
             <NotePage>
-                <NoteEditorContainer/>
+                <NoteEditorContainer key="new"/>
             </NotePage>
         )
     }

@@ -100,7 +100,6 @@ function NoteDataProvider({children,noteId}) {
                     })
                     blockStore.current = parsedData.blocks;
                     setBlockIdList([...parsedData.blockIdList]);
-                    console.log(parsedData);
                 })
         }
     }, []);

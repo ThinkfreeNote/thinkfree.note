@@ -218,4 +218,10 @@ export class EditorSelection {
     isEditor() {
         return this.blockId.length > 0
     }
+
+    getBlockType() {
+        if(this.isNullSelection()) return null;
+        const element = this.getElement().startElement;
+        return element.closest("[data-block-type]")?.dataset.blockType
+    }
 }

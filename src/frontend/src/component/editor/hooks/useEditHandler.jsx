@@ -6,18 +6,21 @@ import {BlockContext} from "../BlockContextProvider";
 import {useBlockStore} from "./useBlockHooks";
 
 function useEditHandler() {
+    const {blockIdList} = useBlockIdList();
+
     const blockStore = useBlockStore();
     const note = useBlockIdList();
 
 
     const backspaceHandler = (e) => {
-        if (!editorSelection.isCaret()) {
+        if (!editorSelection.isCaret() || blockIdList.length === 1) {
             e.preventDefault();
             return;
         }
 
         // data leaf 속에 텍스트가 없는 상태에서 삭제 시 블록 삭제
         if (editorSelection.isEmptyBlock()) {
+            e.preventDefault();
             const blockId = editorSelection.blockId[0];
             // table의 경우 leaf가 셀 단위기 때문에 동작하지 않도록 처리
             if (blockStore.getBlockType(blockId) === "table") return;
@@ -30,6 +33,7 @@ function useEditHandler() {
             e.preventDefault();
             // 캐럿이 아니거나, 테이블인 경우 return
             if (!editorSelection.isCaret() || blockStore.getBlockType(editorSelection.blockId[0]) === "table") return;
+            if(editorSelection.getBlockType() === "title") return;
             // 텍스트가 선택됐는지 확인
             const textBlock = blockStore.getBlock(editorSelection.getClosestId("block").start);
             const text = textBlock.getTextFromId(editorSelection.getClosestId("text").start);

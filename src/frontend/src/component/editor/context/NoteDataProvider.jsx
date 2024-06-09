@@ -1,4 +1,4 @@
-import React, {createContext, useRef, useState} from 'react';
+import React, {createContext, useEffect, useRef, useState} from 'react';
 import {FontStyle} from "../../../model/FontStyle";
 import {TextBlock} from "../../../model/TextBlock";
 import {BlockStore} from "../../../model/BlockStore";
@@ -69,13 +69,33 @@ export const BlockStoreContext = createContext(null);
 export const BlockIdListContext = createContext(null);
 
 /**
- * @desc noteContents, blockStore 관리 
+ * @desc noteContents, blockStore 관리
+ * @param noteId
  * @param children
  * @returns {JSX.Element}
  */
-function BlockIdListProvider({children}) {
-    const [blockIdList, setBlockIdList] = useState(note.blockIdList);
-    const {current: blockStore} = useRef(testBlockStore);
+function NoteDataProvider({children,noteId}) {
+    const [blockIdList, setBlockIdList] = useState([]);
+    const blockStore = useRef(null);
+
+    useEffect(() => {
+        fetch(`http://localhost:8080/documents/${noteId}`)
+            .then(res => res.json())
+            .then(data => {
+                const parsedData = JSON.parse(data.content, (key,value) => {
+                    if(value.type === "table") return Object.setPrototypeOf(value, Table.prototype);
+                    if(value.type === "text") return Object.setPrototypeOf(value,TextBlock.prototype);
+                    if(Object.hasOwn(value,"fontSize")) return Object.setPrototypeOf(value,FontStyle.prototype);
+                    if(Object.hasOwn(value,"fontStyle")) return Object.setPrototypeOf(value,TextBlock.prototype);
+                    if(key === "blocks") return Object.setPrototypeOf(value,BlockStore.prototype);
+                    return value;
+                })
+                blockStore.current = parsedData.blocks;
+                setBlockIdList([...parsedData.blockIdList]);
+            })
+    }, []);
+
+    if(blockIdList.length === 0) return null;
 
     return (
         <BlockIdListContext.Provider value={{blockIdList, setBlockIdList}}>
@@ -86,4 +106,4 @@ function BlockIdListProvider({children}) {
     );
 }
 
-export default BlockIdListProvider;
+export default NoteDataProvider;

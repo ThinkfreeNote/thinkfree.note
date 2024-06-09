@@ -52,6 +52,6 @@ export class BlockStore {
     }
 
     getBlockType(blockId) {
-        return this[blockId].type ?? null;
+        return this[blockId]?.type;
     }
 }

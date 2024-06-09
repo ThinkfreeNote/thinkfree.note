@@ -1,18 +1,22 @@
 import React from 'react';
 import NoteEditor from "../editor/NoteEditor";
-import BlockIdListProvider from "../editor/context/BlockIdListProvider";
+import NoteDataProvider from "../editor/context/NoteDataProvider";
 import EditorToolBox from "../editor/EditorToolBox";
 import BlockReRenderContextProvider from "../editor/context/BlockReRenderContext";
+import SaveButton from "../editor/SaveButton";
+import {useParams} from "react-router-dom";
 
 
 function NoteEditorContainer() {
+    const {noteId} = useParams();
     return (
-        <BlockIdListProvider>
+        <NoteDataProvider key={noteId} noteId={noteId}>
             <BlockReRenderContextProvider>
                 <NoteEditor/>
                 <EditorToolBox/>
+                <SaveButton/>
             </BlockReRenderContextProvider>
-        </BlockIdListProvider>
+        </NoteDataProvider>
     );
 }
 

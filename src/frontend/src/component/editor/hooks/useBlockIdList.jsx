@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {BlockIdListContext} from "../context/BlockIdListProvider";
+import {BlockIdListContext} from "../context/NoteDataProvider";
 
 /**
  * @desc BlockIdList 관리 훅

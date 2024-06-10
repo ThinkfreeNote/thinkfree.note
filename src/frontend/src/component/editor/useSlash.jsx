@@ -48,7 +48,7 @@ function useSlash(editorRef) {
 }
 
 
-const SLASH_ITEM_TYPES = [["텍스트블록", "text", <TextBlockIcon/>], ["목록", "list", <UnorderedIcon/>], ["표", "table",
+const SLASH_ITEM_TYPES = [["텍스트블록", "text", <TextBlockIcon/>], ["목록", "ul", <UnorderedIcon/>],["순서 목록", "ol", <UnorderedIcon/>], ["표", "table",
     <TableIcon/>]];
 
 /**
@@ -63,7 +63,7 @@ function SlashMenu({closeMenu, editorRef}) {
     const {replaceBlock} = useBlockIdList();
     const blockStore = useBlockStore();
 
-    const addBlock = (type) => {
+    const replaceNewBlock = (type) => {
         closeMenu();
         replaceBlock(editorSelection.blockId[0], blockStore.createBlock(type).id);
     }
@@ -80,7 +80,7 @@ function SlashMenu({closeMenu, editorRef}) {
             if (e.key === "Enter") {
                 e.preventDefault();
                 if (menuIndex <= 0) return
-                addBlock(SLASH_ITEM_TYPES[menuIndex - 1][1]);
+                replaceNewBlock(SLASH_ITEM_TYPES[menuIndex - 1][1]);
                 e.stopPropagation();
             }
             if (e.key.startsWith("Arrow")) {
@@ -106,7 +106,7 @@ function SlashMenu({closeMenu, editorRef}) {
         <ContextMenu.Divider/>
         {SLASH_ITEM_TYPES.map((item, idx) => {
             const [text, type, icon] = item;
-            return <ContextMenu.Plain key={idx} isSelected={menuIndex === idx + 1} handler={() => addBlock(type)}
+            return <ContextMenu.Plain key={idx} isSelected={menuIndex === idx + 1} handler={() => replaceNewBlock(type)}
                                       name={text} icon={icon}/>
         })}
     </ContextMenu>

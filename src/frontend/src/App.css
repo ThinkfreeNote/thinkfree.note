@@ -637,5 +637,6 @@ table, th, td {
 }
 
 .list::before {
+    padding : 5px;
     content: attr(data-li-value);
 }

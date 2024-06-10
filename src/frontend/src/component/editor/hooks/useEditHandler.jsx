@@ -13,7 +13,7 @@ function useEditHandler() {
 
 
     const backspaceHandler = (e) => {
-        if (!editorSelection.isCaret() || (editorSelection.isLeaf() && blockIdList.length === 1)) {
+        if (!editorSelection.isCaret()) {
             e.preventDefault();
             return;
         }

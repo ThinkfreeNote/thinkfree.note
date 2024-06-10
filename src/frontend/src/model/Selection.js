@@ -241,4 +241,8 @@ export class EditorSelection {
         const element = this.getElement().startElement;
         return element.closest("[data-block-type]")?.dataset.blockType
     }
+
+    getBoundingRect() {
+        return this.selection.getRangeAt(0).getBoundingClientRect();
+    }
 }

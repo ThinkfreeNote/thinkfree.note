@@ -5,6 +5,7 @@ import useBlockIdList from "./hooks/useBlockIdList";
 import Title from "./Title";
 import useEditorSelection from "./hooks/useEditorSelection";
 import CommandWindow from "./CommandWindow";
+import useSlash from "./useSlash";
 
 export const EditorContext = createContext(null);
 
@@ -15,6 +16,7 @@ function NoteEditor() {
     const editorRef = useRef(null);
 
     useEditorSelection(blockIdList);
+    const {slashComponent} = useSlash(editorRef);
 
     return (
         <EditorContext.Provider value={editorRef}>
@@ -25,6 +27,7 @@ function NoteEditor() {
                 {blockIdList.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}
             </div>
             <CommandWindow/>
+            {slashComponent}
         </EditorContext.Provider>
     );
 }

@@ -24,4 +24,4 @@ function NoteBlockSwitcher({blockId}) {
     </BlockWrapper>
 }
 
-export default NoteBlockSwitcher;
+export default React.memo(NoteBlockSwitcher);

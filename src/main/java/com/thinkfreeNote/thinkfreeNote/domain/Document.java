@@ -25,6 +25,9 @@ public class Document {
     @OneToMany(mappedBy = "document", cascade = CascadeType.REMOVE)
     private List<BookMark> bookmarks;
 
+    @ManyToOne()
+    private Document document;
+
     public Document(String title, String content) {
         this.title = title;
         this.content = content;

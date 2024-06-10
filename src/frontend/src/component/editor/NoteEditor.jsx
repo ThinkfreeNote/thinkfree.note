@@ -5,7 +5,6 @@ import useBlockIdList from "./hooks/useBlockIdList";
 import Title from "./Title";
 import useEditorSelection from "./hooks/useEditorSelection";
 import CommandWindow from "./CommandWindow";
-import {editorSelection} from "../../App";
 
 export const EditorContext = createContext(null);
 
@@ -19,7 +18,7 @@ function NoteEditor() {
 
     return (
         <EditorContext.Provider value={editorRef}>
-            <div className="editor" spellCheck={false} ref={editorRef} onKeyDown={onKeyDownHandler}
+            <div id="editor" className="editor" spellCheck={false} ref={editorRef} onKeyDown={onKeyDownHandler}
                  contentEditable={true}
                  suppressContentEditableWarning={true}>
                 <Title/>

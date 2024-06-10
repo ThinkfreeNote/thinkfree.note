@@ -14,6 +14,7 @@ function ContextMenuMain({children, closeMenu}) {
         if (e.target === menuRef.current || menuRef.current.contains(e.target)) return;
         // 메뉴 닫기
         closeMenu();
+        e.stopPropagation();
     }
 
     // 메뉴 박스가 화면 크기 넘어가는 경우 위치 재조정

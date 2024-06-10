@@ -3,8 +3,11 @@
 
 
 :root {
-    --header: 45px;
+    --header: 56px;
     --side: 20px;
+    --point-color: rgb(110, 93, 198);
+    --point-color-hover: rgb(130, 113, 218) ;
+    --point-color-shadow: rgba(110, 93, 198, .3);
 }
 
 
@@ -56,7 +59,6 @@ blockquote, q {
 blockquote:before, blockquote:after,
 q:before, q:after {
     content: '';
-    content: none;
 }
 
 table {
@@ -68,20 +70,199 @@ table {
     box-sizing: border-box;
 }
 
+a {
+    text-decoration: none;
+}
+
+a:active {
+    color: var(--point-color);
+}
+
+a:visited {
+    color: initial;
+}
 
 /*-------------------*/
+
+html {
+    overflow: hidden;
+}
+
+.home-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
 
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
 }
 
+.note-page {
+    width: 100%;
+    height: 100vh;
+}
+
+.note-box {
+    width: 100%;
+    height: calc(100% - var(--header));
+    overflow: auto;
+    margin-top: var(--header);
+}
+
+.header {
+    position: fixed;
+    display: flex;
+    width: 100%;
+    height: var(--header);
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--side);
+    font-size: 14px;
+    background-color: var(--point-color);
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    font-family: "Roboto", sans-serif;
+    color: white;
+    text-shadow: 0 0 5px rgba(0, 0, 0, .2);
+}
+
+.side-nav {
+    --side: 10px;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    background-color: rgb(247, 247, 245);
+    border-right: 1px solid rgba(0, 0, 0, .1);
+    box-shadow: 1px 0 3px rgba(0, 0, 0, .1);
+    padding: calc(var(--header) + calc(var(--side) * 1.5)) 0 calc(var(--side) * 1.5);
+}
+
+.side-nav hr {
+    border: none;
+    height: 1px;
+    width: 100%;
+    background-color: grey;
+    margin: calc(var(--side) * 1.5) 0;
+    box-shadow: 0 1px 3px var(--point-color-shadow);
+}
+
+.side-nav > div {
+    padding: 0 var(--side);
+}
+
+.user-dashboard-box {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-family: "Noto Sans KR", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.user-dashboard-icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    background-color: var(--point-color);
+    border-radius: 4px;
+    border: 1px solid white;
+}
+
+.user-dashboard-name {
+    color: var(--point-color);
+    font-weight: 800;
+}
+
+.noteList-nav h3 {
+    font-size: 12px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 600;
+    color: grey;
+}
+
+.noteList-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+    font-size: 14px;
+    padding: 0 var(--side);
+    border-radius: 4px;
+    color: rgba(96, 96, 96);
+}
+
+.noteList-item.selected, .noteList-item:hover {
+    background-color: rgba(237, 237, 235);
+    color: var(--point-color);
+    font-weight: 600;
+}
+.noteList-item-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.noteList-item-marker {
+    color: var(--point-color);
+}
+
+.noteList-item-menu-box {
+    margin-left: auto;
+    display: flex;
+    gap: 4px;
+}
+
+.noteList-item-menu-box button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.noteList-item-menu-box svg {
+    width: 18px;
+    height: 18px;
+}
+
+.noteList-item-menu-box svg:hover {
+    fill: var(--point-color)
+}
+
+.new-note-button {
+    margin : auto calc(var(--side) * 2) 0;
+    color: white;
+    padding : 8px 16px;
+    background-color : var(--point-color);
+    border: none;
+    border-radius: 24px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor : pointer;
+    text-align: center;
+}
+.new-note-button:visited {
+    color : white;
+}
+.new-note-button:hover {
+    background-color: var(--point-color-hover);
+}
+
+/*------*/
+
 .editor {
     outline: none;
     width: 100%;
     overflow-x: hidden;
     min-height: 100vh;
-    padding: 40px calc(var(--side) * 8);
+    padding: 40px calc(var(--side) * 4);
     padding-top: var(--header);
 }
 
@@ -140,7 +321,7 @@ table, th, td {
     position: absolute;
     top: -2px;
     left: -2px;
-    border: 2px solid rgb(85, 204, 244);
+    border: 2px solid var(--point-color);
     pointer-events: none;
 }
 
@@ -394,50 +575,6 @@ table, th, td {
 /*    content :"/00A0"*/
 /*}*/
 
-.note-box {
-    width: 100%;
-}
-
-.header {
-    display: flex;
-    height: var(--header);
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 var(--side);
-    font-size: 14px;
-}
-
-.header:hover {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
-}
-
-.header h1 {
-    font-size: 40px;
-    font-weight: 600;
-    font-family: "Bebas Neue", sans-serif;
-    color: white;
-    text-shadow: 0 0 3px rgba(0, 0, 0, 1);
-}
-
-.side-nav {
-    width: 260px;
-    flex-shrink: 0;
-    /*background-color: rgb(247, 247, 245);*/
-    background-color: rgb(64, 64, 64);
-    border-right: 1px solid rgba(0, 0, 0, .1);
-    box-shadow: 1px 0 3px rgba(0, 0, 0, .1);
-    padding: 10px;
-    color: white;
-}
-
-.user-dashboard-box {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    font-family: "Roboto", sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-}
 
 .command-window-overlay {
     position: fixed;
@@ -466,4 +603,25 @@ table, th, td {
 .command-window input {
     outline: none;
     line-height: 180%;
+}
+
+.note-save-button {
+    position: fixed;
+    bottom: 3%;
+    right: 3%;
+    border: none;
+    font-size: 14px;
+    font-family: "Noto Sans KR", sans-serif;
+    padding: 8px 16px;
+    border-radius: 24px;
+    background-color: var(--point-color);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+    font-weight: 600;
+
+}
+
+.note-save-button:hover {
+    background-color: rgb(130, 113, 218);
 }

@@ -1,22 +1,23 @@
 import React from 'react';
-import NoteEditorContainer from "./NoteEditorContainer";
 import SideNavigation from "../SideNavigation";
 import Header from "../Header";
+import NoteTitleProvider from "../editor/context/NoteTitleProvider";
+import {useParams} from "react-router-dom";
 
-function NotePage() {
+function NotePage({children}) {
+    const {noteId} = useParams();
     return (
-        <div>
-            {/*<Header/>*/}
-            <div style={{display : "flex"}}>
-                <SideNavigation/>
-                <main className="note-box">
-                    <header className="header">
-                        헤더
-                    </header>
-                    <NoteEditorContainer/>
-                </main>
+        <NoteTitleProvider key={noteId}>
+            <div className="note-page">
+                <Header/>
+                <div style={{display: "flex", height: "100%"}}>
+                    <SideNavigation/>
+                    <main className="note-box">
+                        {children}
+                    </main>
+                </div>
             </div>
-        </div>
+        </NoteTitleProvider>
     );
 }
 

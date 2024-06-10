@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import {EditorContext} from "./NoteEditor";
-import {BlockStoreContext} from "./context/BlockIdListProvider";
+import {BlockStoreContext} from "./context/NoteDataProvider";
 
 
 function TextBlock({blockId}) {

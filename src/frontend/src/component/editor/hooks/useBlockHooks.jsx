@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {BlockStoreContext} from "../context/BlockIdListProvider";
+import {BlockStoreContext} from "../context/NoteDataProvider";
 
 /**
  * @desc blockId를 받아 블럭스토어에서 블럭 데이터를 가져오는 커스텀 훅
@@ -7,7 +7,7 @@ import {BlockStoreContext} from "../context/BlockIdListProvider";
  * @param {String} blockId 가져올 블록 아이디 
  */
 export function useBlockData(blockId) {
-    const blockStore = useContext(BlockStoreContext);
+    const blockStore = useBlockStore();
 
     return (blockStore[blockId]);
 }
@@ -20,5 +20,5 @@ export function useBlockData(blockId) {
 export function useBlockStore() {
     const blockStore = useContext(BlockStoreContext);
 
-    return (blockStore);
+    return (blockStore.current);
 }

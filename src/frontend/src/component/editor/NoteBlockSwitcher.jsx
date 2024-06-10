@@ -1,8 +1,8 @@
-import React, {useContext} from 'react';
-import {BlockStoreContext} from "./context/BlockIdListProvider";
+import React from 'react';
 import BlockWrapper from "./BlockWrapper";
 import TextBlock from "./text/TextBlock";
 import TableBlock from "./table/TableBlock";
+import {useBlockStore} from "./hooks/useBlockHooks";
 
 const switcher = (type, id) => {
     switch (type) {
@@ -16,7 +16,7 @@ const switcher = (type, id) => {
 }
 
 function NoteBlockSwitcher({blockId}) {
-    const blockStore = useContext(BlockStoreContext);
+    const blockStore = useBlockStore();
     const {type, id} = blockStore[blockId];
 
     return <BlockWrapper id={blockId} type={type}>

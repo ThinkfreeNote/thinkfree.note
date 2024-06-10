@@ -17,6 +17,8 @@ function BlockSelectMenu({closeMenu, blockId}) {
             <ContextMenu.SubTitle text="기본 Blocks"/>
             <ContextMenu.Divider/>
             <ContextMenu.Plain handler={() => addBlock("text")} name="텍스트"/>
+            <ContextMenu.Plain handler={() => addBlock("ul")} name="순서 없는 리스트"/>
+            <ContextMenu.Plain handler={() => addBlock("ol")} name="순서 있는 리스트"/>
             <ContextMenu.Plain handler={() => addBlock("table")} name="테이블"/>
         </ContextMenu>
     );

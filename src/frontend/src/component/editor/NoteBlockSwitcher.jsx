@@ -3,11 +3,16 @@ import BlockWrapper from "./BlockWrapper";
 import TextBlock from "./text/TextBlock";
 import TableBlock from "./table/TableBlock";
 import {useBlockStore} from "./hooks/useBlockHooks";
+import ListBlock from "./list/ListBlock";
 
 const switcher = (type, id) => {
     switch (type) {
         case "text" :
             return <TextBlock blockId={id}/>
+        case "ol" :
+            return <ListBlock blockId={id} type={type}/>
+        case "ul" :
+            return <ListBlock blockId={id} type={type}/>
         case "table" :
             return <TableBlock blockId={id}/>
         default :

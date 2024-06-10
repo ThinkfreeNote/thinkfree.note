@@ -18,8 +18,7 @@ export class BlockStore {
     // 블럭을 생성하여 스토어에 추가
     createBlock(type, textList = []) {
         const blockId = getRandomId();
-
-        if (type === "text") {
+        if (type === "text" || type === "ul" || type === "ol") {
             const textBlock = new TextBlock(blockId, type, {});
 
             // 인자로 들어온 텍스트가 없으면 기본값

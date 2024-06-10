@@ -23,6 +23,8 @@ function useEditHandler() {
         }
 
         const blockId = editorSelection.blockId[0];
+        const textBlock = blockStore[blockId];
+        const prevBlockId = blockIdList[blockIdList.indexOf(blockId)-1];
 
         // data leaf 속에 텍스트가 없는 상태에서 삭제 시 블록 삭제
         if (editorSelection.isEmptyBlock()) {
@@ -32,15 +34,25 @@ function useEditHandler() {
             // table의 경우 leaf가 셀 단위기 때문에 동작하지 않도록 처리
             if (blockStore.getBlockType(blockId) === "table") return;
 
-            editorSelection.setCaretOfBlockId(blockIdList[blockIdList.indexOf(blockId)-1]);
+            editorSelection.setCaretOfBlockId(prevBlockId);
             note.deleteBlock(blockId);
             return;
         }
 
+        // 텍스트 블럭 제일 앞에 커서가 잡힌 경우 블록 삭제하고 이전 블록에 텍스트 이동
+        if (editorSelection.isStartCaret()) {
+            e.preventDefault();
+            blockStore.compositeBlock(blockId, prevBlockId);
+            editorSelection.setCaretOfBlockId(prevBlockId);
 
+            note.deleteBlock(blockId);
+            setReRenderTargetId(prevBlockId);
+            return;
+        }
+
+        // text 모델 제거
         const textNode = editorSelection.getStartNode();
         if (textNode.nodeType === Node.TEXT_NODE) {
-            const textBlock = blockStore[blockId];
             const textId = editorSelection.getClosestId("text").start;
             if(!textId) return;
             const textIdx = textBlock.getTextIdx(textId);

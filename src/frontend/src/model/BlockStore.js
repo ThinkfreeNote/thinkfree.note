@@ -15,6 +15,22 @@ export class BlockStore {
         this[block.id] = block;
     }
 
+    // from 블럭에서 to블럭으로 text 객체 이동
+    compositeBlock(fromId, toId) {
+        const fromBlock = this.getBlock(fromId);
+        const toBlock = this.getBlock(toId);
+
+        // textIdList 결합
+        toBlock.textIdList = toBlock.textIdList.concat(fromBlock.textIdList);
+        console.log(Object.keys(toBlock.contents).length);
+        // 텍스트 객체 이동
+        fromBlock.textIdList.forEach(textId => {
+            toBlock.contents[textId] = fromBlock.contents[textId];
+            delete fromBlock.contents[textId];
+        });
+        console.log(Object.keys(toBlock.contents).length);
+    }
+
     // 블럭을 생성하여 스토어에 추가
     createBlock(type, textList = [], olIdx = 0) {
         const blockId = getRandomId();

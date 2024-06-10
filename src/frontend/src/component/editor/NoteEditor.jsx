@@ -14,7 +14,7 @@ function NoteEditor() {
     const {onKeyDownHandler} = useEditHandler();
     // 하위 컴포넌트에서 에디터에 핸들러 등록하기 위한 ref
     const editorRef = useRef(null);
-
+    let index = 0;
     useEditorSelection(blockIdList);
 
     return (

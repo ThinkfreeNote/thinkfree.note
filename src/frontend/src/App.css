@@ -630,6 +630,6 @@ table, th, td {
     content: "• "
 }
 
-.ol::before {
-    content: "1. ";
+.list::before {
+    content: attr(data-li-value);
 }

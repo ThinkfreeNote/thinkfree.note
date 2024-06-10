@@ -9,9 +9,10 @@ import TextComponent from "../text/TextComponent";
 function ListBlock({type}) {
     const {blockId} = useContext(BlockContext);
     const textBlock = useBlockData(blockId);
-    
+    const liValue = type === "ul" ? "• " : "1. ";
+
     return (
-        <p className={type} data-leaf="true">
+        <p className="list" data-li-value={liValue} data-leaf="true">
             <TextWrapper>
                     {textBlock.textIdList.map(textId => (
                         <TextComponent

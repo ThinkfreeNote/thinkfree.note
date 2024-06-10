@@ -1,4 +1,4 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, useCallback, useContext, useState} from "react";
 
 export const MenuContext = createContext(null);
 
@@ -29,9 +29,10 @@ export function useMenu() {
         setIsOpen(true);
     }
 
-    const closeMenu = () => {
+    const closeMenu = useCallback(() => {
         setIsOpen(false);
-    }
+        setOffset({x:0,y:0});
+    },[])
 
     return {isOpen, openMenu, closeMenu}
 }

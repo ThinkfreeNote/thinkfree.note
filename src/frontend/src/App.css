@@ -444,8 +444,14 @@ table, th, td {
 }
 
 /* 컨텍스트 메뉴 아이템 (비활성화 아닐 때) */
-.context-menu-item:hover:not(.context-menu-disable) {
+.context-menu-item:hover:not(.context-menu-disable) ,.context-menu-item.selected:not(.context-menu-disable){
     background-color: rgba(241, 242, 244);
+}
+
+.context-menu-item svg {
+    width: 20px;
+    height: 20px;
+    fill : var(--point-color);
 }
 
 .context-menu-dropDown .context-menu {
@@ -631,5 +637,6 @@ table, th, td {
 }
 
 .list::before {
+    padding : 5px;
     content: attr(data-li-value);
 }

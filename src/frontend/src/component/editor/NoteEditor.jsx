@@ -5,6 +5,7 @@ import useBlockIdList from "./hooks/useBlockIdList";
 import Title from "./Title";
 import useEditorSelection from "./hooks/useEditorSelection";
 import CommandWindow from "./CommandWindow";
+import useSlash from "./useSlash";
 
 export const EditorContext = createContext(null);
 
@@ -14,6 +15,7 @@ function NoteEditor() {
     // 하위 컴포넌트에서 에디터에 핸들러 등록하기 위한 ref
     const editorRef = useRef(null);
     useEditorSelection(blockIdList);
+    const {slashComponent} = useSlash(editorRef);
 
     return (
         <EditorContext.Provider value={editorRef}>
@@ -24,6 +26,7 @@ function NoteEditor() {
                 {blockIdList.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}
             </div>
             <CommandWindow/>
+            {slashComponent}
         </EditorContext.Provider>
     );
 }

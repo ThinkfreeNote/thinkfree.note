@@ -4,10 +4,17 @@ import useBlockIdList from "./useBlockIdList";
 import {editorSelection} from "../../../App";
 import {BlockContext} from "../BlockContextProvider";
 import {useBlockStore} from "./useBlockHooks";
+import {BlockReRenderContext} from "../context/BlockReRenderContext";
+import {Text} from "../../../model/Text";
+import {getRandomId} from "../../../utils/id";
+import {FontStyle} from "../../../model/FontStyle";
 
 function useEditHandler() {
+    const {blockIdList} = useBlockIdList();
     const blockStore = useBlockStore();
     const note = useBlockIdList();
+
+    const {setReRenderTargetId}  = useContext(BlockReRenderContext);
 
     const backspaceHandler = (e) => {
         if (!editorSelection.isCaret()) {
@@ -20,20 +27,32 @@ function useEditHandler() {
         // data leaf 속에 텍스트가 없는 상태에서 삭제 시 블록 삭제
         if (editorSelection.isEmptyBlock()) {
             e.preventDefault();
+            // 첫 블록은 delete로 삭제되지 않게 하기 위함
+            if(editorSelection.blockId[0] === blockIdList[0]) return;
             // table의 경우 leaf가 셀 단위기 때문에 동작하지 않도록 처리
             if (blockStore.getBlockType(blockId) === "table") return;
+
+            editorSelection.setCaretOfBlockId(blockIdList[blockIdList.indexOf(blockId)-1]);
             note.deleteBlock(blockId);
+            return;
         }
+
 
         const textNode = editorSelection.getStartNode();
         if (textNode.nodeType === Node.TEXT_NODE) {
             const textBlock = blockStore[blockId];
             const textId = editorSelection.getClosestId("text").start;
+            if(!textId) return;
             const textIdx = textBlock.getTextIdx(textId);
             const text = textBlock.getTextFromId(textId);
 
             if (text.value.length === 1) {
-                textBlock.removeText(textIdx);
+                if(textBlock.textIdList.length === 1) {
+                    textBlock.updateTextValue(text.id, "");
+                }
+                else {
+                    textBlock.removeText(textIdx);
+                }
             }
         }
     }
@@ -67,9 +86,16 @@ function useEditHandler() {
                 if (!text) break;
                 removedTextList.push(text);
             }
+            if(textBlock.textIdList.length === 0) {
+                textBlock.addText(new Text(getRandomId(), "", new FontStyle()));
+            }
 
             // 새로운 Text들을 담은 TextBlock을 추가
             note.addBlockId(blockStore.createBlock("text", removedTextList).id, note.getIndexOfBlock(textBlock.id) + 1);
+            // 기존 TextBlock 리렌더링
+            setReRenderTargetId(textBlock.id);
+
+            console.log(blockStore);
         }
 
         e.key === "Backspace" && backspaceHandler(e);

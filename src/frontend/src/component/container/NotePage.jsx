@@ -7,12 +7,12 @@ import {useParams} from "react-router-dom";
 function NotePage({children}) {
     const {noteId} = useParams();
     return (
-        <NoteTitleProvider key={noteId}>
+        <NoteTitleProvider >
             <div className="note-page">
                 <Header/>
                 <div style={{display: "flex", height: "100%"}}>
                     <SideNavigation/>
-                    <main className="note-box">
+                    <main className="note-box" key={noteId}>
                         {children}
                     </main>
                 </div>

@@ -1,3 +1,5 @@
+import {getLastChildNode} from "../utils/node";
+
 export class EditorSelection {
     constructor() {
         this.selection = window.getSelection();
@@ -81,6 +83,22 @@ export class EditorSelection {
         range.setStart(container, offset);
         range.collapse(true);
 
+        this.selection.removeAllRanges();
+        this.selection.addRange(range);
+    }
+
+    setCaretOfBlockId(blockId) {
+        const $editor = document.getElementById("editor");
+        const $leaf = $editor.querySelector(`[data-block-id="${blockId}"]`).querySelector(`[data-leaf]`)
+        const range = new Range();
+        let lastNode = getLastChildNode($leaf);
+
+        if(lastNode.nodeType === Node.TEXT_NODE) {
+            range.setStart(lastNode,lastNode.nodeValue.length);
+        }
+        else {
+            range.setStart(lastNode,0);
+        }
         this.selection.removeAllRanges();
         this.selection.addRange(range);
     }

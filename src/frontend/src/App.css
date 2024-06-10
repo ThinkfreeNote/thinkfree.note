@@ -625,3 +625,11 @@ table, th, td {
 .note-save-button:hover {
     background-color: rgb(130, 113, 218);
 }
+
+.ul::before {
+    content: "• "
+}
+
+.list::before {
+    content: attr(data-li-value);
+}

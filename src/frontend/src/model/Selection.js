@@ -74,7 +74,6 @@ export class EditorSelection {
         return startElement === endElement;
     }
 
-
     setCaret(container, offset = 0) {
         if (!(container instanceof Node)) return;
 

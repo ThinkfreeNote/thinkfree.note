@@ -41,9 +41,9 @@ function ContextMenuMain({children, closeMenu}) {
 }
 
 // 기본 메뉴 아이템
-function ContextMenuItemPlain({name, handler, disable = false}) {
-    return <div className={`context-menu-item ${disable && "context-menu-disable"}`} onClick={disable ? () => {
-    } : handler} style={{color: disable ? "grey" : "inherit"}}>{name}</div>
+function ContextMenuItemPlain({name, handler, disable = false, isSelected, icon}) {
+    return <div className={`context-menu-item ${disable && "context-menu-disable"} ${isSelected && "selected"}`} onClick={disable ? () => {
+    } : handler} style={{color: disable ? "grey" : "inherit"}}>{icon}{name}</div>
 }
 
 // 토글 메뉴 아이템

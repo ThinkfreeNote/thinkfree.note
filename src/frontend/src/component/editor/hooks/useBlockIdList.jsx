@@ -1,5 +1,7 @@
 import {useContext} from 'react';
 import {BlockIdListContext} from "../context/NoteDataProvider";
+import {BlockReRenderContext} from "../context/BlockReRenderContext";
+import tableToolBox from "../table/TableToolBox";
 
 /**
  * @desc BlockIdList 관리 훅
@@ -38,8 +40,15 @@ function useBlockIdList() {
         return true;
     }
 
+    const replaceBlock = (originBlockId, newBlockId) => {
+        const index = getIndexOfBlock(originBlockId);
+        const newBlockIdList = [...blockIdList];
+        newBlockIdList.splice(index, 1, newBlockId);
+        setBlockIdList(newBlockIdList);
+    }
+
     return {
-        blockIdList, addBlockId, getIndexOfBlock, deleteBlock
+        blockIdList, addBlockId, getIndexOfBlock, deleteBlock, replaceBlock
     }
 }
 

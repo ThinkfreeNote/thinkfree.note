@@ -1,7 +1,6 @@
 import {Block} from "./Block";
 import {getRandomId} from "../utils/id";
 import {Text} from "./Text";
-import {editorSelection} from "../App";
 
 export class TextBlock extends Block {
     constructor(id, type, contents = {}, textIdList = []) {

@@ -10,6 +10,11 @@ export class EditorSelection {
         return this.selection.isCollapsed;
     }
 
+    isStartCaret() {
+        if (!this.isCaret()) return false;
+        if (this.getOffset().start === 0) return true;
+    }
+
     isEditorLeaf() {
         if (this.isNullSelection()) return false;
 
@@ -219,7 +224,6 @@ export class EditorSelection {
         if(this.isNullSelection() || !this.isEditorLeaf() || !this.isCaret()) return false;
 
         const $leaf = this.getElement().startElement.closest("[data-leaf]");
-
         if($leaf.textContent.length === 0) return true;
     }
 

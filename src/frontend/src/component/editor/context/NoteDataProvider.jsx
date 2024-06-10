@@ -33,7 +33,7 @@ function NoteDataProvider({children,noteId}) {
                 .then(data => {
                     const parsedData = JSON.parse(data.content, (key,value) => {
                         if(value.type === "table") return Object.setPrototypeOf(value, Table.prototype);
-                        if(value.type === "text") return Object.setPrototypeOf(value,TextBlock.prototype);
+                        if(value.type === "text" || value.type === "ul" || value.type === "ol") return Object.setPrototypeOf(value, TextBlock.prototype);
                         if(Object.hasOwn(value,"fontSize")) return Object.setPrototypeOf(value,FontStyle.prototype);
                         if(Object.hasOwn(value,"fontStyle")) return Object.setPrototypeOf(value,Text.prototype);
                         if(key === "blocks") return Object.setPrototypeOf(value,BlockStore.prototype);

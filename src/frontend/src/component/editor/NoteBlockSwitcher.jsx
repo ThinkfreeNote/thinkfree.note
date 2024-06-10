@@ -5,7 +5,7 @@ import TableBlock from "./table/TableBlock";
 import {useBlockStore} from "./hooks/useBlockHooks";
 import ListBlock from "./list/ListBlock";
 
-const switcher = (type, id, index) => {
+const switcher = (type, id) => {
     switch (type) {
         case "text" :
             return <TextBlock blockId={id}/>
@@ -20,12 +20,12 @@ const switcher = (type, id, index) => {
     }
 }
 
-function NoteBlockSwitcher({blockId, index}) {
+function NoteBlockSwitcher({blockId}) {
     const blockStore = useBlockStore();
     const {type, id} = blockStore[blockId];
 
-    return <BlockWrapper id={blockId} type={type} index={index}>
-        {switcher(type, id, index)}
+    return <BlockWrapper id={blockId} type={type}>
+        {switcher(type, id)}
     </BlockWrapper>
 }
 

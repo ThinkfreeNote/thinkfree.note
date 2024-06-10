@@ -9,7 +9,7 @@ import TextComponent from "../text/TextComponent";
 function ListBlock({type}) {
     const {blockId} = useContext(BlockContext);
     const textBlock = useBlockData(blockId);
-    const liValue = type === "ul" ? "• " : textBlock.olIdx;
+    const liValue = type === "ul" ? "• " : textBlock.olIdx + ". ";
 
     return (
         <p className="list" data-li-value={liValue} data-leaf="true">

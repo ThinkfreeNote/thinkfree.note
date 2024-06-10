@@ -19,7 +19,7 @@ export class BlockStore {
     createBlock(type, textList = [], olIdx = 0) {
         const blockId = getRandomId();
         if (type === "text" || type === "ul") {
-            const textBlock = new TextBlock(blockId, type, {});
+            const textBlock = new TextBlock(blockId, type, {}, []);
 
             // 인자로 들어온 텍스트가 없으면 기본값
             textList.length === 0 ?
@@ -31,14 +31,11 @@ export class BlockStore {
             return textBlock;
 
         } else if (type === "ol") {
-            olIdx = olIdx === 0 ? 0 : olIdx + 1;
-            const textBlock = new TextBlock(blockId, type, {}, olIdx);
-
+            const textBlock = new TextBlock(blockId, type, {}, [], olIdx + 1);
             // 인자로 들어온 텍스트가 없으면 기본값
             textList.length === 0 ?
                 textBlock.addText(new Text(getRandomId(), "", new FontStyle())) :
                 textList.forEach((text) => textBlock.addText(text));
-
             this.addBlock(textBlock);
 
             return textBlock;

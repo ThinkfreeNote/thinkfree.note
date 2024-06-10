@@ -26,7 +26,8 @@ function EditorToolBox() {
             if (!editorSelection.isEditorLeaf()) return setIsShow(false);
 
             // 텍스트 toolBox
-            if (blockStore.getBlockType(startNodeBlockId) === "text") {
+            const type = blockStore.getBlockType(startNodeBlockId);
+            if (type === "text" || type === "ol" || type === "ul") {
                 if (!editorSelection.isCaret()) {
                     setIsShow("text");
                     setBlockId(startNodeBlockId);
@@ -38,7 +39,7 @@ function EditorToolBox() {
                 }
             }
             // 테이블 toolBox
-            else if (blockStore.getBlockType(startNodeBlockId) === "table") {
+            else if (type === "table") {
                 if (!editorSelection.isSelectionSameElement()) {
                     setIsShow(null);
                     setBlockId(null);

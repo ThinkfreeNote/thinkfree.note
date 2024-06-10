@@ -3,9 +3,10 @@ import {getRandomId} from "../utils/id";
 import {Text} from "./Text";
 
 export class TextBlock extends Block {
-    constructor(id, type, contents = {}, textIdList = []) {
+    constructor(id, type, contents = {}, textIdList = [], olIdx = 0) {
         super(id, type, contents);
         this.textIdList = textIdList;
+        this.olIdx = olIdx;// orderList 순서용 속성
     }
 
     addText(text) {

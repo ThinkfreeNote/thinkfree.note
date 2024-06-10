@@ -4,6 +4,10 @@ import {useMenu} from "../common/MenuContext";
 import {editorSelection} from "../../App";
 import useBlockIdList from "./hooks/useBlockIdList";
 import {useBlockStore} from "./hooks/useBlockHooks";
+import {ReactComponent as TextBlockIcon} from "../../assets/icon_textBlock.svg";
+import {ReactComponent as UnorderedIcon} from "../../assets/icon_unorderedList.svg";
+import {ReactComponent as TableIcon} from "../../assets/icon_table.svg";
+import {TextBlock} from "../../model/TextBlock";
 
 /**
  * @desc 슬래시로 블록 추가하는 컴포넌트 훅
@@ -13,16 +17,21 @@ import {useBlockStore} from "./hooks/useBlockHooks";
 function useSlash(editorRef) {
     const {openMenu, isOpen, closeMenu} = useMenu();
     const slashComponent = isOpen && <SlashMenu closeMenu={closeMenu} editorRef={editorRef}/>;
+    const blockStore = useBlockStore();
 
     useEffect(() => {
         if (!editorRef.current) return;
         const $editor = editorRef.current;
 
         const slashHandler = (e) => {
-            if (e.data === "/") {
-                const {right, bottom} = editorSelection.getBoundingRect();
-                openMenu(right, bottom)
-            } else {
+            const block = blockStore.getBlock(editorSelection.blockId[0]);
+            if(block instanceof TextBlock && e.data === "/") {
+                if(editorSelection.getClosestElement("block").start.textContent.length === 1) {
+                    const {right, bottom} = editorSelection.getBoundingRect();
+                    openMenu(right, bottom)
+                }
+            }
+            else {
                 closeMenu();
             }
         }
@@ -39,7 +48,8 @@ function useSlash(editorRef) {
 }
 
 
-const SLASH_ITEM_TYPES = [["텍스트블록","text"],["목록","list"],["표","table"]];
+const SLASH_ITEM_TYPES = [["텍스트블록", "text", <TextBlockIcon/>], ["목록", "list", <UnorderedIcon/>], ["표", "table",
+    <TableIcon/>]];
 
 /**
  * @desc ContextMenu 기반의 슬래시 메뉴
@@ -50,13 +60,12 @@ const SLASH_ITEM_TYPES = [["텍스트블록","text"],["목록","list"],["표","t
  */
 function SlashMenu({closeMenu, editorRef}) {
     const [menuIndex, setMenuIndex] = useState(0);
-
-    const {addBlockId, getIndexOfBlock} = useBlockIdList();
+    const {replaceBlock} = useBlockIdList();
     const blockStore = useBlockStore();
 
     const addBlock = (type) => {
-        addBlockId(blockStore.createBlock(type).id, getIndexOfBlock(editorSelection.blockId[0]) + 1);
         closeMenu();
+        replaceBlock(editorSelection.blockId[0], blockStore.createBlock(type).id);
     }
 
     useEffect(() => {
@@ -68,9 +77,11 @@ function SlashMenu({closeMenu, editorRef}) {
             if (e.key === "Escape") {
                 closeMenu();
             }
-            if(e.key === "Enter") {
+            if (e.key === "Enter") {
                 e.preventDefault();
-                menuIndex > 0 && addBlock(SLASH_ITEM_TYPES[menuIndex - 1][1]);
+                if (menuIndex <= 0) return
+                addBlock(SLASH_ITEM_TYPES[menuIndex - 1][1]);
+                e.stopPropagation();
             }
             if (e.key.startsWith("Arrow")) {
                 e.preventDefault();
@@ -93,8 +104,10 @@ function SlashMenu({closeMenu, editorRef}) {
     return <ContextMenu closeMenu={closeMenu}>
         <ContextMenu.SubTitle text="기본 Blocks"/>
         <ContextMenu.Divider/>
-        {SLASH_ITEM_TYPES.map((item,idx)=>{
-            return <ContextMenu.Plain key={idx} isSelected={menuIndex === idx +1} handler={() => addBlock(item[1])} name={item[0]}/>
+        {SLASH_ITEM_TYPES.map((item, idx) => {
+            const [text, type, icon] = item;
+            return <ContextMenu.Plain key={idx} isSelected={menuIndex === idx + 1} handler={() => addBlock(type)}
+                                      name={text} icon={icon}/>
         })}
     </ContextMenu>
 }

@@ -448,6 +448,12 @@ table, th, td {
     background-color: rgba(241, 242, 244);
 }
 
+.context-menu-item svg {
+    width: 20px;
+    height: 20px;
+    fill : var(--point-color);
+}
+
 .context-menu-dropDown .context-menu {
     display: none;
 }

@@ -35,6 +35,10 @@ export class TextBlock extends Block {
         this.contents[textId].value = value;
     }
 
+    removeLastInput(textId) {
+        this.contents[textId].value = this.contents[textId].value.slice(0,-1);
+    }
+
     getTextFromId(textId) {
         return this.contents[textId];
     }

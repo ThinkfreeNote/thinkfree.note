@@ -31,6 +31,7 @@ export function useMenu() {
 
     const closeMenu = useCallback(() => {
         setIsOpen(false);
+        setOffset({x:0,y:0});
     },[])
 
     return {isOpen, openMenu, closeMenu}

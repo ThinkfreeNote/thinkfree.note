@@ -5,10 +5,12 @@ import {removeBOM} from "../../../../utils/common";
 import {useTableData} from "./useTableData";
 import {BlockContext} from "../../BlockContextProvider";
 import {editorSelection} from "../../../../App";
+import {MenuContext} from "../../../common/MenuContext";
 
 export function useTableHandlers() {
     const tableData = useTableData();
     const {blockId} = useContext(BlockContext);
+    const {offset} = useContext(MenuContext);
 
     const cellHandler = useCallback((e) => {
         const $cell = editorSelection.getElement().startElement;
@@ -26,6 +28,7 @@ export function useTableHandlers() {
 
     const arrowKey = (e) => {
         if(e.key.startsWith("Arrow")){
+            if(offset.x !== 0 && offset.y !== 0) return;
             if (e.key === "ArrowUp" || e.key === "ArrowDown") {
                 if (editorSelection.isNullSelection()) return;
                 const $cell = editorSelection.getElement().startElement;

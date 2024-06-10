@@ -8,11 +8,13 @@ import {BlockReRenderContext} from "../context/BlockReRenderContext";
 import {Text} from "../../../model/Text";
 import {getRandomId} from "../../../utils/id";
 import {FontStyle} from "../../../model/FontStyle";
+import {MenuContext} from "../../common/MenuContext";
 
 function useEditHandler() {
     const {blockIdList} = useBlockIdList();
     const blockStore = useBlockStore();
     const note = useBlockIdList();
+    const {offset} = useContext(MenuContext);
 
     const {setReRenderTargetId}  = useContext(BlockReRenderContext);
 
@@ -60,6 +62,10 @@ function useEditHandler() {
     const onKeyDownHandler = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
+
+            // 메뉴가 열려있으면 동작 x
+            if(offset.x !== 0 && offset.y !== 0) return;
+
             // 캐럿이 아니거나, 테이블인 경우 return
             if (!editorSelection.isCaret() || blockStore.getBlockType(editorSelection.blockId[0]) === "table") return;
             if(editorSelection.getBlockType() === "title") return;
@@ -94,8 +100,6 @@ function useEditHandler() {
             note.addBlockId(blockStore.createBlock("text", removedTextList).id, note.getIndexOfBlock(textBlock.id) + 1);
             // 기존 TextBlock 리렌더링
             setReRenderTargetId(textBlock.id);
-
-            console.log(blockStore);
         }
 
         e.key === "Backspace" && backspaceHandler(e);

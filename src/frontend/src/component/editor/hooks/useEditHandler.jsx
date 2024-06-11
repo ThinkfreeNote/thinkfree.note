@@ -42,7 +42,11 @@ function useEditHandler() {
         }
 
         // 텍스트 블럭 제일 앞에 커서가 잡힌 경우 블록 삭제하고 이전 블록에 텍스트 이동
-        if (editorSelection.isStartCaret()) {
+        if (editorSelection.isStartCaret() && editorSelection.isLeaf()) {
+            if(editorSelection.blockId[0] === blockIdList[0]) {
+                e.preventDefault();
+                return;
+            }
             e.preventDefault();
             blockStore.compositeBlock(blockId, prevBlockId);
             editorSelection.setCaretOfBlockId(prevBlockId);

@@ -321,6 +321,7 @@ table, th, td {
     position: absolute;
     top: -2px;
     left: -2px;
+    z-index: 4;
     border: 2px solid var(--point-color);
     pointer-events: none;
 }

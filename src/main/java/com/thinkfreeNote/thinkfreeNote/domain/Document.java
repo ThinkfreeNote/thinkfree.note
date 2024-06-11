@@ -19,7 +19,7 @@ public class Document {
     @GeneratedValue
     private Long id;
     private String title;
-    @Column(length = 10000)
+    @Column(length = 100000)
     private String content;
 
     @OneToMany(mappedBy = "document", cascade = CascadeType.REMOVE)

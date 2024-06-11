@@ -6,6 +6,7 @@ import Title from "./Title";
 import useEditorSelection from "./hooks/useEditorSelection";
 import CommandWindow from "./CommandWindow";
 import useSlash from "./useSlash";
+import EditorToolBox from "./EditorToolBox";
 
 export const EditorContext = createContext(null);
 
@@ -16,7 +17,6 @@ function NoteEditor() {
     const editorRef = useRef(null);
     useEditorSelection(blockIdList);
     const {slashComponent} = useSlash(editorRef);
-
     return (
         <EditorContext.Provider value={editorRef}>
             <div id="editor" className="editor" spellCheck={false} ref={editorRef} onKeyDown={onKeyDownHandler}
@@ -27,6 +27,7 @@ function NoteEditor() {
             </div>
             <CommandWindow/>
             {slashComponent}
+            <EditorToolBox/>
         </EditorContext.Provider>
     );
 }

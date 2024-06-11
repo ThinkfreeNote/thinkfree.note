@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect, useRef, useState} from 'react';
+import React, {createContext, useEffect, useRef, useState} from 'react';
 import {FontStyle} from "../../../model/FontStyle";
 import {TextBlock} from "../../../model/TextBlock";
 import {BlockStore} from "../../../model/BlockStore";
@@ -67,7 +67,7 @@ function fetchDocument(url, option) {
 
 /**
  * @desc NoteDataContext 조작하는 함수
- * @returns {{updateNote: updateNote, saveNote: saveNote}}
+ * @returns {{updateNote: function, saveNote: function}}
  */
 export function useNoteDataFetch() {
     const navigate = useNavigate();

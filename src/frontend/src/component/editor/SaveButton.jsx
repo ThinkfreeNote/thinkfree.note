@@ -18,10 +18,13 @@ function SaveButton() {
     }
     Object.assign(postData.blocks, blockStore);
 
+    const clickHandler = () => {
+        // noteId가 있으면 업데이트, 없으면 새로 저장
+        noteId ? updateNote(noteId,title,postData) : saveNote(title,postData);
+    }
+
     return (
-        <button className="note-save-button" onClick={()=>{
-            noteId ? updateNote(noteId,title,postData) : saveNote(title,postData);
-        }}>
+        <button className="note-save-button" onClick={clickHandler}>
             {!noteId && "새"} 노트 저장
         </button>
     );

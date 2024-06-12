@@ -2,7 +2,7 @@ import {useContext, useEffect} from "react";
 import {EditorContext} from "../NoteEditor";
 import useBlockIdList from "./useBlockIdList";
 import {editorSelection} from "../../../App";
-import {BlockContext} from "../BlockContextProvider";
+import {useBlockId} from "../BlockManagerProvider";
 import {useBlockStore} from "./useBlockHooks";
 import {BlockReRenderContext} from "../context/BlockReRenderContext";
 import {Text} from "../../../model/Text";
@@ -128,7 +128,7 @@ function useEditHandler() {
  */
 export function useEditorEventListener(eventType, handler) {
     const editorRef = useContext(EditorContext);
-    const {blockId} = useContext(BlockContext);
+    const {blockId} = useBlockId();
 
     useEffect(() => {
         const $editor = editorRef.current;

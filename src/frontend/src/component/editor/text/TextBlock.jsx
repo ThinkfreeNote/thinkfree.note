@@ -1,14 +1,13 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import TextComponent from "./TextComponent";
 import {useBlockData} from "../hooks/useBlockHooks";
-import {BlockContext} from "../BlockContextProvider";
+import {useBlockId} from "../BlockManagerProvider";
 import TextWrapper from "./TextWrapper";
 import {generate4wordId} from "../../../utils/id";
 import useTextBlockObserver from "./hooks/useTextBlockObserver";
 
 function TextBlock() {
-    const blockContext = useContext(BlockContext);
-    const blockId = blockContext.blockId;
+    const {blockId} = useBlockId();
     const textBlock = useBlockData(blockId);
     const {ref} = useTextBlockObserver(blockId);
 

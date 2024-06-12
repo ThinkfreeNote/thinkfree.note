@@ -1,6 +1,5 @@
-import {useContext} from 'react';
 import {useTableData} from "./useTableData";
-import {BlockContext} from "../../BlockContextProvider";
+import {useBlockReRender} from "../../BlockManagerProvider";
 
 /**
  * @desc 테이블 조작 함수 반환 커스텀 훅
@@ -8,7 +7,7 @@ import {BlockContext} from "../../BlockContextProvider";
  */
 function useTable() {
     const tableData = useTableData();
-    const {reRender} = useContext(BlockContext);
+    const {reRender} = useBlockReRender();
 
     const addColumn = (index) => {
         tableData.addColumn(index);

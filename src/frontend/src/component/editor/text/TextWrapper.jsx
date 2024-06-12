@@ -1,9 +1,8 @@
-import React, {useContext, useState} from 'react';
-import TextBox from "./TextBox";
+import React from 'react';
 import {editorSelection} from "../../../App";
 import {useEditorEventListener} from "../hooks/useEditHandler";
 import {useBlockData} from "../hooks/useBlockHooks";
-import {BlockContext} from "../BlockContextProvider";
+import {useBlockId} from "../BlockManagerProvider";
 
 /**
  * @desc TextComponent 에 불필요한 리렌더링이 발생하지 않기 위해 로직을 분리하는 컴포넌트
@@ -11,7 +10,7 @@ import {BlockContext} from "../BlockContextProvider";
  * @returns {JSX.Element}
  */
 function TextWrapper({children}) {
-    const {blockId} = useContext(BlockContext);
+    const {blockId} = useBlockId();
     const textBlock = useBlockData(blockId);
 
     const updateTextValue = () => {

@@ -1,14 +1,14 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {ReactComponent as HamburgerIcon} from "../../../assets/icon_hamburger.svg";
 import {ReactComponent as PlusIcon} from "../../../assets/icon_plus.svg";
 import {useMenu} from "../../common/MenuContext";
 import BlockContextMenu from "./BlockContextMenu";
 import {createPortal} from "react-dom";
-import {BlockContext} from "../BlockContextProvider";
+import {useBlockId} from "../BlockManagerProvider";
 import BlockSelectMenu from "../BlockSelectMenu";
 
 function BlockMenuBox() {
-    const {blockId} = useContext(BlockContext);
+    const {blockId} = useBlockId();
     const {openMenu, closeMenu,isOpen} = useMenu();
     const AddBlockMenu = useMenu();
 

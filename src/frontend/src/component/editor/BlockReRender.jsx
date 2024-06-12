@@ -1,6 +1,6 @@
 import {useContext, useEffect} from 'react';
 import {BlockReRenderContext} from "./context/BlockReRenderContext";
-import {BlockContext} from "./BlockContextProvider";
+import {useBlockId, useBlockReRender} from "./BlockManagerProvider";
 
 
 /**
@@ -9,7 +9,9 @@ import {BlockContext} from "./BlockContextProvider";
  * @constructor
  */
 function BlockReRender() {
-    const {reRender,blockId} = useContext(BlockContext);
+    const {blockId} = useBlockId();
+    const {reRender} = useBlockReRender();
+
     // 블록 밖에서 블록 리렌더링 유발 목적 (
     const {reRenderTargetId, setReRenderTargetId} = useContext(BlockReRenderContext);
     useEffect(() => {

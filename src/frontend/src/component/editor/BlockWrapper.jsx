@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {editorSelection} from "../../App";
-import BlockContextProvider from "./BlockContextProvider";
+import BlockManagerProvider from "./BlockManagerProvider";
 import BlockMenuBox from "./block/BlockMenuBox";
 import BlockReRender from "./BlockReRender";
 
@@ -24,13 +24,13 @@ function BlockWrapper({id, children,type}) {
     }, []);
 
     return (
-        <BlockContextProvider id={id}>
+        <BlockManagerProvider id={id}>
             <div className="block-wrapper" ref={wrapper} data-block-id={id} data-block-type={type}>
                 <BlockMenuBox/>
                 {children}
                 <BlockReRender/>
             </div>
-        </BlockContextProvider>
+        </BlockManagerProvider>
     );
 }
 

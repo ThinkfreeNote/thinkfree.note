@@ -1,14 +1,14 @@
-import React, {useContext} from 'react';
+import React from 'react';
 
 import {useBlockData} from "../hooks/useBlockHooks";
-import {BlockContext} from "../BlockContextProvider";
+import {useBlockId} from "../BlockManagerProvider";
 import TextWrapper from "../text/TextWrapper";
 import TextComponent from "../text/TextComponent";
 import useTextBlockObserver from "../text/hooks/useTextBlockObserver";
 
 
 function ListBlock({type}) {
-    const {blockId} = useContext(BlockContext);
+    const {blockId} = useBlockId();
     const textBlock = useBlockData(blockId);
     const liValue = type === "ul" ? "• " : textBlock.olIdx + ". ";
     const {ref} = useTextBlockObserver(blockId);

@@ -19,6 +19,7 @@ export const BlockIdListContext = createContext(null);
 function NoteDataProvider({children, noteId}) {
     const [blockIdList, setBlockIdList] = useState([]);
     const blockStore = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // noteId 없으면 새 노트
@@ -33,7 +34,7 @@ function NoteDataProvider({children, noteId}) {
                 const {blocks, blockIdList} = jsonToBlockStore(data.content);
                 blockStore.current = blocks;
                 setBlockIdList([...blockIdList]);
-            })
+            }).catch(e => navigate("/"));
         }
     }, []);
 
@@ -73,8 +74,8 @@ export function useNoteDataFetch() {
     const navigate = useNavigate();
 
     const saveNote = (title, note) => {
-        fetchDocument("",{
-            method : "POST",
+        fetchDocument("", {
+            method: "POST",
             body: JSON.stringify({
                 title: title.length === 0 ? "Untitled" : title,
                 content: JSON.stringify(note)
@@ -82,9 +83,9 @@ export function useNoteDataFetch() {
         }).then(data => navigate(`/${data}`));
     }
 
-    const updateNote = (id,title,note) => {
-        fetchDocument("",{
-            method : "PATCH",
+    const updateNote = (id, title, note) => {
+        fetchDocument("", {
+            method: "PATCH",
             body: JSON.stringify({
                 id: id,
                 title: title.length === 0 ? "Untitled" : title,
@@ -93,7 +94,7 @@ export function useNoteDataFetch() {
         }).then(data => console.log(data))
     }
 
-    return {saveNote,updateNote}
+    return {saveNote, updateNote}
 }
 
 

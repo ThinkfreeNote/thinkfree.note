@@ -1,55 +1,63 @@
-import {useEditorEventListener} from "../../hooks/useEditHandler";
-import {useCallback, useContext} from "react";
+import {useContext} from "react";
 import {getCellIds, isCell} from "../../../../utils/table";
-import {removeBOM} from "../../../../utils/common";
-import {useTableData} from "./useTableData";
-import {BlockContext} from "../../BlockContextProvider";
 import {editorSelection} from "../../../../App";
 import {MenuContext} from "../../../common/MenuContext";
+import {useBlockStore} from "../../hooks/useBlockHooks";
 
 export function useTableHandlers() {
-    const tableData = useTableData();
-    const {blockId} = useContext(BlockContext);
+    const blockStore = useBlockStore();
     const {offset} = useContext(MenuContext);
 
-    const cellHandler = useCallback((e) => {
+    const cellInputHandler = (e) => {
+        // 현재 커서가 셀에 있는지 확인
         const $cell = editorSelection.getElement().startElement;
-        if (!isCell($cell) || editorSelection.getClosestId("block").start !== blockId ) return;
+        if (!isCell($cell)) return;
 
-        const textNode = [...$cell.childNodes].find((item)=> item.nodeType === Node.TEXT_NODE);
-        if(!textNode) return;
+        // 커서 위치에 맞는 테이블 모델 획득
+        const tableData = blockStore.getBlock(editorSelection.blockId[0]);
+        
+        // 변경된 값 획득
+        const value = editorSelection.getStartNode().textContent;
+        if (value === undefined || value === null) return;
 
-        let value = removeBOM(textNode.textContent);
-
+        // 테이블 모델 업데이트
         const {rowId, cellId} = getCellIds($cell);
         tableData.updateCell(rowId, cellId, value);
-    }, [tableData,blockId])
+    }
 
 
     const arrowKey = (e) => {
-        if(e.key.startsWith("Arrow")){
-            if(offset.x !== 0 && offset.y !== 0) return;
-            if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-                if (editorSelection.isNullSelection()) return;
-                const $cell = editorSelection.getElement().startElement;
-                if (isCell($cell) && editorSelection.getClosestId("block").start === blockId) {
-                    e.preventDefault();
-                    const {rowId, cellId} = getCellIds($cell);
+        if (offset.x !== 0 && offset.y !== 0) return;
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+            if (editorSelection.isNullSelection()) return;
+            const $cell = editorSelection.getElement().startElement;
+            if (isCell($cell)) {
+                const blockId = editorSelection.blockId[0];
+                const tableData = blockStore.getBlock(blockId);
+                e.preventDefault();
+                const {rowId, cellId} = getCellIds($cell);
 
-                    const prevRowId = e.key === "ArrowUp" ? tableData.getPrevRowId(rowId) : tableData.getNextRowId(rowId);
-                    if (!prevRowId) return;
-                    const $block = document.querySelector(`[data-block-id="${blockId}"]`);
+                const prevRowId = e.key === "ArrowUp" ? tableData.getPrevRowId(rowId) : tableData.getNextRowId(rowId);
+                if (!prevRowId) return;
+                const $block = document.querySelector(`[data-block-id="${blockId}"]`);
 
-                    const targetCell = $block.querySelector(`[data-row-id="${prevRowId}"]`).querySelector(`[data-cell-id="${cellId}"]`);
-                    editorSelection.setCaret(targetCell, 0);
-                }
+                const targetCell = $block.querySelector(`[data-row-id="${prevRowId}"]`).querySelector(`[data-cell-id="${cellId}"]`);
+                editorSelection.setCaret(targetCell, 0);
             }
         }
+        
     }
 
-    // 셀 위 아래 방향키 이동 처리
-    useEditorEventListener("keydown", arrowKey);
 
-    useEditorEventListener("input", cellHandler);
+    const keyDownHandler = (e) => {
+        // 화살표 키 입력 이벤트 처리
+        e.key.startsWith("Arrow") && arrowKey(e);
+    }
 
+
+    const inputHandler = (e) => {
+        cellInputHandler(e);
+    }
+
+    return {keyDownHandler, inputHandler}
 }

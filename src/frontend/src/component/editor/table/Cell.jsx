@@ -14,7 +14,7 @@ function Cell({cellId, rowId, colIdx, rowIdx}) {
         return {
             color,
             backgroundColor : bgColor,
-            fontWeight : bold,
+            fontWeight : bold && 600,
         }
     },[color,bgColor,bold])
 

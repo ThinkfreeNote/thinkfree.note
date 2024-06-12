@@ -8,7 +8,7 @@ export function useTableHandlers() {
     const blockStore = useBlockStore();
     const {offset} = useContext(MenuContext);
 
-    const cellInputHandler = (e) => {
+    const cellHandler = (e) => {
         // 현재 커서가 셀에 있는지 확인
         const $cell = editorSelection.getElement().startElement;
         if (!isCell($cell)) return;
@@ -56,7 +56,7 @@ export function useTableHandlers() {
 
 
     const inputHandler = (e) => {
-        cellInputHandler(e);
+        cellHandler(e);
     }
 
     return {keyDownHandler, inputHandler}

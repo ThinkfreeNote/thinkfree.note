@@ -8,7 +8,7 @@ export const BlockReRenderContext = createContext(null);
  * @returns {JSX.Element}
  * @constructor
  */
-function BlockReRenderContextProvider({children}) {
+function BlockReRenderProvider({children}) {
     const [reRenderTargetId,setReRenderTargetId] = useState(null);
 
     return <BlockReRenderContext.Provider value={{reRenderTargetId,setReRenderTargetId}}>
@@ -17,4 +17,5 @@ function BlockReRenderContextProvider({children}) {
 
 }
 
-export default BlockReRenderContextProvider;
+
+export default BlockReRenderProvider;

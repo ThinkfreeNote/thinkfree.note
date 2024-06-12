@@ -98,6 +98,11 @@ export function useNoteDataFetch() {
 }
 
 
+/**
+ * @desc 저장된 json 문서 파싱하여 모델객체로 연결
+ * @param jsonText
+ * @returns {any}
+ */
 function jsonToBlockStore(jsonText) {
     return JSON.parse(jsonText, (key, value) => {
         if (value.type === "table") return Object.setPrototypeOf(value, Table.prototype);

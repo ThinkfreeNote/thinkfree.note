@@ -1,11 +1,12 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {ContextMenu} from "../../common/ContextMenu";
 import useBlockIdList from "../hooks/useBlockIdList";
-import {BlockContext} from "../BlockContextProvider";
+import {useBlockId, useBlockReRender} from "../BlockManagerProvider";
 import {useBlockStore} from "../hooks/useBlockHooks";
 
 function BlockContextMenu({closeMenu}) {
-    const {blockId,reRender} = useContext(BlockContext);
+    const {blockId} = useBlockId();
+    const {reRender} = useBlockReRender();
     const {deleteBlock,addBlockId ,getIndexOfBlock} = useBlockIdList();
     const blockStore = useBlockStore();
 

@@ -1,10 +1,8 @@
 import React from 'react';
 import TableMousePositionProvider from "./contexts/TableSelectorProvider";
-import {useTableHandlers} from "./hooks/useTableHandlers";
 import Table from "./Table";
 
 function TableBlock() {
-    useTableHandlers();
 
     return (
         <TableMousePositionProvider>

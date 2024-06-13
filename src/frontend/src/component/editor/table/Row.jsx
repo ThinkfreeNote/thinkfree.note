@@ -8,6 +8,7 @@ function Row({rowId, rowIdx}) {
 
     return (
         <RowWrapper rowIdx={rowIdx} rowId={rowId}>
+            {/* format 배열을 반복하며 Cell 추가 */}
             {tableData.getFormat().map((cellId, idx) => {
                 return (<Cell key={cellId} rowId={rowId} cellId={cellId} colIdx={idx} rowIdx={rowIdx}/>)
             })}

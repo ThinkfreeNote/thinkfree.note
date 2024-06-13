@@ -1,6 +1,10 @@
 import {useEffect} from "react";
 import {editorSelection} from "../../../App";
 
+/**
+ * @desc 에디터가 관리하는 셀렉션
+ * @param blockIdList
+ */
 function useEditorSelection(blockIdList) {
 
     useEffect(() => {

@@ -4,11 +4,18 @@ import {editorSelection} from "../../../../App";
 import {MenuContext} from "../../../common/MenuContext";
 import {useBlockStore} from "../../hooks/useBlockHooks";
 
-export function useTableHandlers() {
+/**
+ * @desc 테이블 모델 메서드를 호출하는 함수들을 모아두는 커스텀 훅
+ * @returns {{updateCellValue: function, tableArrowHandler: function}}
+ */
+export function useTableHandler() {
     const blockStore = useBlockStore();
     const {offset} = useContext(MenuContext);
 
-    const cellHandler = (e) => {
+    /**
+     *  @desc 입력 값을 가져와서 테이블 모델을 업데이트 하는 함수
+     */
+    const updateCellValue = () => {
         // 현재 커서가 셀에 있는지 확인
         const $cell = editorSelection.getElement().startElement;
         if (!isCell($cell)) return;
@@ -25,8 +32,11 @@ export function useTableHandlers() {
         tableData.updateCell(rowId, cellId, value);
     }
 
-
-    const arrowKey = (e) => {
+    /**
+     * @dsec 화살표 키 입력을 받아서 테이블에서 현재 입력중인 셀을 변경하는 함수
+     * @param {KeyboardEvent} e
+     */
+    const tableArrowHandler = (e) => {
         if (offset.x !== 0 && offset.y !== 0) return;
         if (e.key === "ArrowUp" || e.key === "ArrowDown") {
             if (editorSelection.isNullSelection()) return;
@@ -48,16 +58,5 @@ export function useTableHandlers() {
         
     }
 
-
-    const keyDownHandler = (e) => {
-        // 화살표 키 입력 이벤트 처리
-        e.key.startsWith("Arrow") && arrowKey(e);
-    }
-
-
-    const inputHandler = (e) => {
-        cellHandler(e);
-    }
-
-    return {keyDownHandler, inputHandler}
+    return {tableArrowHandler, updateCellValue}
 }

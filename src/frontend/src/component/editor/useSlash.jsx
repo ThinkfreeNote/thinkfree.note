@@ -16,7 +16,6 @@ import {TextBlock} from "../../model/TextBlock";
  */
 function useSlash(editorRef) {
     const {openMenu, isOpen, closeMenu} = useMenu();
-    const slashComponent = isOpen && <SlashMenu closeMenu={closeMenu} editorRef={editorRef}/>;
     const blockStore = useBlockStore();
 
     useEffect(() => {
@@ -44,7 +43,7 @@ function useSlash(editorRef) {
 
     }, []);
 
-    return {slashComponent}
+    return {slashComponent : isOpen && <SlashMenu closeMenu={closeMenu} editorRef={editorRef}/>}
 }
 
 

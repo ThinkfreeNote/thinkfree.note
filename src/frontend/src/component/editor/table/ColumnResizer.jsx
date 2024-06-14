@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {ColgroupContext, ColgroupSetterContext} from "./contexts/ColgroupProvider";
 import {useTableData} from "./hooks/useTableData";
-import {BlockContext} from "../BlockContextProvider";
+import {useBlockId, useBlockReRender} from "../BlockManagerProvider";
 
 
 /**
@@ -12,7 +12,9 @@ function ColumnResizer() {
     const tableData = useTableData();
     const {currentCol, startPageX} = useContext(ColgroupContext);
     const {setCurrentCol} = useContext(ColgroupSetterContext);
-    const {blockId, reRender} = useContext(BlockContext);
+    const {blockId} = useBlockId();
+    const {reRender} = useBlockReRender();
+
     const [moveX, setMoveX] = useState(0);
 
     // 테이블의 절대 위치값

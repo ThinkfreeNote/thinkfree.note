@@ -170,14 +170,12 @@ export class EditorSelection {
         const beforeText = textContent.slice(0, offset.start);
         const selectedText = textContent.slice(offset.start, offset.end);
         const afterText = textContent.slice(offset.end, textContent.length);
-
         return {
             before: beforeText,
             selected: selectedText,
             after: afterText
         };
     }
-
     /**
      * Node의 분리된 TextContent를 가져옴
      */
@@ -187,7 +185,6 @@ export class EditorSelection {
         const offset = this.getOffset();
         const beforeText = textContent.slice(0, offset.start);
         const afterText = textContent.slice(offset.start, textContent.length);
-
         return {
             before: beforeText,
             after: afterText

@@ -4,6 +4,14 @@ export class EditorSelection {
     constructor() {
         this.selection = window.getSelection();
         this.blockId = [];
+        this.startBlockId = null;
+        this.endBlockId = null;
+        this.startBlockType = null;
+        this.endBlockType = null;
+        this.startBlockOffset = null;
+        this.endBlockOffset = null;
+        this.startOffset = null;
+        this.endOffset = null;
     }
 
     isCaret() {
@@ -98,11 +106,10 @@ export class EditorSelection {
         const range = new Range();
         let lastNode = getLastChildNode($leaf);
 
-        if(lastNode.nodeType === Node.TEXT_NODE) {
-            range.setStart(lastNode,lastNode.nodeValue.length);
-        }
-        else {
-            range.setStart(lastNode,0);
+        if (lastNode.nodeType === Node.TEXT_NODE) {
+            range.setStart(lastNode, lastNode.nodeValue.length);
+        } else {
+            range.setStart(lastNode, 0);
         }
         this.selection.removeAllRanges();
         this.selection.addRange(range);
@@ -176,6 +183,7 @@ export class EditorSelection {
             after: afterText
         };
     }
+
     /**
      * Node의 분리된 TextContent를 가져옴
      */
@@ -191,44 +199,28 @@ export class EditorSelection {
         };
     }
 
-    /**
-     * @desc 실시간으로 블록 아이디 추적
-     * @param blockIdList
-     */
-    updateEditorSelection(blockIdList) {
-        if (this.isNullSelection()) {
-            this.blockId = [];
-            return;
-        }
-        const {start, end} = this.getClosestId("block");
-
-        const startIndex = blockIdList.indexOf(start);
-        const endIndex = blockIdList.indexOf(end);
-
-        // 현재 셀렉션된 블록 리스트
-        this.blockId = blockIdList.slice(startIndex, endIndex + 1);
-    }
 
     /**
      * @return {boolean} 셀렉션이 같은 블록 내에 있는지
      */
     isCollapseBlock() {
-        return this.blockId.length === 1
+        return this.startBlockId === this.endBlockId;
     }
 
     isEmptyBlock() {
         // leaf에서 캐럿인지 확인
-        if(this.isNullSelection() || !this.isEditorLeaf() || !this.isCaret()) return false;
+        if (this.isNullSelection() || !this.isEditorLeaf() || !this.isCaret()) return false;
 
         const $leaf = this.getElement().startElement.closest("[data-leaf]");
-        if($leaf.textContent.length === 0) return true;
+        if ($leaf.textContent.length === 0) return true;
     }
 
     isLeaf() {
-        if(this.isNullSelection()) return false;
-        const {startElement,endElement} = this.getElement();
+        if (this.isNullSelection()) return false;
+        const {startElement, endElement} = this.getElement();
         return !(!startElement.closest("[data-leaf]") || !endElement.closest("[data-leaf]"));
     }
+
     removeSelection() {
         this.selection.removeAllRanges();
     }
@@ -237,13 +229,111 @@ export class EditorSelection {
         return this.blockId.length > 0
     }
 
-    getBlockType() {
-        if(this.isNullSelection()) return null;
-        const element = this.getElement().startElement;
-        return element.closest("[data-block-type]")?.dataset.blockType
+    /**
+     * @desc 전달받은 block element의 타입 반환
+     * @param $block
+     * @returns {string | undefined}
+     */
+    getBlockType($block) {
+        return $block.dataset?.blockType;
     }
 
     getBoundingRect() {
         return this.selection.getRangeAt(0).getBoundingClientRect();
+    }
+
+
+    clearSelection() {
+        this.blockId = [];
+        this.startBlockId = null;
+        this.endBlockId = null;
+        this.startBlockType = null;
+        this.endBlockType = null;
+    }
+
+    /**
+     * @desc 에디터 셀렉션 관리
+     * @param blockIdList
+     */
+    updateEditorSelection(blockIdList) {
+        if (this.isNullSelection()) {
+            this.clearSelection();
+            return;
+        }
+        const {start, end} = this.getClosestElement("block");
+        const {startElement, endElement} = this.getElement();
+
+        if (!start || !end) {
+            this.clearSelection();
+            return;
+        }
+
+        this.updateBlockId(blockIdList);
+        this.updateBlockType(start, end);
+        this.updateBlockOffset(startElement,endElement);
+        this.updateOffset();
+    }
+
+    /**
+     * @desc 셀렉션 시작 블록아이디 끝 블록 아이디 관리
+     */
+    updateBlockId(blockIdList) {
+        const {start, end} = this.getClosestId("block");
+
+        const startIndex = blockIdList.indexOf(start);
+        const endIndex = blockIdList.indexOf(end);
+
+        // 현재 셀렉션된 블록 리스트
+        this.blockId = blockIdList.slice(startIndex, endIndex + 1);
+        this.startBlockId = start
+        this.endBlockId = end;
+    }
+
+
+    /**
+     * @desc DOM 커서 기반으로 blockType 업데이트
+     * @param $startBlock
+     * @param $endBlock
+     */
+    updateBlockType($startBlock, $endBlock) {
+        this.startBlockType = this.getBlockType($startBlock);
+        this.endBlockType = this.getBlockType($endBlock);
+    }
+
+
+    /**
+     * @desc blockOffset 업데이트, text는 textId, table은 [rowId,columnId], title은 null;
+     */
+    updateBlockOffset() {
+        const {startElement, endElement} = this.getElement();
+
+        const getBlockOffset = ($element, type) => {
+            if (type === "table") {
+                const columnId = $element.closest("[data-cell-id]")?.dataset.cellId;
+                const rowId = $element.closest("[data-row-id]")?.dataset.rowId;
+
+                return [rowId,columnId];
+            } else if (type === "title") {
+
+            }
+            // Text
+            else {
+                return $element.closest("[data-text-id]")?.dataset.textId;
+            }
+
+            return null;
+        }
+
+        this.startBlockOffset = getBlockOffset(startElement, this.startBlockType);
+        this.endBlockOffset = getBlockOffset(endElement, this.endBlockType);
+    }
+
+    updateOffset() {
+        const {anchorNode, focusNode, anchorOffset, focusOffset}  = this.selection;
+
+        const comparePosition = anchorNode.compareDocumentPosition(focusNode) & Node.DOCUMENT_POSITION_FOLLOWING;
+
+        this.startOffset = comparePosition ? anchorOffset : focusOffset;
+        this.endOffset = comparePosition ? focusOffset : anchorOffset;
     }
 }

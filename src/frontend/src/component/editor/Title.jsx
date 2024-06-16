@@ -8,7 +8,7 @@ function Title() {
     const blockStore = useBlockStore();
     const titleRef = useRef(null);
     const editorRef = useContext(EditorContext);
-    const {title, setTitle} = useContext(NoteTitleContext);
+    const {title, setTitle, titleId} = useContext(NoteTitleContext);
     const [text, setText] = useState(null);
 
     useEffect(() => {
@@ -18,7 +18,7 @@ function Title() {
         const $editor = editorRef.current;
         if (!$editor) return;
         const preventEnter = (e) => {
-            if (editorSelection.getBlockType() === "title")
+            if (editorSelection.isCollapseBlock() && editorSelection.startBlockType === "title")
                 e.key === "Enter" && e.preventDefault();
         }
 
@@ -41,7 +41,7 @@ function Title() {
 
     if (!blockStore) return null;
     return (
-        <h1 ref={titleRef} data-block-type="title" className="title">
+        <h1 data-block-id={titleId} data-leaf={true} ref={titleRef} data-block-type="title" className="title">
             {text}
         </h1>
     );

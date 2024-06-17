@@ -510,10 +510,10 @@ table, th, td {
 
 }
 
-[data-leaf="true"]:empty::after {
-    user-select: none;
-    content: "\00AD";
-}
+/*[data-leaf="true"]:empty::after {*/
+/*    user-select: none;*/
+/*    content: "\00AD";*/
+/*}*/
 
 /* tool-box */
 

@@ -10,7 +10,7 @@ function useTextHandler() {
         if (textNode.nodeType !== Node.TEXT_NODE) return;
         const element = editorSelection.getElement().startElement;
         const textId = editorSelection.getClosestId("text").start;
-        const blockId = editorSelection.blockId[0];
+        const blockId = editorSelection.startBlockId;
 
         const textBlock = blockStore.getBlock(blockId);
         // 모델 가져오고 저장하기

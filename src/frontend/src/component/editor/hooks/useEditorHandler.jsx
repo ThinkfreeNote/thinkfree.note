@@ -64,13 +64,14 @@ function useEditorHandler() {
 
     const onInputHandler = (e) => {
         // Input 입력이 발생한 block Id와 타입
-        const blockId = editorSelection.blockId[0];
+        const blockId = editorSelection.startBlockId;
         if (!blockId) return;
         const blockType = blockStore.getBlockType(blockId);
-
         if (blockType === "table") {
             updateCellValue();
         } else {
+            console.log(blockType);
+
             updateTextValue();
         }
     }

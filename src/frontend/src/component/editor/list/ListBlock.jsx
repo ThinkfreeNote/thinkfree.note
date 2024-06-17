@@ -1,32 +1,29 @@
 import React, {useRef} from 'react';
 
-import {useBlockData} from "../hooks/useBlockHooks";
+import {useBlockData, useBlockStore} from "../hooks/useBlockHooks";
 import {useBlockId} from "../BlockManagerProvider";
-import TextComponent from "../text/TextComponent";
 import useTextBlockObserver from "../text/hooks/useTextBlockObserver";
 import {generate4wordId} from "../../../utils/id";
+import TextBlock from "../text/TextBlock";
 
 
-function ListBlock({type}) {
+
+function ListBlock() {
+    const blockStore = useBlockStore();
     const {blockId} = useBlockId();
-    const textBlock = useBlockData(blockId);
-    const liValue = type === "ul" ? "• " : textBlock.olIdx + ". ";
+    const listBlock = useBlockData(blockId);
     const ref = useRef(null);
     useTextBlockObserver(ref);
 
     return (
-        <>
-            <p ref={ref} key={generate4wordId()} className="list" data-li-value={liValue} data-leaf="true">
-                {textBlock.textIdList.map(textId => (
-                    <TextComponent
-                        key={textId}
-                        textId={textId}
-                        text={textBlock.contents[textId]}
-                    />
-                ))}
-            </p>
-        </>
-
+        <div ref={ref} key={generate4wordId()} className="list">
+            {listBlock.textBlockIdList.map(((textBlockId) => (
+                <TextBlock
+                    key={textBlockId}
+                    curBlock={blockStore[textBlockId]}
+                />
+            )))}
+        </div>
     );
 }
 

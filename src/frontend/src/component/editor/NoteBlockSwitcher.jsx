@@ -26,10 +26,8 @@ const switcher = (type, id) => {
     switch (type) {
         case "text" :
             return <TextBlock blockId={id}/>
-        case "ol" :
-            return <ListBlock blockId={id} type={type}/>
-        case "ul" :
-            return <ListBlock blockId={id} type={type}/>
+        case "ol" && "ul" :
+            return <ListBlock blockId={id}/>
         case "table" :
             return <TableBlock blockId={id}/>
         default :

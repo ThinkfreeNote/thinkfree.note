@@ -6,7 +6,7 @@
     --header: 56px;
     --side: 20px;
     --point-color: rgb(110, 93, 198);
-    --point-color-hover: rgb(130, 113, 218) ;
+    --point-color-hover: rgb(130, 113, 218);
     --point-color-shadow: rgba(110, 93, 198, .3);
 }
 
@@ -204,6 +204,7 @@ table, th, td {
     color: var(--point-color);
     font-weight: 600;
 }
+
 .noteList-item-title {
     overflow: hidden;
     white-space: nowrap;
@@ -237,20 +238,22 @@ table, th, td {
 }
 
 .new-note-button {
-    margin : auto calc(var(--side) * 2) 0;
+    margin: auto calc(var(--side) * 2) 0;
     color: white;
-    padding : 8px 16px;
-    background-color : var(--point-color);
+    padding: 8px 16px;
+    background-color: var(--point-color);
     border: none;
     border-radius: 24px;
     font-weight: 600;
     font-size: 16px;
-    cursor : pointer;
+    cursor: pointer;
     text-align: center;
 }
+
 .new-note-button:visited {
-    color : white;
+    color: white;
 }
+
 .new-note-button:hover {
     background-color: var(--point-color-hover);
 }
@@ -378,6 +381,7 @@ table, th, td {
     background-color: rgb(201, 202, 204) !important;
     font-weight: 600;
 }
+
 .table-header td {
     background-color: rgb(201, 202, 204) !important;
 }
@@ -449,14 +453,14 @@ table, th, td {
 }
 
 /* 컨텍스트 메뉴 아이템 (비활성화 아닐 때) */
-.context-menu-item:hover:not(.context-menu-disable) ,.context-menu-item.selected:not(.context-menu-disable){
+.context-menu-item:hover:not(.context-menu-disable), .context-menu-item.selected:not(.context-menu-disable) {
     background-color: rgba(241, 242, 244);
 }
 
 .context-menu-item svg {
     width: 20px;
     height: 20px;
-    fill : var(--point-color);
+    fill: var(--point-color);
 }
 
 .context-menu-dropDown .context-menu {
@@ -638,10 +642,11 @@ table, th, td {
 }
 
 .ul::before {
-    content: "• "
+    padding: 5px;
+    content: attr(data-li-value);
 }
 
 .list::before {
-    padding : 5px;
+    padding: 5px;
     content: attr(data-li-value);
 }

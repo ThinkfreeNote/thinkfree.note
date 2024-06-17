@@ -3,6 +3,7 @@ import {TextBlock} from "./TextBlock";
 import {Table} from "./Table";
 import {Text} from "./Text";
 import {FontStyle} from "./FontStyle";
+import {ListBlock} from "./ListBlock";
 
 export class BlockStore {
     // 블럭 조회
@@ -34,7 +35,7 @@ export class BlockStore {
     // 블럭을 생성하여 스토어에 추가
     createBlock(type, textList = [], olIdx = 0) {
         const blockId = getRandomId();
-        if (type === "text" || type === "ul") {
+        if (type === "text") {
             const textBlock = new TextBlock(blockId, type, {}, []);
 
             // 인자로 들어온 텍스트가 없으면 기본값
@@ -46,15 +47,20 @@ export class BlockStore {
 
             return textBlock;
 
-        } else if (type === "ol") {
-            const textBlock = new TextBlock(blockId, type, {}, [], olIdx + 1);
+        } else if (type === "ul" || type === "ol") {
+            const listBlock = new ListBlock(blockId, type, {}, [], []);
+            const textBlock = new TextBlock(getRandomId(), "text", {}, []);
             // 인자로 들어온 텍스트가 없으면 기본값
             textList.length === 0 ?
                 textBlock.addText(new Text(getRandomId(), "", new FontStyle())) :
                 textList.forEach((text) => textBlock.addText(text));
-            this.addBlock(textBlock);
 
-            return textBlock;
+            // 객체는 블럭스토어에, listBlock은 id만 관리함
+            listBlock.pushTextBlockId(textBlock.id, 0);
+            this.addBlock(textBlock)
+            this.addBlock(listBlock);
+
+            return listBlock;
         } else if (type === "table") {
             const table = new Table(blockId, type, []);
             this.addBlock(table);

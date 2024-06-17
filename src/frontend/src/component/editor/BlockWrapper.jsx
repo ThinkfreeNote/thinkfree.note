@@ -1,8 +1,9 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {editorSelection} from "../../App";
 import BlockManagerProvider from "./BlockManagerProvider";
 import BlockMenuBox from "./block/BlockMenuBox";
 import BlockReRender from "./BlockReRender";
+import {useInitBlockCursor} from "../context/SelectionManagerProvider";
 
 /**
  * 블록 공통 기능 구현 목적
@@ -14,14 +15,7 @@ import BlockReRender from "./BlockReRender";
 function BlockWrapper({id, children,type}) {
     const wrapper = useRef(null);
 
-    // 블록이 처음 생성될 때 해당 블록에 커서 전달
-    useEffect(() => {
-        const $block = wrapper.current;
-        if(!$block) return;
-
-        // 셀렉션 모델의 캐럿과 블록 생성 시 캐럿이 동작이 약간 달라 추후 셀렉션의 커서 함수로 공통화 예정
-        setCursor($block,type);
-    }, []);
+    useInitBlockCursor(id);
 
     return (
         <BlockManagerProvider id={id}>

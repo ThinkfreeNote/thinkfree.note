@@ -1,6 +1,8 @@
 import {getLastChildNode} from "../utils/node";
 
 export class EditorSelection {
+    static LAST_OFFSET = -1
+    static FRONT_OFFSET = 0;
     constructor() {
         this.selection = window.getSelection();
         this.blockId = [];
@@ -337,3 +339,4 @@ export class EditorSelection {
         this.endOffset = comparePosition ? focusOffset : anchorOffset;
     }
 }
+

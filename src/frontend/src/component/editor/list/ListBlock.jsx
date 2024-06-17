@@ -15,15 +15,18 @@ function ListBlock({type}) {
     useTextBlockObserver(ref);
 
     return (
-        <p ref={ref} key={generate4wordId()} className="list" data-li-value={liValue} data-leaf="true">
-            {textBlock.textIdList.map(textId => (
-                <TextComponent
-                    key={textId}
-                    textId={textId}
-                    text={textBlock.contents[textId]}
-                />
-            ))}
-        </p>
+        <>
+            <p ref={ref} key={generate4wordId()} className="list" data-li-value={liValue} data-leaf="true">
+                {textBlock.textIdList.map(textId => (
+                    <TextComponent
+                        key={textId}
+                        textId={textId}
+                        text={textBlock.contents[textId]}
+                    />
+                ))}
+            </p>
+        </>
+
     );
 }
 

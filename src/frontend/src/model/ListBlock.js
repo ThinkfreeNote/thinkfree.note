@@ -1,9 +1,8 @@
-import {TextBlock} from "./TextBlock";
+import {Block} from "./Block";
 
-export class ListBlock extends TextBlock {
-    constructor(id, type, contents = {}, textIdList = [], listContents = {}, listIdList = []) {
-        super(id, type, contents, textIdList);
-        this.listContents = listContents;
-        this.listIdList = listIdList;
+export class ListBlock extends Block {
+    constructor(id, type, contents = {}, textBlockIdList = []) {
+        super(id, type, contents);
+        this.textBlockIdList = textBlockIdList;
     }
 }

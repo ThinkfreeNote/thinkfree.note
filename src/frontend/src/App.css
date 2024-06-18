@@ -278,12 +278,13 @@ table, th, td {
 }
 
 .block-wrapper {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     position: relative;
+    padding: 3px;
+    border-radius: 4px;
 }
 .block-wrapper.isDragOver {
-    background-color: var(--point-color-hover);
-
+    background-color: rgba(239, 246, 253,.7);
 }
 
 .table-block {
@@ -295,7 +296,7 @@ table, th, td {
     position: relative;
     left: -10px;
     top: -10px;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
 }
 
 .table-box {
@@ -658,26 +659,20 @@ table, th, td {
     position: absolute;
     padding : 7px 0;
     width: 100%;
-    background-color: red;
 }
 
 .drag-point {
     height: 3px;
-    background-color: var(--point-color);
-    opacity: 0;
+    margin: 0 3px;
+    background-color: rgb(162, 204, 248);
+    opacity: 1;
     transition: opacity .3s ease-out;
 }
 
-.drag-point-wrapper.drag-on .drag-point {
-    opacity: 1;
-}
 .drag-point-wrapper.drag-on * {
     pointer-events: none;
 }
 
-.drag-point-wrapper.drag-on {
-
-}
 
 
 

@@ -21,15 +21,18 @@ export class BlockStore {
         const fromBlock = this.getBlock(fromId);
         const toBlock = this.getBlock(toId);
 
+        if(toBlock.textIdList.length === 1 && toBlock.getTextFromIdx(0).value.length === 0){
+            toBlock.removeText(0);
+        }
+
         // textIdList 결합
         toBlock.textIdList = toBlock.textIdList.concat(fromBlock.textIdList);
-        console.log(Object.keys(toBlock.contents).length);
+
         // 텍스트 객체 이동
         fromBlock.textIdList.forEach(textId => {
             toBlock.contents[textId] = fromBlock.contents[textId];
             delete fromBlock.contents[textId];
         });
-        console.log(Object.keys(toBlock.contents).length);
     }
 
     // 블럭을 생성하여 스토어에 추가

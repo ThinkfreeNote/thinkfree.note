@@ -74,4 +74,11 @@ export class TextBlock extends Block {
         // 총 증가된 개수 반환
         return cnt - 1;
     }
+
+    getLastTextId() {
+        return this.textIdList[this.textIdList.length-1];
+    }
+    getFirstTextId() {
+        return this.textIdList[0];
+    }
 }

@@ -183,4 +183,8 @@ export class Table extends Block {
         }
         return value;
     }
+
+    getFirstCellOffset() {
+        return [this.contents[0],this.format[0]];
+    }
 }

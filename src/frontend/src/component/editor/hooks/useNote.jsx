@@ -7,36 +7,52 @@ import {useContext} from "react";
 import {MenuContext} from "../../common/MenuContext";
 import {BlockReRenderContext} from "../context/BlockReRenderContext";
 import {useBlockStore} from "./useBlockHooks";
+import {useSelectionManager} from "../../context/SelectionManagerProvider";
+import {EditorSelection} from "../../../model/Selection";
 
 /**
  * @desc blockIdList, blockStore 둘 다 조작하는 함수들 관리
  */
 function useNote() {
-    const {blockIdList} = useBlockIdList();
+    const {blockIdList, getPrevBlockId} = useBlockIdList();
     const blockStore = useBlockStore();
     const note = useBlockIdList();
     const {offset} = useContext(MenuContext);
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
+    const selectionManager = useSelectionManager();
 
     /**
-     * @desc 블록을 삭제하는 함수, 블록에 내용이 있다면
+     * @desc 블록을 삭제하는 함수
      */
     const backspaceRemoveBlock = () => {
-        const blockId = editorSelection.blockId[0];
-        const prevBlockId = blockIdList[blockIdList.indexOf(blockId) - 1];
-
         if (editorSelection.blockId[0] === blockIdList[0]) return;
+
+        const blockId = editorSelection.startBlockId;
+        const prevBlockId = getPrevBlockId(blockId);
+        const prevBlock = blockStore.getBlock(prevBlockId);
+
+        let blockOffset = prevBlock.getLastTextId();
+        let offset = EditorSelection.LAST_OFFSET;
 
         // 블록이 비어있지 않은 경우 현재 블록과 이전 블록을 합쳐주는 작업 수행
         if (!editorSelection.isEmptyBlock()) {
             blockStore.compositeBlock(blockId, prevBlockId);
             setReRenderTargetId(prevBlockId);
+
+            // 합쳐지면서 합치기 전 블록의 text 객체가 없어졌다면
+            if (prevBlock.textIdList.indexOf(blockOffset) === -1) {
+                // 합쳐진 블록의 첫번째로 blockOffset 변경
+                blockOffset = prevBlock.getFirstTextId();
+                offset = EditorSelection.FRONT_OFFSET;
+            }
         }
-        editorSelection.setCaretOfBlockId(prevBlockId);
         note.deleteBlock(blockId);
+
+        // 커서 이동
+        selectionManager.setEditorCaretPosition(prevBlockId, blockOffset, offset, "text");
     }
 
-    const appendBlockAfterCurrentBlock  = (e) => {
+    const appendBlockAfterCurrentBlock = (e) => {
         e.preventDefault();
         // 메뉴가 열려있으면 동작 x
         if (offset.x !== 0 && offset.y !== 0) return;

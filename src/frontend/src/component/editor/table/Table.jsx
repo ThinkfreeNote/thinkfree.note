@@ -8,7 +8,6 @@ import ColgroupProvider from "./contexts/ColgroupProvider";
 function Table() {
     // 문서 모델에서 가져온 테이블 데이터
     const tableData = useTableData();
-    console.log(tableData);
     return (
         <ColgroupProvider>
             {/* 테이블 요소를 감싸는 요소들 */}

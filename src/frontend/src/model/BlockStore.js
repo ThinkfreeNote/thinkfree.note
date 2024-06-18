@@ -49,13 +49,12 @@ export class BlockStore {
 
         } else if (type === "ul" || type === "ol") {
             const listBlock = new ListBlock(blockId, type, {}, []);
-            console.log(textList);
             // 인자로 들어온 텍스트가 없으면 기본값
             textList.length === 0 ?
                 listBlock.addText(new Text(getRandomId(), "", new FontStyle())) :
                 textList.forEach((text) => listBlock.addText(text));
             this.addBlock(listBlock);
-            console.log(listBlock);
+
             return listBlock;
 
         } else if (type === "table") {

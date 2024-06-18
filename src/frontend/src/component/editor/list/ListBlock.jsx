@@ -20,7 +20,7 @@ function ListBlock({index}) {
     // child가 있으면 block 맵으로 돌기
     return (
         <>
-            <p ref={ref} key={key} className={listBlock.type} data-list-index={index + 1} data-block-id={listBlock.id} data-leaf="true">
+            <p ref={ref} key={key} className={listBlock.type} data-list-depth={listBlock.depth} data-list-index={index + 1} data-block-id={listBlock.id} data-leaf="true">
                 {listBlock.textIdList.map(textId => (
                     <TextComponent
                         key={textId}

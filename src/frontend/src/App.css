@@ -643,5 +643,20 @@ table, th, td {
 
 .ol::before {
     padding: 5px;
-    content: attr(data-list-index) ". ";
+    content: attr(data-list-index) ".";
+}
+
+.ul[data-list-depth="0"]::before {
+    padding: 5px;
+    content: "º";
+}
+
+.ul[data-list-depth="1"]::before {
+    padding: 5px;
+    content: "º";
+}
+
+.ul[data-list-depth="3"]::before {
+    padding: 5px;
+    content: "□";
 }

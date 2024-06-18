@@ -641,12 +641,7 @@ table, th, td {
     background-color: rgb(130, 113, 218);
 }
 
-.ul::before {
+.ol::before {
     padding: 5px;
-    content: attr(data-li-value);
-}
-
-.list::before {
-    padding: 5px;
-    content: attr(data-li-value);
+    content: attr(data-list-index) ". ";
 }

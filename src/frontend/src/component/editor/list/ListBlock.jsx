@@ -7,7 +7,7 @@ import TextComponent from "../text/TextComponent";
 import BlockWrapper from "../BlockWrapper";
 
 
-function ListBlock({blockId}) {
+function ListBlock({blockId, index}) {
     const listBlock = useBlockData(blockId);
 
     const ref = useRef(null);
@@ -16,7 +16,7 @@ function ListBlock({blockId}) {
 
     return (
         <>
-            <p ref={ref} key={key} data-block-id={listBlock.id} data-leaf="true">
+            <p ref={ref} key={key} className={listBlock.type} data-list-index={index + 1} data-block-id={listBlock.id} data-leaf="true">
                 {listBlock.textIdList.map(textId => (
                     <TextComponent
                         key={textId}
@@ -26,7 +26,7 @@ function ListBlock({blockId}) {
                 ))}
             </p>
 
-            {listBlock.childIdList.map(blockId => (
+            {listBlock.childIdList.map((blockId, index) => (
                 <BlockWrapper id={blockId} type={listBlock.type}>
                     <ListBlock
                         id={blockId}

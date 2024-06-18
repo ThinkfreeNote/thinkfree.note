@@ -70,8 +70,6 @@ function useEditorHandler() {
         if (blockType === "table") {
             updateCellValue();
         } else {
-            console.log(blockType);
-
             updateTextValue();
         }
     }

@@ -27,7 +27,7 @@ function NoteEditor() {
                  contentEditable={true}
                  suppressContentEditableWarning={true}>
                 <Title/>
-                {blockIdList.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}
+                {blockIdList.map((blockId, index) => <NoteBlockSwitcher key={blockId} blockId={blockId} index={index}/>)}
             </div>
             <CommandWindow/>
             {slashComponent}

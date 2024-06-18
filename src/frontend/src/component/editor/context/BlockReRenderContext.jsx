@@ -1,4 +1,5 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useEffect, useState} from 'react';
+import {useSelectionManager} from "../../context/SelectionManagerProvider";
 
 export const BlockReRenderContext = createContext(null);
 
@@ -10,6 +11,11 @@ export const BlockReRenderContext = createContext(null);
  */
 function BlockReRenderProvider({children}) {
     const [reRenderTargetId,setReRenderTargetId] = useState(null);
+    const {recoveryPosition} = useSelectionManager();
+
+    useEffect(()=>{
+        recoveryPosition();
+    },[reRenderTargetId])
 
     return <BlockReRenderContext.Provider value={{reRenderTargetId,setReRenderTargetId}}>
         {children}

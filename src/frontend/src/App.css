@@ -648,7 +648,7 @@ table, th, td {
 
 .ul[data-list-depth="0"]::before {
     padding: 5px;
-    content: "º";
+    content: "ㆍ";
 }
 
 .ul[data-list-depth="1"]::before {

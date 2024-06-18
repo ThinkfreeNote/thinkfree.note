@@ -4,6 +4,7 @@ import TextBlock from "./text/TextBlock";
 import TableBlock from "./table/TableBlock";
 import {useBlockStore} from "./hooks/useBlockHooks";
 import ListBlock from "./list/ListBlock";
+import {useIndexList} from "./context/NoteIndexListProvider";
 
 
 /**
@@ -12,17 +13,18 @@ import ListBlock from "./list/ListBlock";
  * @returns {JSX.Element}
  * @constructor
  */
-function NoteBlockSwitcher({blockId, index}) {
+function NoteBlockSwitcher({blockId}) {
     const blockStore = useBlockStore();
-    const {type, id} = blockStore[blockId];
+    const {type} = blockStore[blockId];
+    const index = useIndexList().getOrder(blockId);// 현재는 ol을 위해 index 가져옴
 
     return <BlockWrapper id={blockId} type={type} index={index}>
-        {switcher(type, id, index)}
+        {switcher(type, index)}
     </BlockWrapper>
 }
 
 
-const switcher = (type, id, index) => {
+const switcher = (type, index) => {
     switch (type) {
         case "text" :
             return <TextBlock/>

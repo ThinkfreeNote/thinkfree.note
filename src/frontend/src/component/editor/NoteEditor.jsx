@@ -7,6 +7,7 @@ import useEditorSelection from "./hooks/useEditorSelection";
 import CommandWindow from "./CommandWindow";
 import useSlash from "./useSlash";
 import EditorToolBox from "./EditorToolBox";
+import {NoteIndexListProvider} from "./context/NoteIndexListProvider";
 
 export const EditorContext = createContext(null);
 
@@ -23,15 +24,17 @@ function NoteEditor() {
 
     return (
         <EditorContext.Provider value={editorRef}>
-            <div id="editor" className="editor" spellCheck={false} ref={editorRef} onKeyDown={onKeyDownHandler} onInput={onInputHandler}
-                 contentEditable={true}
-                 suppressContentEditableWarning={true}>
-                <Title/>
-                {blockIdList.map((blockId, index) => <NoteBlockSwitcher key={blockId} blockId={blockId} index={index}/>)}
-            </div>
-            <CommandWindow/>
-            {slashComponent}
-            <EditorToolBox/>
+            <NoteIndexListProvider>
+                <div id="editor" className="editor" spellCheck={false} ref={editorRef} onKeyDown={onKeyDownHandler} onInput={onInputHandler}
+                     contentEditable={true}
+                     suppressContentEditableWarning={true}>
+                    <Title/>
+                    {blockIdList.map((blockId, index) => <NoteBlockSwitcher key={blockId} blockId={blockId} index={index}/>)}
+                </div>
+                <CommandWindow/>
+                {slashComponent}
+                <EditorToolBox/>
+            </NoteIndexListProvider>
         </EditorContext.Provider>
     );
 }

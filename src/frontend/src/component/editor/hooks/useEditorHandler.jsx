@@ -25,8 +25,9 @@ function useEditorHandler() {
     const onKeyDownHandler = (e) => {
         // 키 입력이 발생한 block Id와 타입
         const blockId = editorSelection.blockId[0];
+        const block = blockStore.getBlock(blockId);
         if (!blockId) return;
-        const blockType = blockStore.getBlockType(blockId);
+        const blockType = block.type;
 
         // 테이블인 경우
         if (blockType === "table") {
@@ -40,6 +41,14 @@ function useEditorHandler() {
                 }
                 else {
                     e.preventDefault();
+                }
+            }
+
+            if (e.key === "Tab") {
+                e.preventDefault();
+
+                if (editorSelection.isCaret() && blockType === "ol" || blockType === "ul") {
+                    console.log(block);
                 }
             }
 

@@ -67,7 +67,7 @@ function useNote() {
         }
 
         // 새로운 Text들을 담은 TextBlock을 추가 (이전과 같은 타입의 텍스트 블럭을 생성)
-        note.addBlockId(blockStore.createBlock(textBlock.type, removedTextList, textBlock.olIdx).id, note.getIndexOfBlock(textBlock.id) + 1);
+        note.addBlockId(blockStore.createNewBlock(textBlock.type, removedTextList).id, note.getIndexOfBlock(textBlock.id) + 1);
         // 기존 TextBlock 리렌더링
         setReRenderTargetId(textBlock.id);
     }

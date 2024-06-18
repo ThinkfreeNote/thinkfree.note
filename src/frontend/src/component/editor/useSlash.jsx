@@ -64,7 +64,7 @@ function SlashMenu({closeMenu, editorRef}) {
 
     const replaceNewBlock = (type) => {
         closeMenu();
-        replaceBlock(editorSelection.blockId[0], blockStore.createBlock(type).id);
+        replaceBlock(editorSelection.blockId[0], blockStore.createNewBlock(type).id);
     }
 
     useEffect(() => {

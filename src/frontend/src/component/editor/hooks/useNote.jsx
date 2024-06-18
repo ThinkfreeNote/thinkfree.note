@@ -59,10 +59,21 @@ function useNote() {
 
         const block = blockStore.getBlock(editorSelection.startBlockId);
         const text = block.getTextFromId(editorSelection.getClosestId("text").start);
+        let textIdx = block.getTextIdx(text.id);
+        let newBlockType = block.type;
+
+        // textValue가 없을 때 depth 줄여주거나 다음 블럭 생성
+        if (newBlockType === "ol" || newBlockType === "ul" && text.value === "" && block.textIdList.length === 1) {
+            if (block.depth === 0) {
+                newBlockType = "text";
+            } else {
+                // 뎁스를 줄여줌
+                block.depth -= 1;
+            }
+        }
 
         // 분리하고 업데이트된 textIdx 구함
         const dividedTextContents = editorSelection.getDividedTextContentsFromCaret();
-        let textIdx = block.getTextIdx(text.id);
         const cnt = block.divideText(textIdx, dividedTextContents.before, dividedTextContents.after);
 
         // text 마지막에 캐럿이 잡힐 경우 예외 처리
@@ -83,7 +94,7 @@ function useNote() {
         }
 
         // 새로운 Text들을 담은 TextBlock을 추가 (이전과 같은 타입의 텍스트 블럭을 생성)
-        const newBlock = blockStore.createNewBlock(block.type, removedTextList);
+        const newBlock = blockStore.createNewBlock(newBlockType, removedTextList);
         note.addBlockId(newBlock.id, note.getIndexOfBlock(block.id) + 1);
         // 기존 TextBlock 리렌더링
         setReRenderTargetId(block.id);

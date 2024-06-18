@@ -1,14 +1,8 @@
-import {Block} from "./Block";
+import {TextBlock} from "./TextBlock";
 
-export class ListBlock extends Block {
-    constructor(id, type, contents = {}, textBlockIdList = [], depthList = []) {
+export class ListBlock extends TextBlock {
+    constructor(id, type, contents = {}, childIdList = []) {
         super(id, type, contents);
-        this.textBlockIdList = textBlockIdList;
-        this.depthList = depthList;
-    }
-
-    pushTextBlockId(textBlockId = null , depth = 0) {
-        this.textBlockIdList.push(textBlockId);
-        this.depthList.push(depth);
+        this.childIdList = childIdList;
     }
 }

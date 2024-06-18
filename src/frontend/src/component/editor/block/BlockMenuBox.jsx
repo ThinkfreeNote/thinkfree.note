@@ -19,7 +19,7 @@ function BlockMenuBox() {
     return (
         <div contentEditable={false} className="block-menu-btn-box">
             <button className="block-menu-btn" onClick={addBlockHandler}><PlusIcon width="18px" height="18px" fill="black"/></button>
-            <button className="block-menu-btn" onClick={(e)=>{
+            <button draggable={true} className="block-menu-btn" onClick={(e)=>{
                 openMenu(e.clientX,e.clientY);
             }}><HamburgerIcon width="18px" height="18px" fill="black"/></button>
             {isOpen && createPortal(<BlockContextMenu closeMenu={closeMenu}/>,document.body)}

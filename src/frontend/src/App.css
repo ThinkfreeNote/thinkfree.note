@@ -641,9 +641,22 @@ table, th, td {
     background-color: rgb(130, 113, 218);
 }
 
-.ol::before {
+.ol[data-list-depth="0"]::before {
     padding: 5px;
-    content: attr(data-list-index) ".";
+    content: attr(data-list-value) ".";
+    margin-left: 0;
+}
+
+.ol[data-list-depth="1"]::before {
+    padding: 5px;
+    content: attr(data-list-value) ".";
+    margin-left: 20px;
+}
+
+.ol[data-list-depth="2"]::before {
+    padding: 5px;
+    content: attr(data-list-value) ".";
+    margin-left: 40px;
 }
 
 .ul[data-list-depth="0"]::before {

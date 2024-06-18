@@ -12,8 +12,9 @@ function useListHandler() {
         const block = blockStore.getBlock(blockId);
 
         if (editorSelection.isCaret() && block.type === "ol" || block.type === "ul") {
-            // 최대 depth 설정
-            // 부모 depth 보다 크게 안됨
+            // TODO: 최대 depth 설정
+
+            // TODO: 부모 depth 보다 크게 안됨
 
 
             block.depth += 1;

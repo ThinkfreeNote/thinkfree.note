@@ -17,14 +17,34 @@ function ListBlock({index}) {
     useTextBlockObserver(ref);
     const curIndex = index === undefined ? 0 : index;
 
+    // TODO: 함수 빼야함
+    const getListValue = (index, depth) => {
+        // 인덱스가 넘어가면 초기화
+        const maxIndex = 26;
+        // 0이면 maxIndex 반환
+        const changedIndex = index % maxIndex || maxIndex; // 1-based index
+
+        switch (depth) {
+            case 0:
+                return index;
+            case 1:
+                return String.fromCharCode(64 + changedIndex); // 65 is 'A'
+            case 2:
+                return String.fromCharCode(96 + changedIndex); // 97 is 'a'
+            default:
+                return index;
+        }
+    }
+
     // text 맵으로 돌고
     // child가 있으면 block 맵으로 돌기
     return (
         <>
             <p ref={ref} key={key} className={listBlock.type} data-list-depth={listBlock.depth}
-               data-list-index={curIndex + 1} data-block-id={listBlock.id} data-leaf="true">
+               data-list-value={getListValue(curIndex + 1, listBlock.depth)}
+               data-block-id={listBlock.id} data-leaf="true">
+
                 {listBlock.textIdList.map(textId => {
-                    console.log(listBlock.depth);
                     return (
                         <TextComponent
                             key={textId}

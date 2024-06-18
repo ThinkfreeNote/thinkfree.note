@@ -12,11 +12,10 @@ function useTextHandler() {
         const textId = editorSelection.getClosestId("text").start;
         const blockId = editorSelection.startBlockId;
 
-        const textBlock = blockStore.getBlock(blockId);
+        const block = blockStore.getBlock(blockId);
         // 모델 가져오고 저장하기
-        textBlock.updateTextValue(textId, element.textContent);
+        block.updateTextValue(textId, element.textContent);
     };
-
 
     const deleteTextValue = () => {
         const blockId = editorSelection.blockId[0];

@@ -41,13 +41,14 @@ function useNote() {
         // 메뉴가 열려있으면 동작 x
         if (offset.x !== 0 && offset.y !== 0) return;
 
-        const textBlock = blockStore.getBlock(editorSelection.blockId[0]);
-        const text = textBlock.getTextFromId(editorSelection.getClosestId("text").start);
+        const block = blockStore.getBlock(editorSelection.startBlockId);
+        console.log(block);
+        const text = block.getTextFromId(editorSelection.getClosestId("text").start);
 
         // 분리하고 업데이트된 textIdx 구함
         const dividedTextContents = editorSelection.getDividedTextContentsFromCaret();
-        let textIdx = textBlock.getTextIdx(text.id);
-        const cnt = textBlock.divideText(textIdx, dividedTextContents.before, dividedTextContents.after);
+        let textIdx = block.getTextIdx(text.id);
+        const cnt = block.divideText(textIdx, dividedTextContents.before, dividedTextContents.after);
 
         // text 마지막에 캐럿이 잡힐 경우 예외 처리
         if (dividedTextContents.after === "") textIdx++;
@@ -58,18 +59,18 @@ function useNote() {
         // 기존 textBlock에 있는 text들 삭제
         const removedTextList = [];
         while (true) {
-            const text = textBlock.removeText(textIdx);
+            const text = block.removeText(textIdx);
             if (!text) break;
             removedTextList.push(text);
         }
-        if (textBlock.textIdList.length === 0) {
-            textBlock.addText(new Text(getRandomId(), "", new FontStyle()));
+        if (block.textIdList.length === 0) {
+            block.addText(new Text(getRandomId(), "", new FontStyle()));
         }
 
         // 새로운 Text들을 담은 TextBlock을 추가 (이전과 같은 타입의 텍스트 블럭을 생성)
-        note.addBlockId(blockStore.createNewBlock(textBlock.type, removedTextList).id, note.getIndexOfBlock(textBlock.id) + 1);
+        note.addBlockId(blockStore.createNewBlock(block.type, removedTextList).id, note.getIndexOfBlock(block.id) + 1);
         // 기존 TextBlock 리렌더링
-        setReRenderTargetId(textBlock.id);
+        setReRenderTargetId(block.id);
     }
 
     return {backspaceRemoveBlock, appendBlockAfterCurrentBlock}

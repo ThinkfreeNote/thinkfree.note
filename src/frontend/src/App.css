@@ -281,6 +281,10 @@ table, th, td {
     margin-bottom: 10px;
     position: relative;
 }
+.block-wrapper.isDragOver {
+    background-color: var(--point-color-hover);
+
+}
 
 .table-block {
     display: flex;
@@ -645,3 +649,35 @@ table, th, td {
     padding : 5px;
     content: attr(data-li-value);
 }
+
+
+/* drag */
+
+.drag-point-wrapper {
+    user-select: none;
+    position: absolute;
+    padding : 7px 0;
+    width: 100%;
+    background-color: red;
+}
+
+.drag-point {
+    height: 3px;
+    background-color: var(--point-color);
+    opacity: 0;
+    transition: opacity .3s ease-out;
+}
+
+.drag-point-wrapper.drag-on .drag-point {
+    opacity: 1;
+}
+.drag-point-wrapper.drag-on * {
+    pointer-events: none;
+}
+
+.drag-point-wrapper.drag-on {
+
+}
+
+
+

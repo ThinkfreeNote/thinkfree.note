@@ -1,9 +1,11 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {editorSelection} from "../../App";
 import BlockManagerProvider from "./BlockManagerProvider";
 import BlockMenuBox from "./block/BlockMenuBox";
 import BlockReRender from "./BlockReRender";
 import {useInitBlockCursor} from "../context/SelectionManagerProvider";
+import BlockDragPoint from "./block/BlockDragPoint";
+import useBlockDragAndDrop from "./block/hooks/useBlockDragAndDrop";
 
 /**
  * 블록 공통 기능 구현 목적
@@ -12,17 +14,25 @@ import {useInitBlockCursor} from "../context/SelectionManagerProvider";
  * @param type
  * @returns {JSX.Element}
  */
-function BlockWrapper({id, children,type}) {
+function BlockWrapper({id, children, type}) {
     const wrapper = useRef(null);
+    const {onDragStart, onDragOver, onDrop, onDragLeave, onDragEnter, isDragOver} = useBlockDragAndDrop(id);
 
     useInitBlockCursor(id);
-
     return (
         <BlockManagerProvider id={id}>
-            <div className="block-wrapper" ref={wrapper} data-block-id={id} data-block-type={type}>
+            <div onDragStart={onDragStart}
+                 onDragOver={onDragOver}
+                 onDragLeave={onDragLeave}
+                 onDragEnter={onDragEnter}
+                 onDrop={onDrop}
+                 draggable={true}
+                 className={`block-wrapper ${isDragOver ? "isDragOver" : ""}`} ref={wrapper} data-block-id={id}
+                 data-block-type={type}>
                 <BlockMenuBox/>
                 {children}
                 <BlockReRender/>
+                {isDragOver && <BlockDragPoint/>}
             </div>
         </BlockManagerProvider>
     );
@@ -37,13 +47,12 @@ function setCursor($block, type) {
     // 블록 내의 첫번째 leaf 요소에 커서 지정
     const $firstLeaf = $block.querySelector("[data-leaf]");
     const $br = $firstLeaf.querySelector("br");
-    if($br){
+    if ($br) {
         editorSelection.setCaret($br);
-    }
-    else {
+    } else {
         let lastTextNode = "";
         // 테이블의 경우
-        if(type === "table") {
+        if (type === "table") {
             lastTextNode = [...$firstLeaf.childNodes].find(item => item.nodeType === Node.TEXT_NODE);
 
         }

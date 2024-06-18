@@ -19,13 +19,16 @@ function NoteEditor() {
     useEditorSelection(blockIdList);
 
     // contentEditable div 요소에서 처리할 이벤트 핸들러
-    const {onKeyDownHandler,onInputHandler} = useEditorHandler();
+    const {onKeyDownHandler, onInputHandler} = useEditorHandler();
 
     return (
         <EditorContext.Provider value={editorRef}>
-            <div id="editor" className="editor" spellCheck={false} ref={editorRef} onKeyDown={onKeyDownHandler} onInput={onInputHandler}
+            <div id="editor" className="editor" spellCheck={false} ref={editorRef}
                  contentEditable={true}
-                 suppressContentEditableWarning={true}>
+                 suppressContentEditableWarning={true}
+                 onKeyDown={onKeyDownHandler}
+                 onInput={onInputHandler}
+                 >
                 <Title/>
                 {blockIdList.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}
             </div>

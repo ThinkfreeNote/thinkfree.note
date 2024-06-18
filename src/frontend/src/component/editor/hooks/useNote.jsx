@@ -42,7 +42,6 @@ function useNote() {
         if (offset.x !== 0 && offset.y !== 0) return;
 
         const block = blockStore.getBlock(editorSelection.startBlockId);
-        console.log(block);
         const text = block.getTextFromId(editorSelection.getClosestId("text").start);
 
         // 분리하고 업데이트된 textIdx 구함
@@ -68,7 +67,8 @@ function useNote() {
         }
 
         // 새로운 Text들을 담은 TextBlock을 추가 (이전과 같은 타입의 텍스트 블럭을 생성)
-        note.addBlockId(blockStore.createNewBlock(block.type, removedTextList).id, note.getIndexOfBlock(block.id) + 1);
+        const newBlock = blockStore.createNewBlock(block.type, removedTextList);
+        note.addBlockId(newBlock.id, note.getIndexOfBlock(block.id) + 1);
         // 기존 TextBlock 리렌더링
         setReRenderTargetId(block.id);
     }

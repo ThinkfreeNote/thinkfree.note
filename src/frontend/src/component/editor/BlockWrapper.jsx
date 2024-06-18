@@ -11,9 +11,8 @@ import BlockReRender from "./BlockReRender";
  * @param type
  * @returns {JSX.Element}
  */
-function BlockWrapper({id, children,type}) {
+function BlockWrapper({id, children, type}) {
     const wrapper = useRef(null);
-
     // 블록이 처음 생성될 때 해당 블록에 커서 전달
     useEffect(() => {
         const $block = wrapper.current;

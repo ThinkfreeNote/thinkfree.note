@@ -25,15 +25,15 @@ function NoteBlockSwitcher({blockId, index}) {
 const switcher = (type, id, index) => {
     switch (type) {
         case "text" :
-            return <TextBlock blockId={id}/>
+            return <TextBlock/>
         case "ul":
-            return <ListBlock blockId={id}/>
+            return <ListBlock/>
         case "ol":
-            return <ListBlock blockId={id} index={index}/>
+            return <ListBlock index={index}/>
         case "table" :
-            return <TableBlock blockId={id}/>
+            return <TableBlock/>
         default :
-            return <TextBlock blockId={id}/>
+            return <TextBlock/>
     }
 }
 

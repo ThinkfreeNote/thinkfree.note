@@ -5,17 +5,17 @@ import useTextBlockObserver from "../text/hooks/useTextBlockObserver";
 import {generate4wordId} from "../../../utils/id";
 import TextComponent from "../text/TextComponent";
 import BlockWrapper from "../BlockWrapper";
+import {useBlockId} from "../BlockManagerProvider";
 
 
-function ListBlock({blockId, index}) {
+function ListBlock({index}) {
+    const {blockId} = useBlockId();
     const listBlock = useBlockData(blockId);
 
     const ref = useRef(null);
     const key = generate4wordId();
     useTextBlockObserver(ref);
-
     index = index === undefined ? null : index
-
     // text 맵으로 돌고
     // child가 있으면 block 맵으로 돌기
     return (

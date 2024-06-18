@@ -1,15 +1,10 @@
-import {useContext} from "react";
-import useBlockIdList from "./useBlockIdList";
 import {editorSelection} from "../../../App";
 import {useBlockStore} from "./useBlockHooks";
-import {BlockReRenderContext} from "../context/BlockReRenderContext";
-import {Text} from "../../../model/Text";
-import {getRandomId} from "../../../utils/id";
-import {FontStyle} from "../../../model/FontStyle";
-import {MenuContext} from "../../common/MenuContext";
 import {useTableHandler} from "../table/hooks/useTableHandler";
 import useTextHandler from "../text/hooks/useTextHandler";
 import useNote from "./useNote";
+import useListHandler from "../list/hooks/useListHandler";
+
 
 
 /**
@@ -21,6 +16,7 @@ function useEditorHandler() {
     const {backspaceRemoveBlock, appendBlockAfterCurrentBlock} = useNote();
     const {tableArrowHandler, updateCellValue} = useTableHandler();
     const {updateTextValue, deleteTextValue} = useTextHandler();
+    const {changeDepth} = useListHandler();
 
     const onKeyDownHandler = (e) => {
         // 키 입력이 발생한 block Id와 타입
@@ -46,10 +42,7 @@ function useEditorHandler() {
 
             if (e.key === "Tab") {
                 e.preventDefault();
-
-                if (editorSelection.isCaret() && blockType === "ol" || blockType === "ul") {
-                    console.log(block);
-                }
+                changeDepth();
             }
 
             if (e.key === "Backspace") {

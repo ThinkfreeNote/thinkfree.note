@@ -649,14 +649,17 @@ table, th, td {
 .ul[data-list-depth="0"]::before {
     padding: 5px;
     content: "ㆍ";
+    margin-left: 0;
 }
 
 .ul[data-list-depth="1"]::before {
     padding: 5px;
     content: "º";
+    margin-left: 20px;
 }
 
-.ul[data-list-depth="3"]::before {
+.ul[data-list-depth="2"]::before {
     padding: 5px;
     content: "□";
+    margin-left: 40px;
 }

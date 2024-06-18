@@ -62,8 +62,8 @@ function useNote() {
         let textIdx = block.getTextIdx(text.id);
         let newBlockType = block.type;
 
-        // textValue가 없을 때 depth 줄여주거나 다음 블럭 생성
-        if (newBlockType === "ol" || newBlockType === "ul" && text.value === "" && block.textIdList.length === 1) {
+        // listType이 textValue가 없을 때 depth 줄여주거나 다음 블럭 생성
+        if ((newBlockType === "ol" || newBlockType === "ul") && text.value === "" && block.textIdList.length === 1) {
             if (block.depth === 0) {
                 newBlockType = "text";
             } else {

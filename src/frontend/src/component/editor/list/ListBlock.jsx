@@ -21,24 +21,30 @@ function ListBlock({index}) {
     // child가 있으면 block 맵으로 돌기
     return (
         <>
-            <p ref={ref} key={key} className={listBlock.type} data-list-depth={listBlock.depth} data-list-index={curIndex + 1} data-block-id={listBlock.id} data-leaf="true">
-                {listBlock.textIdList.map(textId => (
-                    <TextComponent
-                        key={textId}
-                        textId={textId}
-                        text={listBlock.contents[textId]}
-                    />
-                ))}
+            <p ref={ref} key={key} className={listBlock.type} data-list-depth={listBlock.depth}
+               data-list-index={curIndex + 1} data-block-id={listBlock.id} data-leaf="true">
+                {listBlock.textIdList.map(textId => {
+                    console.log(listBlock.depth);
+                    return (
+                        <TextComponent
+                            key={textId}
+                            textId={textId}
+                            text={listBlock.contents[textId]}
+                        />
+                    )
+                })}
             </p>
 
-            {listBlock.childIdList.map((blockId, index) => (
-                <BlockWrapper id={blockId} type={listBlock.type}>
-                    <ListBlock
-                        id={blockId}
-                        index={index}
-                    />
-                </BlockWrapper>
-            ))}
+            {
+                listBlock.childIdList.map((blockId, index) => (
+                        <BlockWrapper id={blockId} type={listBlock.type}>
+                            <ListBlock
+                                id={blockId}
+                                index={index}
+                            />
+                        </BlockWrapper>
+                    ))
+            }
         </>
     );
 }

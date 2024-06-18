@@ -39,7 +39,6 @@ function useTextHandler() {
         }
     }
 
-
     return {updateTextValue, deleteTextValue}
 }
 

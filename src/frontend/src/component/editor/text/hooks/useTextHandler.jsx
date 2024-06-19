@@ -11,8 +11,8 @@ function useTextHandler() {
         const element = editorSelection.getElement().startElement;
         const textId = editorSelection.getClosestId("text").start;
         const blockId = editorSelection.startBlockId;
-
         const block = blockStore.getBlock(blockId);
+
         // 모델 가져오고 저장하기
         block.updateTextValue(textId, element.textContent);
     };

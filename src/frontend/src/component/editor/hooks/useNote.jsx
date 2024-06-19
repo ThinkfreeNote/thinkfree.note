@@ -73,6 +73,7 @@ function useNote() {
                 block.depth -= 1;
             }
         }
+        // TODO: 그 child에서 enter했을때 노트 id 추가해주는거 수정 로직 필요함
 
         // 분리하고 업데이트된 textIdx 구함
         const dividedTextContents = editorSelection.getDividedTextContentsFromCaret();

@@ -16,7 +16,6 @@ function ListBlock({index}) {
     const key = generate4wordId();
     useTextBlockObserver(ref);
     const curIndex = index === undefined ? 0 : index;
-
     // TODO: 함수 빼야함
     const getListValue = (index, depth) => {
         // 인덱스가 넘어가면 초기화
@@ -57,7 +56,7 @@ function ListBlock({index}) {
 
             {
                 listBlock.childIdList.map((blockId, index) => (
-                        <BlockWrapper id={blockId} type={listBlock.type}>
+                        <BlockWrapper key={blockId} id={blockId} type={listBlock.type}>
                             <ListBlock
                                 id={blockId}
                                 index={index}

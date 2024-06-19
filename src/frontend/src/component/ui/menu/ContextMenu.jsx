@@ -2,8 +2,8 @@ import React, {useContext, useLayoutEffect, useRef, useState} from 'react';
 import {MenuContext} from "./MenuContext";
 
 // 아이콘 에셋
-import {ReactComponent as ToggleOn} from "../../assets/icon_check.svg";
-import {ReactComponent as ArrowRightIcon} from "../../assets/icon_arrow_right.svg";
+import {ReactComponent as ToggleOn} from "../../../assets/icon_check.svg";
+import {ReactComponent as ArrowRightIcon} from "../../../assets/icon_arrow_right.svg";
 
 function ContextMenuMain({children, closeMenu}) {
     const menuRef = useRef(null);

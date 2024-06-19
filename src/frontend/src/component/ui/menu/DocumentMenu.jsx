@@ -1,9 +1,9 @@
 import React from 'react';
-import {ContextMenu} from "./common/ContextMenu";
+import {ContextMenu} from "./ContextMenu";
 import {useNavigate} from "react-router-dom";
 
-import {ReactComponent as DuplicateIcon} from "../assets/icon_duplicate.svg";
-import {ReactComponent as DeleteIcon} from "../assets/icon_delete.svg";
+import {ReactComponent as DuplicateIcon} from "../../../assets/icon_duplicate.svg";
+import {ReactComponent as DeleteIcon} from "../../../assets/icon_delete.svg";
 
 
 function DocumentMenu({closeMenu,noteId}) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {ReactComponent as HamburgerIcon} from "../../../assets/icon_hamburger.svg";
 import {ReactComponent as PlusIcon} from "../../../assets/icon_plus.svg";
-import {useMenu} from "../../common/MenuContext";
+import {useMenu} from "../../ui/menu/MenuContext";
 import BlockContextMenu from "./BlockContextMenu";
 import {createPortal} from "react-dom";
 import {useBlockId} from "../BlockManagerProvider";

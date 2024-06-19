@@ -4,7 +4,7 @@ import {getRandomId} from "../../../utils/id";
 import {FontStyle} from "../../../model/FontStyle";
 import useBlockIdList from "./useBlockIdList";
 import {useContext} from "react";
-import {MenuContext} from "../../common/MenuContext";
+import {MenuContext} from "../../ui/menu/MenuContext";
 import {BlockReRenderContext} from "../context/BlockReRenderContext";
 import {useBlockStore} from "./useBlockHooks";
 import {useSelectionManager} from "../../context/SelectionManagerProvider";

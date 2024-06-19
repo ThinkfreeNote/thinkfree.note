@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {ContextMenu} from "../common/ContextMenu";
-import {useMenu} from "../common/MenuContext";
+import {ContextMenu} from "../ui/menu/ContextMenu";
+import {useMenu} from "../ui/menu/MenuContext";
 import {editorSelection} from "../../App";
 import useBlockIdList from "./hooks/useBlockIdList";
 import {useBlockStore} from "./hooks/useBlockHooks";

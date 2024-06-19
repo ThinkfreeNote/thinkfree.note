@@ -1,5 +1,5 @@
 import React from 'react';
-import {ContextMenu} from "../../common/ContextMenu";
+import {ContextMenu} from "../../ui/menu/ContextMenu";
 import useBlockIdList from "../hooks/useBlockIdList";
 import {useBlockId, useBlockReRender} from "../BlockManagerProvider";
 import {useBlockStore} from "../hooks/useBlockHooks";

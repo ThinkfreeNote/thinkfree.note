@@ -1,5 +1,5 @@
 import React from 'react';
-import {ContextMenu} from "../common/ContextMenu";
+import {ContextMenu} from "../ui/menu/ContextMenu";
 import useBlockIdList from "./hooks/useBlockIdList";
 import {useBlockStore} from "./hooks/useBlockHooks";
 import {ReactComponent as TextBlockIcon} from "../../assets/icon_textBlock.svg";

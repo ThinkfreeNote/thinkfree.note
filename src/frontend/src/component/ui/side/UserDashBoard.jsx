@@ -1,5 +1,5 @@
 import React from 'react';
-import {ReactComponent as UserIcon} from "../assets/icon_user.svg";
+import {ReactComponent as UserIcon} from "../../../assets/icon_user.svg";
 
 function UserDashBoard() {
     return (

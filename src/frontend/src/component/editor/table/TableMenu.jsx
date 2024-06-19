@@ -1,5 +1,5 @@
 import React from 'react';
-import {ContextMenu} from "../../common/ContextMenu";
+import {ContextMenu} from "../../ui/menu/ContextMenu";
 import useTable from "./hooks/useTable";
 import {useTableData} from "./hooks/useTableData";
 

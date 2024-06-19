@@ -24,17 +24,15 @@ function NoteEditor() {
 
     return (
         <EditorContext.Provider value={editorRef}>
-            <NoteIndexListProvider>
-                <div id="editor" className="editor" spellCheck={false} ref={editorRef} onKeyDown={onKeyDownHandler} onInput={onInputHandler}
-                     contentEditable={true}
-                     suppressContentEditableWarning={true}>
-                    <Title/>
-                    {blockIdList.map((blockId, index) => <NoteBlockSwitcher key={blockId} blockId={blockId} index={index}/>)}
-                </div>
-                <CommandWindow/>
-                {slashComponent}
-                <EditorToolBox/>
-            </NoteIndexListProvider>
+            <div id="editor" className="editor" spellCheck={false} ref={editorRef} onKeyDown={onKeyDownHandler} onInput={onInputHandler}
+                 contentEditable={true}
+                 suppressContentEditableWarning={true}>
+                <Title/>
+                {blockIdList.map((blockId, index) => <NoteBlockSwitcher key={blockId} blockId={blockId} index={index}/>)}
+            </div>
+            <CommandWindow/>
+            {slashComponent}
+            <EditorToolBox/>
         </EditorContext.Provider>
     );
 }

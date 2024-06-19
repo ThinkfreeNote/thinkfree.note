@@ -20,8 +20,8 @@ export function NoteIndexListProvider({children}) {
                 return index;
             }
         })
-        console.log(indexList);
         setIndexList(indexList);
+        console.log(indexList);
     }, [blockIdList]);
 
 
@@ -38,9 +38,11 @@ export function useIndexList() {
 
     const getOrder = (blockId) => {
         const blockIndex = getIndexOfBlock(blockId);
-
+        if (blockIndex === -1) return -1;
         return indexList[blockIndex];
     }
+
+
 
     return {getOrder}
 }

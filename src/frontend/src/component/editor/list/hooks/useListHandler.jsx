@@ -9,7 +9,7 @@ function useListHandler() {
     const blockStore = useBlockStore();
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
     const {getOrder} = useIndexList();
-    const {getPrevBlockId} = useBlockIdList();
+    const {getPrevBlockId, deleteBlock} = useBlockIdList();
 
 
     const changeDepth = () => {
@@ -30,9 +30,10 @@ function useListHandler() {
                 return;
             }
 
-
-            // TODO: Child 로 옮겨줌
-
+            // blockId 를 이전 ListBlock 의 childIdList 에 추가, 이후 기존 ListBlockId 삭제
+            prevBlock.moveChild(block.id);
+            console.log(prevBlock);
+            console.log(deleteBlock(blockId));
 
             block.depth += 1;
             setReRenderTargetId(blockId);

@@ -6,4 +6,8 @@ export class ListBlock extends TextBlock {
         this.childIdList = childIdList;
         this.depth = depth;
     }
+
+    moveChild(listBlockId) {
+        this.childIdList.push(listBlockId);
+    }
 }

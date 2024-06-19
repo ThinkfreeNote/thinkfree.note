@@ -101,7 +101,7 @@ function SlashMenu({closeMenu, editorRef}) {
     }, [menuIndex]);
 
     return <ContextMenu closeMenu={closeMenu}>
-        <ContextMenu.SubTitle text="기본 Blocks"/>
+        <ContextMenu.SubTitle text="블록 추가"/>
         <ContextMenu.Divider/>
         {SLASH_ITEM_TYPES.map((item, idx) => {
             const [text, type, icon] = item;

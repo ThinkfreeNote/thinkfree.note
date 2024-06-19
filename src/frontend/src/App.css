@@ -437,14 +437,15 @@ table, th, td {
 }
 
 .context-menu-item {
-    padding: 1em 1em;
+    padding: .8em 1em;
     font-family: "Noto Sans KR", sans-serif;
     font-size: 12px;
-    min-width: 12rem;
+    font-weight: 400;
+    min-width: 10rem;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 5px;
+    gap: 7px;
     cursor: pointer;
 }
 
@@ -454,8 +455,8 @@ table, th, td {
 }
 
 .context-menu-item svg {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     fill : var(--point-color);
 }
 

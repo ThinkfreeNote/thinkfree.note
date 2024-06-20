@@ -346,7 +346,7 @@ table, th, td {
     display: flex;
     align-items: center;
     height: 24px;
-    z-index: 3;
+    z-index: 5;
     cursor: pointer;
     -moz-user-select: none;
     -webkit-user-select: none;

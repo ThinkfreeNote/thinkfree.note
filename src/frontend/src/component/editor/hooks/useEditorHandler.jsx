@@ -1,12 +1,5 @@
-import {useContext} from "react";
-import useBlockIdList from "./useBlockIdList";
 import {editorSelection} from "../../../App";
 import {useBlockStore} from "./useBlockHooks";
-import {BlockReRenderContext} from "../context/BlockReRenderContext";
-import {Text} from "../../../model/Text";
-import {getRandomId} from "../../../utils/id";
-import {FontStyle} from "../../../model/FontStyle";
-import {MenuContext} from "../../ui/menu/MenuContext";
 import {useTableHandler} from "../table/hooks/useTableHandler";
 import useTextHandler from "../text/hooks/useTextHandler";
 import useNote from "./useNote";
@@ -19,7 +12,7 @@ import useNote from "./useNote";
 function useEditorHandler() {
     const blockStore = useBlockStore();
     const {backspaceRemoveBlock, appendBlockAfterCurrentBlock} = useNote();
-    const {tableArrowHandler, updateCellValue} = useTableHandler();
+    const {tableArrowHandler, updateCellValue,openCalcDialog} = useTableHandler();
     const {updateTextValue, deleteTextValue} = useTextHandler();
 
     const onKeyDownHandler = (e) => {
@@ -75,7 +68,15 @@ function useEditorHandler() {
         }
     }
 
-    return {onKeyDownHandler, onInputHandler};
+    const onKeyUp = (e) => {
+
+        // 계산함수 처리
+        if(e.key === "=") {
+            openCalcDialog();
+        }
+    }
+
+    return {onKeyDownHandler, onInputHandler, onKeyUp};
 }
 
 

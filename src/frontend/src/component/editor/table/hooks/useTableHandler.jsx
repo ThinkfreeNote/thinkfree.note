@@ -3,6 +3,7 @@ import {getCellIds, isCell} from "../../../../utils/table";
 import {editorSelection} from "../../../../App";
 import {MenuContext} from "../../../ui/menu/MenuContext";
 import {useBlockStore} from "../../hooks/useBlockHooks";
+import {useDialog} from "../../context/EditorDialogProvider";
 
 /**
  * @desc 테이블 모델 메서드를 호출하는 함수들을 모아두는 커스텀 훅
@@ -11,7 +12,7 @@ import {useBlockStore} from "../../hooks/useBlockHooks";
 export function useTableHandler() {
     const blockStore = useBlockStore();
     const {offset} = useContext(MenuContext);
-
+    const {openDialog} = useDialog();
     /**
      *  @desc 입력 값을 가져와서 테이블 모델을 업데이트 하는 함수
      */
@@ -58,5 +59,17 @@ export function useTableHandler() {
         
     }
 
-    return {tableArrowHandler, updateCellValue}
+    const openCalcDialog = () => {
+        const {right, bottom} = window.getSelection().getRangeAt(0).getBoundingClientRect();
+
+        const [rowId,cellId] = editorSelection.startBlockOffset;
+        const cellIds = {
+            blockId : editorSelection.startBlockId,
+            rowId,
+            cellId
+        }
+        openDialog({top:bottom, left:right},"calc", {cellIds} );
+    }
+
+    return {tableArrowHandler, updateCellValue, openCalcDialog}
 }

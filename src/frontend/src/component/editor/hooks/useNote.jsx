@@ -62,18 +62,18 @@ function useNote() {
         let textIdx = block.getTextIdx(text.id);
         let newBlockType = block.type;
 
-        // 리스트일때 예외 처리
-        if ((newBlockType === "ol" || newBlockType === "ul") && text.value === "" && block.textIdList.length === 1) {
-            // listType이 textValue가 없을 때 depth 줄여주거나 다음 블럭 생성
+        // ListBlock 이 textValue 가 없을 때 예외 처리
+        // depth 가 0일 때만 TextBlock 으로 변경
+        if ((newBlockType === "ol" || newBlockType === "ul") &&
+            text.value === "" && block.textIdList.length === 1 && block.depth === 0) {
+
             // 현재와 다음 블럭을 textType으로 변경해줌
-            if (block.depth === 0) {
-                block.type = "text";
-                newBlockType = "text";
-            } else {// 아니라면 뎁스만 줄여줌
-                block.depth -= 1;
-            }
+            block.type = "text";// TODO: type만 text로 바꿔준거라 문제 생길 수도 있음
+            newBlockType = "text";
         }
+
         // TODO: 그 child에서 enter했을때 노트 id 추가해주는거 수정 로직 필요함
+        // 자식 ListBlock 일 때 예외 처리
 
         // 분리하고 업데이트된 textIdx 구함
         const dividedTextContents = editorSelection.getDividedTextContentsFromCaret();

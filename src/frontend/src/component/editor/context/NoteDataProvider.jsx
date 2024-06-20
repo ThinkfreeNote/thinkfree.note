@@ -20,6 +20,7 @@ export const BlockIdListContext = createContext(null);
 function NoteDataProvider({children, noteId}) {
     const [blockIdList, setBlockIdList] = useState([]);
     const blockStore = useRef(null);
+    console.log(blockStore);
     const navigate = useNavigate();
 
     useEffect(() => {

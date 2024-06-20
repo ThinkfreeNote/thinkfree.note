@@ -18,9 +18,13 @@ export class ListBlock extends TextBlock {
         return this.childIdList[curIdx - 1];
     }
 
-    //
-    // moveChild(childListBlock) {
-    //     childListBlock.parentId = this.id;
-    //     this.childIdList.push(childListBlock.id);
-    // }
+    moveChildList(fromBlock) {
+        this.childIdList.push(fromBlock);
+
+        fromBlock.childIdList.forEach((childId) => {
+            this.childIdList.push(childId);
+        });
+
+        fromBlock.childIdList = [];
+    }
 }

@@ -102,7 +102,6 @@ function useNote() {
         let textIdx = curBlock.getTextIdx(text.id);
         let newBlockType = curBlock.type;
 
-
         // textValue 가 없고, depth 가 0일 때만 TextBlock 추가
         if (text.value === "" && curBlock.textIdList.length === 1 && curBlock.depth === 0) {
             curBlock.type = "text";// TODO: type만 text로 바꿔준거라 문제 생길 수도 있음
@@ -130,13 +129,20 @@ function useNote() {
             curBlock.addText(new Text(getRandomId(), "", new FontStyle()));
         }
 
-        // BlockStore 에 새로운 Text 들을 담은 ListBlock 추가 (이전과 같은 타입의 텍스트 블럭을 생성)
+        // BlockStore 에 새로운 Text 들을 담은 ListBlock 추가 (이전과 같은 타입의 블럭을 생성)
         const newBlock = blockStore.createNewBlock(newBlockType, removedTextList);
 
+        // depth 가 0 인 경우 note 에 넣어줌
+        if (curBlock.depth === 0) {
+            note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
+            // 기존 block 리렌더링
+            setReRenderTargetId(curBlock.id);
+        }
         // depth 가 1 이상인 경우 부모의 childIdList 에 Push
-        if (curBlock.depth > 0) {
+        else {
             const parentBlock = blockStore.getBlock(curBlock.parentId);
             newBlock.depth = curBlock.depth;
+            console.log(curBlock.depth);
             newBlock.parentId = curBlock.parentId;
 
             parentBlock.childIdList.splice(parentBlock.childIdList.indexOf(curBlock.id) + 1, 0, newBlock.id);
@@ -148,11 +154,8 @@ function useNote() {
             // 기존 block 리렌더링
             setReRenderTargetId(parentBlock.id);
             reloadBlockIdList();
-        } else {
-            note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
-            // 기존 block 리렌더링
-            setReRenderTargetId(curBlock.id);
         }
+
     }
 
     return {backspaceRemoveBlock, appendBlockAfterCurrentBlock, appendBlockAfterCurrentListBlock}

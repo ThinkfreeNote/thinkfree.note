@@ -16,7 +16,7 @@ function useEditorHandler() {
     const {backspaceRemoveBlock, appendBlockAfterCurrentBlock, appendBlockAfterCurrentListBlock} = useNote();
     const {tableArrowHandler, updateCellValue} = useTableHandler();
     const {updateTextValue, deleteTextValue} = useTextHandler();
-    const {changeDepth} = useListHandler();
+    const {increaseDepth} = useListHandler();
 
     const onKeyDownHandler = (e) => {
         // 키 입력이 발생한 block Id와 타입
@@ -74,7 +74,7 @@ function useEditorHandler() {
             if (e.key === "Tab") {
                 e.preventDefault();
                 if(editorSelection.isCaret()){
-                    changeDepth();
+                    increaseDepth();
                 }
             }
 

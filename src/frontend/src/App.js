@@ -7,7 +7,7 @@ import NoteEditorContainer from "./component/container/NoteEditorContainer";
 import HomePage from "./component/HomePage";
 
 export const editorSelection = new EditorSelection();
-
+console.log(editorSelection);
 const router = createBrowserRouter([
     {
         path: "/",

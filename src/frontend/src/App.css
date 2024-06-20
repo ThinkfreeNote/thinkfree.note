@@ -527,8 +527,8 @@ table, th, td {
 }
 
 .block-menu-btn:hover {
-    background: rgb(239, 239, 239);
-    border-radius: 8px;
+    background: rgba(239, 239, 239,.7);
+    border-radius: 3px;
 }
 
 .block-menu-btn svg {

@@ -1,6 +1,6 @@
 import React from 'react';
-import SideNavigation from "../SideNavigation";
-import Header from "../Header";
+import SideNavigation from "../ui/side/SideNavigation";
+import Header from "./Header";
 import NoteTitleProvider from "../editor/context/NoteTitleProvider";
 import {useParams} from "react-router-dom";
 

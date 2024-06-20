@@ -1,7 +1,7 @@
 import React from 'react';
 import {useTableMousePosition} from "./hooks/useTableMousePositionHooks";
 import {createPortal} from "react-dom";
-import {useMenu} from "../../common/MenuContext";
+import {useMenu} from "../../ui/menu/MenuContext";
 import TableMenu from "./TableMenu";
 import {ReactComponent as SelectorIcon} from "../../../assets/icon_selector.svg";
 

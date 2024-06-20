@@ -6,7 +6,7 @@ import {BlockReRenderContext} from "../context/BlockReRenderContext";
 import {Text} from "../../../model/Text";
 import {getRandomId} from "../../../utils/id";
 import {FontStyle} from "../../../model/FontStyle";
-import {MenuContext} from "../../common/MenuContext";
+import {MenuContext} from "../../ui/menu/MenuContext";
 import {useTableHandler} from "../table/hooks/useTableHandler";
 import useTextHandler from "../text/hooks/useTextHandler";
 import useNote from "./useNote";

@@ -1,7 +1,10 @@
 import React from 'react';
-import {ContextMenu} from "../common/ContextMenu";
+import {ContextMenu} from "../ui/menu/ContextMenu";
 import useBlockIdList from "./hooks/useBlockIdList";
 import {useBlockStore} from "./hooks/useBlockHooks";
+import {ReactComponent as TextBlockIcon} from "../../assets/icon_textBlock.svg";
+import {ReactComponent as UnorderedIcon} from "../../assets/icon_unorderedList.svg";
+import {ReactComponent as TableIcon} from "../../assets/icon_table.svg";
 
 function BlockSelectMenu({closeMenu, blockId}) {
     const {addBlockId, getIndexOfBlock} = useBlockIdList();
@@ -16,10 +19,10 @@ function BlockSelectMenu({closeMenu, blockId}) {
         <ContextMenu closeMenu={closeMenu}>
             <ContextMenu.SubTitle text="기본 Blocks"/>
             <ContextMenu.Divider/>
-            <ContextMenu.Plain handler={() => addBlock("text")} name="텍스트"/>
-            <ContextMenu.Plain handler={() => addBlock("ul")} name="순서 없는 리스트"/>
-            <ContextMenu.Plain handler={() => addBlock("ol")} name="순서 있는 리스트"/>
-            <ContextMenu.Plain handler={() => addBlock("table")} name="테이블"/>
+            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("text")} name="텍스트"/>
+            <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ul")} name="순서 없는 리스트"/>
+            <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ol")} name="순서 있는 리스트"/>
+            <ContextMenu.Plain icon={<TableIcon/>} handler={() => addBlock("table")} name="테이블"/>
         </ContextMenu>
     );
 }

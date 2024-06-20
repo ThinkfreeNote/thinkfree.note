@@ -431,6 +431,19 @@ table, th, td {
     height: 18px;
 }
 
+/* 공용 컨텍스트 메뉴 UI */
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+        transform : scale(.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .context-menu-overlay {
     position: fixed;
     z-index: 999;
@@ -441,9 +454,11 @@ table, th, td {
 .context-menu {
     position: absolute;
     background-color: white;
-    border-radius: 4px;
+    border-radius: 3px;
     padding: .3rem 0;
     box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+    animation: .2s ease normal fadein forwards;
+    opacity: 0;
 }
 
 .context-menu-item {

@@ -68,7 +68,7 @@ function ContextMenuItemDropDown({children, name,icon}) {
     return <div className="context-menu-item context-menu-dropDown" style={{position: "relative"}}>
         {icon}<span>{name}</span>
         <ArrowRightIcon width="18" height="18" style={{marginLeft: "auto"}}/>
-        <div style={{position: "absolute", transform: "translateX(90%)"}} className="context-menu">
+        <div style={{position: "absolute", left: "95%"}} className="context-menu">
             {children}
         </div>
     </div>

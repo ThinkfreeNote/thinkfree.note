@@ -17,7 +17,7 @@ import {useMenu} from "../menu/MenuContext";
 function NoteListItemButtonBox({noteId}) {
     return (
         <div className="noteList-item-menu-box">
-            <NoteListItemBookMarkButton noteId={noteId}/> {/* 북마크 */}
+            {/*<NoteListItemBookMarkButton noteId={noteId}/> /!* 북마크 *!/*/}
             <NoteListItemMenuButton noteId={noteId}/> {/* 메뉴 */}
             <NoteListItemPlusButton noteId={noteId}/> {/* Plus */}
         </div>

@@ -17,8 +17,8 @@ function NoteListNavigation({noteList}) {
                 return <NoteListItem key={item.id} id={item.id} title={item.title}
                                      isSelected={Number(noteId) === item.id}/>
             })}
-            <hr/>
-            <h3>Note List</h3>
+
+            <h3 style={{marginTop : "24px"}}>Note List</h3>
             {noteList.map((item) => {
                 return <NoteListItem key={item.id} id={item.id} title={item.title}
                                      isSelected={Number(noteId) === item.id}/>

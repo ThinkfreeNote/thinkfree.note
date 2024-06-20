@@ -19,7 +19,6 @@ function NoteListItem({id, title, isSelected}) {
         }
     }}>
         <div className={`noteList-item ${isSelected && "selected"}`}>
-            <div className="noteList-item-marker">•</div>
             <div className="noteList-item-title">{isSelected ? liveTitle : title}</div>
             <NoteListItemButtonBox noteId={id}/>
         </div>

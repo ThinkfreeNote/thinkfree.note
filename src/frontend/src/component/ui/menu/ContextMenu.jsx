@@ -60,7 +60,7 @@ function ContextMenuItemToggle({name, handler, init = false, icon}) {
 
 // 구분선
 function ContextMenuItemDivider() {
-    return <hr style={{margin: "0 10px"}}></hr>
+    return <hr style={{margin: "0 5px", height : "1px", border : "none",background : "rgba(var(--point-color),.4)"}}></hr>
 }
 
 //

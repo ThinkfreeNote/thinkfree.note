@@ -6,6 +6,7 @@ import SaveButton from "../editor/SaveButton";
 import {useParams} from "react-router-dom";
 import SelectionManagerProvider from "../context/SelectionManagerProvider";
 import {DragAndDropProvider} from "../editor/context/DragAndDropProvider";
+import {EditorDialogProvider} from "../editor/context/EditorDialogProvider";
 
 
 function NoteEditorContainer() {
@@ -14,11 +15,13 @@ function NoteEditorContainer() {
         <NoteDataProvider key={noteId} noteId={noteId}>
             <SelectionManagerProvider>
                 <BlockReRenderProvider>
-                   <DragAndDropProvider>
-                       {/* 에디터 */}
-                       <NoteEditor/>
-                       <SaveButton/>
-                   </DragAndDropProvider>
+                    <DragAndDropProvider>
+                        <EditorDialogProvider>
+                            {/* 에디터 */}
+                            <NoteEditor/>
+                            <SaveButton/>
+                        </EditorDialogProvider>
+                    </DragAndDropProvider>
                 </BlockReRenderProvider>
             </SelectionManagerProvider>
         </NoteDataProvider>

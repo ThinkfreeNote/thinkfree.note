@@ -21,7 +21,7 @@ export class BlockStore {
         const fromBlock = this.getBlock(fromId);
         const toBlock = this.getBlock(toId);
 
-        if(toBlock.textIdList.length === 1 && toBlock.getTextFromIdx(0).value.length === 0){
+        if (toBlock.textIdList.length === 1 && toBlock.getTextFromIdx(0).value.length === 0) {
             toBlock.removeText(0);
         }
 
@@ -51,7 +51,7 @@ export class BlockStore {
             return textBlock;
 
         } else if (type === "ul" || type === "ol") {
-            const listBlock = new ListBlock(blockId, type, {}, []);
+            const listBlock = new ListBlock(blockId, type, {}, "", [], 0);
             // 인자로 들어온 텍스트가 없으면 기본값
             textList.length === 0 ?
                 listBlock.addText(new Text(getRandomId(), "", new FontStyle())) :

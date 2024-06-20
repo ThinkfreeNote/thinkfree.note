@@ -31,10 +31,7 @@ function useListHandler() {
             }
 
             // blockId 를 이전 ListBlock 의 childIdList 에 추가, 이후 기존 ListBlockId 삭제
-            prevBlock.moveChild(block.id);
-            console.log(prevBlock);
-            console.log(deleteBlock(blockId));
-
+            prevBlock.moveChild(block);
             block.depth += 1;
             setReRenderTargetId(blockId);
         }

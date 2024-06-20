@@ -8,8 +8,19 @@ export class ListBlock extends TextBlock {
         this.depth = depth;
     }
 
-    moveChild(childListBlock) {
-        childListBlock.parentId = this.id;
-        this.childIdList.push(childListBlock.id);
+    getChildIndex(childBlockId) {
+        return this.childIdList.indexOf(childBlockId);
     }
+
+    getPrevChildBlockId(childBlockId) {
+        const curIdx = this.getChildIndex(childBlockId);
+        if (curIdx <= 0) return null;
+        return this.childIdList[curIdx - 1];
+    }
+
+    //
+    // moveChild(childListBlock) {
+    //     childListBlock.parentId = this.id;
+    //     this.childIdList.push(childListBlock.id);
+    // }
 }

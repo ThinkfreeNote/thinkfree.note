@@ -47,12 +47,15 @@ function useBlockIdList() {
 
     const getPrevBlockId = (blockId) => {
         const index = getIndexOfBlock(blockId);
-
         return index < 1 ? blockId : blockIdList[index - 1];
     }
 
+    const reloadBlockIdList = () => {
+        setBlockIdList([...blockIdList]);
+    }
+
     return {
-        blockIdList, addBlockId, getIndexOfBlock, deleteBlock, replaceBlock, getPrevBlockId
+        blockIdList, addBlockId, getIndexOfBlock, deleteBlock, replaceBlock, getPrevBlockId, reloadBlockIdList
     }
 }
 

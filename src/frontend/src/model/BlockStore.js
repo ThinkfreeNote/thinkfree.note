@@ -8,6 +8,7 @@ import {ListBlock} from "./ListBlock";
 export class BlockStore {
     // 블럭 조회
     getBlock(blockId) {
+        if (this[blockId] === undefined) return null;
         return this[blockId];
     }
 

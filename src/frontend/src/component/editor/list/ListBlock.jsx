@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 
-import {useBlockData} from "../hooks/useBlockHooks";
+import {useBlockData, useBlockStore} from "../hooks/useBlockHooks";
 import useTextBlockObserver from "../text/hooks/useTextBlockObserver";
 import {generate4wordId} from "../../../utils/id";
 import TextComponent from "../text/TextComponent";

@@ -4,8 +4,10 @@ import {useContext} from "react";
 import {BlockReRenderContext} from "../../context/BlockReRenderContext";
 import {useIndexList} from "../../context/NoteIndexListProvider";
 import useBlockIdList from "../../hooks/useBlockIdList";
+import useNote from "../../hooks/useNote";
 
 function useListHandler() {
+    const note = useBlockIdList();
     const blockStore = useBlockStore();
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
     const {getOrder} = useIndexList();
@@ -13,31 +15,43 @@ function useListHandler() {
 
 
     const changeDepth = () => {
-        const blockId = editorSelection.startBlockId;
-        const block = blockStore.getBlock(blockId);
+        const curBlockId = editorSelection.startBlockId;
+        const curBlock = blockStore.getBlock(curBlockId);
 
-        if (editorSelection.isCaret() && block.type === "ol" || block.type === "ul") {
-            // 첫 목록인 경우 예외 처리
-            const order = getOrder(blockId);
+        // 예외 처리: 최대 Depth를 넘은 경우
+        if (curBlock.depth >= 3) return;
+
+        // depth가 0일 때 블록을 이전 블록의 자식으로 이동 후, note에서 제거
+        if (curBlock.depth === 0) {
+            // 예외 처리: 첫 목록인경우
+            const order = getOrder(curBlockId);
+            const prevBlock = blockStore.getBlock(getPrevBlockId(curBlockId));
             if (order === 0) return;
 
-            // 최대 Depth 를 넘은 경우 예외 처리
-            if (block.depth >= 3) return;
+            curBlock.depth += 1;
+            curBlock.parentId = prevBlock.id;
+            prevBlock.childIdList.push(curBlockId);
+            curBlock.childIdList.forEach((childId) => {
+                prevBlock.childIdList.push(childId);
+                note.deleteBlock(childId);
+            });
+            note.deleteBlock(curBlockId);
 
-            // 자식은 부모 기준 1 depth 를 넘을 수 없음
-            const prevBlock = blockStore.getBlock(getPrevBlockId(blockId));
-            if (block.depth > prevBlock.depth) {
-                return;
-            }
-
-            // blockId 를 이전 ListBlock 의 childIdList 에 추가, 이후 기존 ListBlockId 삭제
-            prevBlock.moveChild(block);
-            block.depth += 1;
-            setReRenderTargetId(blockId);
+            return;
         }
+
+        // 예외 처리: 자식의 첫 목록인 경우
+
+        const parentBlock = blockStore.getBlock(curBlock.parentId);
+        const prevBlock = blockStore.getBlock(parentBlock.getPrevChildBlockId(curBlockId));
+        curBlock.depth += 1;
+        parentBlock.childIdList.splice(parentBlock.getChildIndex(curBlockId), 1);
+        prevBlock.childIdList.push(curBlockId);
+
+        setReRenderTargetId(parentBlock.id);
     };
 
-    return {changeDepth}
+    return {changeDepth};
 }
 
 export default useListHandler;

@@ -9,12 +9,13 @@ import {BlockReRenderContext} from "../context/BlockReRenderContext";
 import {useBlockStore} from "./useBlockHooks";
 import {useSelectionManager} from "../../context/SelectionManagerProvider";
 import {EditorSelection} from "../../../model/Selection";
+import {useIndexList} from "../context/NoteIndexListProvider";
 
 /**
  * @desc blockIdList, blockStore 둘 다 조작하는 함수들 관리
  */
 function useNote() {
-    const {blockIdList, getPrevBlockId} = useBlockIdList();
+    const {blockIdList, getPrevBlockId, reloadBlockIdList} = useBlockIdList();
     const blockStore = useBlockStore();
     const note = useBlockIdList();
     const {offset} = useContext(MenuContext);
@@ -54,6 +55,7 @@ function useNote() {
 
     const appendBlockAfterCurrentBlock = (e) => {
         e.preventDefault();
+
         // 메뉴가 열려있으면 동작 x
         if (offset.x !== 0 && offset.y !== 0) return;
 
@@ -61,19 +63,6 @@ function useNote() {
         const text = block.getTextFromId(editorSelection.getClosestId("text").start);
         let textIdx = block.getTextIdx(text.id);
         let newBlockType = block.type;
-
-        // ListBlock 이 textValue 가 없을 때 예외 처리
-        // depth 가 0일 때만 TextBlock 으로 변경
-        if ((newBlockType === "ol" || newBlockType === "ul") &&
-            text.value === "" && block.textIdList.length === 1 && block.depth === 0) {
-
-            // 현재와 다음 블럭을 textType으로 변경해줌
-            block.type = "text";// TODO: type만 text로 바꿔준거라 문제 생길 수도 있음
-            newBlockType = "text";
-        }
-
-        // TODO: 그 child에서 enter했을때 노트 id 추가해주는거 수정 로직 필요함
-        // 자식 ListBlock 일 때 예외 처리
 
         // 분리하고 업데이트된 textIdx 구함
         const dividedTextContents = editorSelection.getDividedTextContentsFromCaret();
@@ -103,7 +92,70 @@ function useNote() {
         setReRenderTargetId(block.id);
     }
 
-    return {backspaceRemoveBlock, appendBlockAfterCurrentBlock}
+    const appendBlockAfterCurrentListBlock = (e) => {
+        e.preventDefault();
+        // 메뉴가 열려있으면 동작 x
+        if (offset.x !== 0 && offset.y !== 0) return;
+
+        const curBlock = blockStore.getBlock(editorSelection.startBlockId);
+        const text = curBlock.getTextFromId(editorSelection.getClosestId("text").start);
+        let textIdx = curBlock.getTextIdx(text.id);
+        let newBlockType = curBlock.type;
+
+
+        // textValue 가 없고, depth 가 0일 때만 TextBlock 추가
+        if (text.value === "" && curBlock.textIdList.length === 1 && curBlock.depth === 0) {
+            curBlock.type = "text";// TODO: type만 text로 바꿔준거라 문제 생길 수도 있음
+            newBlockType = "text";
+        }
+
+        // 분리하고 업데이트된 textIdx 구함
+        const dividedTextContents = editorSelection.getDividedTextContentsFromCaret();
+        const cnt = curBlock.divideText(textIdx, dividedTextContents.before, dividedTextContents.after);
+
+        // text 마지막에 캐럿이 잡힐 경우 예외 처리
+        if (dividedTextContents.after === "") textIdx++;
+
+        // 추가된만큼 idx 증가
+        textIdx += cnt;
+
+        // 기존 textBlock에 있는 text들 삭제
+        const removedTextList = [];
+        while (true) {
+            const text = curBlock.removeText(textIdx);
+            if (!text) break;
+            removedTextList.push(text);
+        }
+        if (curBlock.textIdList.length === 0) {
+            curBlock.addText(new Text(getRandomId(), "", new FontStyle()));
+        }
+
+        // BlockStore 에 새로운 Text 들을 담은 ListBlock 추가 (이전과 같은 타입의 텍스트 블럭을 생성)
+        const newBlock = blockStore.createNewBlock(newBlockType, removedTextList);
+
+        // depth 가 1 이상인 경우 부모의 childIdList 에 Push
+        if (curBlock.depth > 0) {
+            const parentBlock = blockStore.getBlock(curBlock.parentId);
+            newBlock.depth = curBlock.depth;
+            newBlock.parentId = curBlock.parentId;
+
+            parentBlock.childIdList.splice(parentBlock.childIdList.indexOf(curBlock.id) + 1, 0, newBlock.id);
+
+            parentBlock.childIdList.forEach((id) => {
+                console.log(blockStore.getBlock(id));
+            })
+
+            // 기존 block 리렌더링
+            setReRenderTargetId(parentBlock.id);
+            reloadBlockIdList();
+        } else {
+            note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
+            // 기존 block 리렌더링
+            setReRenderTargetId(curBlock.id);
+        }
+    }
+
+    return {backspaceRemoveBlock, appendBlockAfterCurrentBlock, appendBlockAfterCurrentListBlock}
 }
 
 export default useNote;

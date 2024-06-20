@@ -31,22 +31,31 @@ function useListHandler() {
             curBlock.depth += 1;
             curBlock.parentId = prevBlock.id;
             prevBlock.childIdList.push(curBlockId);
+
             curBlock.childIdList.forEach((childId) => {
                 prevBlock.childIdList.push(childId);
-                note.deleteBlock(childId);
             });
+
+            curBlock.childIdList = [];
+
             note.deleteBlock(curBlockId);
 
             return;
         }
 
-        // 예외 처리: 자식의 첫 목록인 경우
-
         const parentBlock = blockStore.getBlock(curBlock.parentId);
         const prevBlock = blockStore.getBlock(parentBlock.getPrevChildBlockId(curBlockId));
+
+        // 예외 처리: 자식의 첫 목록인 경우
+        if (parentBlock.childIdList.indexOf(curBlockId) === 0)  return;
+
         curBlock.depth += 1;
         parentBlock.childIdList.splice(parentBlock.getChildIndex(curBlockId), 1);
         prevBlock.childIdList.push(curBlockId);
+
+        // curBlock.childIdList.forEach((childId) => {
+        //     prevBlock.childIdList.push(childId);
+        // });
 
         setReRenderTargetId(parentBlock.id);
     };

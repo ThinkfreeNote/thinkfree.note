@@ -5,9 +5,10 @@
 :root {
     --header: 56px;
     --side: 20px;
-    --point-color: 110, 93, 198;
+    --point-color: 254, 0, 121;
+    /*--point-color: 110, 93, 198;*/
     --point-color-hover: rgb(130, 113, 218) ;
-    --point-color-shadow: rgba(110, 93, 198, .3);
+    --point-color-shadow: rgba(254, 0, 121, .3);
 }
 
 
@@ -213,6 +214,7 @@ table, th, td {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    line-height: 1.6em;
 }
 
 .noteList-item-marker {
@@ -330,7 +332,7 @@ table, th, td {
     top: -2px;
     left: -2px;
     z-index: 4;
-    border: 2px solid rgb(var(--point-color));
+    border: 2px solid rgba(var(--point-color),.7);
     pointer-events: none;
 }
 
@@ -465,7 +467,7 @@ table, th, td {
 .context-menu-item svg {
     width: 16px;
     height: 16px;
-    fill : rgb(var(--point-color));
+    fill : rgba(var(--point-color),.8);
 }
 
 .context-menu-dropDown .context-menu {

@@ -1,18 +1,18 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {BlockReRenderContext} from "../context/BlockReRenderContext";
-import {useBlockStore} from "../hooks/useBlockHooks";
 import {useDialog} from "../context/EditorDialogProvider";
+import {useCell} from "./hooks/useTableData";
 
 function CalcDialog({position,payload}) {
     const {top,left} = position;
     const {closeDialog} = useDialog();
-    const {cellIds} = payload;
+    const {cellIds : {rowId, cellId,blockId }} = payload;
 
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
     const [value, setValue] = useState("");
     const overlayRef = useRef(null);
     const inputRef = useRef(null);
-    const tableData = useBlockStore().getBlock(cellIds.blockId);
+    const cellModel = useCell(blockId,rowId,cellId);
 
     const close = (e) => {
         e.target === overlayRef.current && closeDialog();
@@ -20,9 +20,9 @@ function CalcDialog({position,payload}) {
 
     const keyDownHandler = (e) => {
         if (e.key === "Enter") {
-            tableData.updateCell(cellIds.rowId,cellIds.cellId,inputRef.current.value);
+            cellModel.text = inputRef.current.value;
             closeDialog();
-            setReRenderTargetId(cellIds.blockId);
+            setReRenderTargetId(blockId);
         }
         else if(e.key === "Escape") {
             closeDialog();

@@ -1,11 +1,19 @@
 import {getRandomId} from "../utils/id";
 import {TextBlock} from "./TextBlock";
-import {Table} from "./Table";
+import {Table} from "./Table/Table";
 import {Text} from "./Text";
 import {FontStyle} from "./FontStyle";
+import {jsonToBlockStore} from "../utils/json";
+
+/**
+ * @typedef {ListBlock, TextBlock, Table} BlockModel
+ */
 
 export class BlockStore {
-    // 블럭 조회
+    /**
+     * @param blockId
+     * @returns {BlockModel}
+     */
     getBlock(blockId) {
         return this[blockId];
     }
@@ -69,7 +77,7 @@ export class BlockStore {
     duplicateBlock(originId) {
         const blockId = getRandomId();
 
-        const newBlock = JSON.parse(JSON.stringify({...this[originId]}));
+        const newBlock = jsonToBlockStore(JSON.stringify({...this[originId]}));
         Object.setPrototypeOf(newBlock, Object.getPrototypeOf(this[originId]));
 
         newBlock.id = blockId;

@@ -30,7 +30,7 @@ export function useTableHandler() {
 
         // 테이블 모델 업데이트
         const {rowId, cellId} = getCellIds($cell);
-        tableData.updateCell(rowId, cellId, value);
+        tableData.getRow(rowId).getCell(cellId).text = value;
     }
 
     /**

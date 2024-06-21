@@ -1,12 +1,14 @@
 import {Block} from "../Block";
 import {generate4wordId, getRandomId} from "../../utils/id";
 import {checkCalc, getCalcValue, isCell} from "../../utils/table";
+import {Row} from "./Row";
 
 /**
  * @property {Array} format
  * @property {Object} rows
  * @property {boolean} isRowHeader
  * @property {boolean} isColumnHeader
+ * @property {Array} contents
  */
 export class Table extends Block {
     constructor(id, type = "table", contents = []) {
@@ -28,6 +30,18 @@ export class Table extends Block {
         }
     }
 
+    getRow (rowId) {
+        return this.rows[rowId];
+    }
+
+    get rowSize() {
+        return this.contents.length;
+    }
+
+    get columnSize() {
+        return this.format.length;
+    }
+
     addRow(index = Infinity) {
         const id = getRandomId();
 
@@ -38,14 +52,7 @@ export class Table extends Block {
             this.contents.splice(index + 1, 0, id);
         }
 
-        const rowObj = {};
-        this.format.forEach(item => {
-            rowObj[item] = {
-                value: "",
-            };
-        })
-
-        this.rows[id] = rowObj;
+        this.rows[id] = new Row(this.format);
     }
 
     addColumn(index = Infinity) {
@@ -60,10 +67,8 @@ export class Table extends Block {
 
         const rowIds = Object.keys(this.rows);
 
-        rowIds.forEach(item => {
-            this.rows[item][columnId] = {
-                value: ""
-            }
+        rowIds.forEach(rowId => {
+            this.getRow(rowId).setCell(columnId);
         })
     }
 
@@ -74,22 +79,16 @@ export class Table extends Block {
         }
     }
 
-    removeRow(index) {
-        const rowId = this.contents[index];
-        delete this.rows[rowId];
-        this.contents.splice(index, 1);
+    removeRow(rowIdx) {
+        delete this.rows[this.contents[rowIdx]];
+        this.contents.splice(rowIdx, 1);
     }
 
-    removeColumn(index) {
-        const cellId = this.format[index];
+    removeColumn(colIdx) {
+        const cellId = this.format[colIdx];
         this.contents.map(rowId => delete this.rows[rowId][cellId])
         const formatIndex = this.format.indexOf(cellId);
         this.format.splice(formatIndex, 1);
-
-    }
-
-    updateCell(rowId, colId, value) {
-        this.rows[rowId][colId].value = value;
     }
 
     /**
@@ -99,7 +98,7 @@ export class Table extends Block {
      * @param {boolean} isCalcMode 계산함수 적용 여부
      */
     getCellValue(rowId, colId, isCalcMode) {
-        const {value, color, bgColor, bold} = this.rows[rowId][colId];
+        const {value, color, bgColor, bold} = this.getRow(rowId).getCell(colId);
         const calculatedValue = this.calculateValue(value);
 
         return {
@@ -128,22 +127,6 @@ export class Table extends Block {
         }
     }
 
-    setCellColor(rowId, colId, color) {
-        this.rows[rowId][colId].color = color;
-    }
-
-    toggleBold(rowId, colId) {
-        this.rows[rowId][colId].bold = !this.rows[rowId][colId].bold ?? true;
-    }
-
-    setCellBackgroundColor(rowId, colId, color) {
-        this.rows[rowId][colId].bgColor = color;
-    }
-
-    getFormat() {
-        return this.format;
-    }
-
     /**
      * @desc 테이블에서 셀의 위치 값
      * @param {HTMLElement} $cell
@@ -158,15 +141,6 @@ export class Table extends Block {
         const colIdx = this.format.indexOf(cellId);
         return [rowIdx, colIdx];
     }
-
-    getRowLength() {
-        return this.contents.length;
-    }
-
-    getColumnLength() {
-        return this.format.length;
-    }
-
 
     /**
      * @param {"column"|"row"} type

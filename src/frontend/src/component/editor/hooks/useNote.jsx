@@ -13,7 +13,7 @@ import useTextHandler from "../text/hooks/useTextHandler";
  * @desc blockIdList, blockStore 둘 다 조작하는 함수들 관리
  */
 function useNote() {
-    const {blockIdList, getPrevBlockId} = useBlockIdList();
+    const {blockIdList, getPrevBlockId, reloadBlockIdList} = useBlockIdList();
     const blockStore = useBlockStore();
     const note = useBlockIdList();
     const {offset} = useContext(MenuContext);
@@ -23,7 +23,7 @@ function useNote() {
     const {addListBlock} = useListHandler();
 
     /**
-     * @desc 블록을 삭제하는 함수
+     * @desc 텍스트 블록을 삭제하는 함수
      */
     const backspaceRemoveBlock = () => {
         if (editorSelection.blockId[0] === blockIdList[0]) return;
@@ -31,7 +31,6 @@ function useNote() {
         const blockId = editorSelection.startBlockId;
         const prevBlockId = getPrevBlockId(blockId);
         const prevBlock = blockStore.getBlock(prevBlockId);
-
         let blockOffset = prevBlock.getLastTextId();
         let offset = EditorSelection.LAST_OFFSET;
 
@@ -54,6 +53,67 @@ function useNote() {
     }
 
     /**
+     * 자식, 손주 들을 뎁스를 줄여줌
+     * @param curBlock
+     * @param updatedBlockIdList
+     */
+    function move(curBlock, updatedBlockIdList) {
+        // 자식들을 0 depth 로 만들고 blockIdList 에 추가
+        curBlock.childIdList.forEach((childId) => {
+            const childBlock = blockStore.getBlock(childId);
+
+            childBlock.depth = 0;
+            childBlock.parentId = "";
+            updatedBlockIdList.push(childBlock.id);
+
+            // 손자들의 depth 를 줄여줌
+            childBlock.childIdList.forEach((grandChildId) => {
+                const grandChildBlock = blockStore.getBlock(grandChildId);
+                grandChildBlock.depth = 1;
+            });
+        });
+
+        curBlock.childIdList = [];
+    }
+
+    /**
+     * @desc 리스트 블록을 삭제하는 함수
+     */
+    const backspaceRemoveListBlock = () => {
+        if (editorSelection.blockId[0] === blockIdList[0]) return;
+        const curBlock = blockStore.getBlock(editorSelection.startBlockId);
+
+        // depth 가 0일 때
+
+        // 블럭을 텍스트로 변경
+        curBlock.type = "text";
+
+        const updatedBlockIdList = [];
+        // if (curBlock.depth >= 2) updatedBlockIdList.push(curBlock.id);
+        if (curBlock.depth === 0) {
+            move(curBlock, updatedBlockIdList);
+        } else {
+            move(blockStore.getBlock(curBlock.parentId), updatedBlockIdList);
+        }
+
+        // move(curBlock, updatedBlockIdList);
+        // 블럭의 자식을 끊어줌
+
+        let index;
+        // 노트에 추가
+        if (curBlock.depth === 0) {
+            index = note.getIndexOfBlock(curBlock.id);
+        } else {
+            index = note.getIndexOfBlock(curBlock.parentId);
+            console.log(index);
+        }
+
+        note.concatBlockIdList(updatedBlockIdList, index + 1);
+        console.log(curBlock.type);
+        // reloadBlockIdList(curBlock.id);
+    }
+
+    /**
      * 텍스트 블록을 추가하는 함수
      * @param e
      */
@@ -71,7 +131,6 @@ function useNote() {
 
         // 새로운 Text들을 담은 TextBlock을 추가 (이전과 같은 타입의 텍스트 블럭을 생성)
         const newBlock = blockStore.createNewBlock(newBlockType, removedTextList);
-
         note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
         // 기존 TextBlock 리렌더링
         setReRenderTargetId(curBlock.id);
@@ -106,7 +165,12 @@ function useNote() {
         addListBlock(curBlock, newBlock);
     }
 
-    return {backspaceRemoveBlock, appendBlockAfterCurrentBlock, appendBlockAfterCurrentListBlock}
+    return {
+        backspaceRemoveBlock,
+        backspaceRemoveListBlock,
+        appendBlockAfterCurrentBlock,
+        appendBlockAfterCurrentListBlock
+    }
 }
 
 export default useNote;

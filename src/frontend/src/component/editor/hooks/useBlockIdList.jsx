@@ -19,6 +19,20 @@ function useBlockIdList() {
         setBlockIdList(newNoteContents);
     }
 
+    /**
+     * @desc blockIdList 에 추가 blockIdList  추가
+     * @param {Array} blockIds
+     * @param {number} offset offset 미입력 시 가장 마지막에 추가
+     */
+    const concatBlockIdList = (blockIds, offset = Infinity) => {
+        const index = offset > blockIdList.length ? blockIdList.length : offset;
+        const newNoteContents = [...blockIdList];
+        for (let i = blockIds.length - 1; i >= 0; i--) {
+            newNoteContents.splice(index, 0, blockIds[i]);
+        }
+        setBlockIdList(newNoteContents);
+    }
+
     const getIndexOfBlock = (blockId) => {
         return blockIdList.indexOf(blockId);
     }
@@ -55,7 +69,7 @@ function useBlockIdList() {
     }
 
     return {
-        blockIdList, addBlockId, getIndexOfBlock, deleteBlock, replaceBlock, getPrevBlockId, reloadBlockIdList
+        blockIdList, addBlockId, getIndexOfBlock, deleteBlock, replaceBlock, getPrevBlockId, reloadBlockIdList, concatBlockIdList
     }
 }
 

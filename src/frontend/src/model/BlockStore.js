@@ -35,6 +35,7 @@ export class BlockStore {
         });
     }
 
+
     // 블럭을 생성하여 스토어에 추가
     createNewBlock(type, textList = []) {
         const blockId = getRandomId();

@@ -13,7 +13,7 @@ import useListHandler from "../list/hooks/useListHandler";
  */
 function useEditorHandler() {
     const blockStore = useBlockStore();
-    const {backspaceRemoveBlock, appendBlockAfterCurrentBlock, appendBlockAfterCurrentListBlock} = useNote();
+    const {backspaceRemoveBlock, backspaceRemoveListBlock , appendBlockAfterCurrentBlock, appendBlockAfterCurrentListBlock} = useNote();
     const {tableArrowHandler, updateCellValue} = useTableHandler();
     const {updateTextValue, deleteTextValue} = useTextHandler();
     const {increaseDepth} = useListHandler();
@@ -84,7 +84,7 @@ function useEditorHandler() {
                     if (editorSelection.isStartCaret()) {
                         e.preventDefault();
                         // backspace 로 블록 삭제되는 경우
-                        backspaceRemoveBlock();
+                        backspaceRemoveListBlock();
                     } else {
                         deleteTextValue();
                     }

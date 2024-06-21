@@ -50,7 +50,7 @@ function useTextHandler() {
     };
 
     const deleteTextValue = () => {
-        const blockId = editorSelection.blockId[0];
+        const blockId = editorSelection.startBlockId;
         const textBlock = blockStore[blockId];
 
         // text 모델 제거

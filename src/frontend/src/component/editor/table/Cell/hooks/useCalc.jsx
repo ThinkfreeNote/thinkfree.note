@@ -5,7 +5,7 @@ import {Calc, checkCalc} from "../../../../../utils/table";
  * @param {Table} tableData
  * @param {string} text
  */
-export function useCalc(tableData, text) {
+export function useCalc(tableData) {
 
     const calculate = (text) => {
         const calcType = checkCalc(text);
@@ -20,7 +20,7 @@ export function useCalc(tableData, text) {
                 return calculateByMethod(text, method, parameters);
             }
             case Calc.SIGN : {
-                return text;
+                return calculateByMethod(text, method, parameters);
             }
             default : {
                 return text;
@@ -55,7 +55,7 @@ export function useCalc(tableData, text) {
         else if (calcType === Calc.SIGN) {
             const calculation = text.slice(1).replace(" ", "");
             const parameters = calculation.split(/[*+-\/]/);
-            const signs = calculation.split(/[a-zA-Z0-9]+/).filter((item)=>item.length > 0);
+            const signs = calculation.split(/[a-zA-Z0-9]+/).filter((item) => item.length > 0);
             const method = signs.map(signToMethod);
 
             return {
@@ -86,17 +86,38 @@ export function useCalc(tableData, text) {
      * @returns {string}
      */
     const calculateByMethod = (text, method, parameters) => {
-
         // 계산함수 파라미터 인덱스 변환 및 계산 값
         const parameterCellValues = parameters.map((param) => {
+            if (!isNaN(Number(param))) return Number(param);
             const columnIdx = param.slice(0, 1).toLowerCase().charCodeAt(0) - 97;
             const rowIdx = Number(param.slice(1)) - 1;
             return Number(getIndexOfValue(rowIdx, columnIdx));
         })
 
-        // 메서드에 해당하는 계산 처리
-        return calc(method, parameterCellValues);
+        if (method instanceof Array) {
+            const methodList = [...method];
+            const parameters = [...parameterCellValues];
+
+            while (methodList.length !== 0) {
+                let index = methodList.findIndex((method) => method === "PRODUCT" || method === "QUOTIENT");
+                if (index === -1) {
+                    index = methodList.findIndex((method) => method === "SUM" || method === "MINUS");
+                }
+                const [method] = methodList.splice(index, 1);
+                const params = parameters.splice(index, 2);
+
+                const result = calc(method, params);
+                parameters.splice(index, 0, result);
+            }
+
+            return parameters[0];
+        } else {
+            // 메서드에 해당하는 계산 처리
+            return calc(method, parameterCellValues);
+        }
+
     }
+
 
     /** @return {string} 인덱스에 해당하는 셀의 값 획득 만약 계산함수라면 계산된 결과를 제공 */
     const getIndexOfValue = (rowIdx, colIdx) => {

@@ -10,7 +10,7 @@ function Cell({cellId, rowId, colIdx, rowIdx}) {
     const cell = tableData.getRow(rowId).getCell(cellId);
     const {isSelected} = useTableCursorPosition(rowId,cellId);
 
-    const {calculate} = useCalc(tableData,cell.text);
+    const {calculate} = useCalc(tableData);
 
     const contents = !isSelected ? calculate(cell.text) : cell.text;
     return <CellWrapper key={cell.text} cellId={cellId} rowId={rowId} colIdx={colIdx} rowIdx={rowIdx} isSelected={isSelected}>

@@ -1,6 +1,6 @@
-import {Block} from "./Block";
-import {generate4wordId, getRandomId} from "../utils/id";
-import {checkCalc, getCalcValue, isCell} from "../utils/table";
+import {Block} from "../Block";
+import {generate4wordId, getRandomId} from "../../utils/id";
+import {checkCalc, getCalcValue, isCell} from "../../utils/table";
 
 /**
  * @property {Array} format
@@ -41,7 +41,7 @@ export class Table extends Block {
         const rowObj = {};
         this.format.forEach(item => {
             rowObj[item] = {
-                value : "",
+                value: "",
             };
         })
 
@@ -62,7 +62,7 @@ export class Table extends Block {
 
         rowIds.forEach(item => {
             this.rows[item][columnId] = {
-                value : ""
+                value: ""
             }
         })
     }
@@ -92,18 +92,51 @@ export class Table extends Block {
         this.rows[rowId][colId].value = value;
     }
 
-    getCellValue(rowId, colId) {
-        return this.rows[rowId][colId];
+    /**
+     * @desc id 받아서 셀의 값 획득
+     * @param {string} rowId
+     * @param {string} colId
+     * @param {boolean} isCalcMode 계산함수 적용 여부
+     */
+    getCellValue(rowId, colId, isCalcMode) {
+        const {value, color, bgColor, bold} = this.rows[rowId][colId];
+        const calculatedValue = this.calculateValue(value);
+
+        return {
+            originValue : value,
+            value : isCalcMode ? calculatedValue : value,
+            color,
+            bgColor,
+            bold
+        };
     }
 
-    setCellColor(rowId,colId,color) {
+    calculateValue(text) {
+        const calcType = checkCalc(text);
+
+        switch (calcType) {
+            case "method" : {
+                return getCalcValue(this,text);
+            }
+            case "sign" : {
+                console.log(text);
+                return text;
+            }
+            default : {
+                return text
+            }
+        }
+    }
+
+    setCellColor(rowId, colId, color) {
         this.rows[rowId][colId].color = color;
     }
-    toggleBold(rowId,colId) {
+
+    toggleBold(rowId, colId) {
         this.rows[rowId][colId].bold = !this.rows[rowId][colId].bold ?? true;
     }
 
-    setCellBackgroundColor(rowId,colId,color) {
+    setCellBackgroundColor(rowId, colId, color) {
         this.rows[rowId][colId].bgColor = color;
     }
 
@@ -166,25 +199,26 @@ export class Table extends Block {
 
     getPrevRowId(rowId) {
         const index = this.contents.indexOf(rowId);
-        return this.contents[index-1];
-    }
-    getNextRowId(rowId) {
-        const index = this.contents.indexOf(rowId);
-        return this.contents[index+1];
+        return this.contents[index - 1];
     }
 
-    getIndexOfValue(rowIdx,colIdx) {
-        if(rowIdx >= this.contents.length || colIdx >= this.format.length) return null;
+    getNextRowId(rowId) {
+        const index = this.contents.indexOf(rowId);
+        return this.contents[index + 1];
+    }
+
+    getIndexOfValue(rowIdx, colIdx) {
+        if (rowIdx >= this.contents.length || colIdx >= this.format.length) return null;
         const rowId = this.contents[rowIdx]
         const value = this.rows[rowId][this.format[colIdx]].value;
 
-        if(checkCalc(value)) {
-            return getCalcValue(this,value);
+        if (checkCalc(value)) {
+            return getCalcValue(this, value);
         }
         return value;
     }
 
     getFirstCellOffset() {
-        return [this.contents[0],this.format[0]];
+        return [this.contents[0], this.format[0]];
     }
 }

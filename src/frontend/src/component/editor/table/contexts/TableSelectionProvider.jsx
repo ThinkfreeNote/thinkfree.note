@@ -1,6 +1,6 @@
-import React, {createContext, useCallback, useEffect, useMemo, useState} from "react";
+import React, {createContext, useContext, useEffect, useState} from "react";
 import {editorSelection} from "../../../../App";
-import {getCellIds, isCell} from "../../../../utils/table";
+import {getCellIds} from "../../../../utils/table";
 
 export const TableCursorPositionContext = createContext(null);
 
@@ -28,7 +28,6 @@ function TableCursorPositionProvider({blockId, children}) {
                 clearPosition();
                 return;
             }
-
             const $cell = editorSelection.getClosestElement("cell").start;
             if (!$cell) {
                 clearPosition();
@@ -50,6 +49,14 @@ function TableCursorPositionProvider({blockId, children}) {
         {children}
     </TableCursorPositionContext.Provider>
 
+}
+
+export function useTableCursorPosition(rowId,columnId) {
+    const cellPosition = useContext(TableCursorPositionContext);
+
+    const isSelected = cellPosition.rowId === rowId && cellPosition.cellId === columnId;
+
+    return {isSelected}
 }
 
 export default React.memo(TableCursorPositionProvider);

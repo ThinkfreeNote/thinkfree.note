@@ -20,7 +20,6 @@ function CalcDialog({position,payload}) {
 
     const keyDownHandler = (e) => {
         if (e.key === "Enter") {
-            // 정규식 통과하면 적용하도록 추가
             tableData.updateCell(cellIds.rowId,cellIds.cellId,inputRef.current.value);
             closeDialog();
             setReRenderTargetId(cellIds.blockId);

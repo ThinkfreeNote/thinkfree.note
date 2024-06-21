@@ -26,7 +26,12 @@ export function checkCalc(text) {
     // = 으로 시작하고, 영문자 반복 + 괄호 안에 문자1+숫자n+쉼표 가 여러개 , 마지막은 쉼표 없이 문자1+숫자n
     const regex = /^=[a-zA-Z]*\(([a-zA-Z]\d+,)*([a-zA-Z]\d+)\)$/;
 
-    return regex.test(text)
+    // = 으로 시작하고 +, - / * 기호를 이용
+    const regex2 = /^=([a-zA-Z0-9]+[+-/*])*[a-zA-Z0-9]+$/;
+
+    if(regex.test(text)) return "method"
+    else if(regex2.test(text)) return "sign"
+    return false;
 }
 
 export function getCalcMethod(text) {
@@ -35,7 +40,7 @@ export function getCalcMethod(text) {
     return text.slice(1, bracketStartIndex);
 }
 
-export function getCalcParams(text) {
+export function getCalcParams(text, calcType) {
     const bracketStartIndex = text.indexOf("(");
     const bracketEndIndex = text.indexOf(")");
 

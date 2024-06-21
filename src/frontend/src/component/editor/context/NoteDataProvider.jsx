@@ -1,10 +1,7 @@
 import React, {createContext, useEffect, useRef, useState} from 'react';
-import {FontStyle} from "../../../model/FontStyle";
-import {TextBlock} from "../../../model/TextBlock";
 import {BlockStore} from "../../../model/BlockStore";
-import {Text} from "../../../model/Text";
-import {Table} from "../../../model/Table";
 import {useNavigate} from "react-router-dom";
+import {jsonToBlockStore} from "../../../utils/json";
 
 
 export const BlockStoreContext = createContext(null);
@@ -20,6 +17,11 @@ function NoteDataProvider({children, noteId}) {
     const [blockIdList, setBlockIdList] = useState([]);
     const blockStore = useRef(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(!blockStore.current) return
+        window.blockStore = blockStore.current;
+    }, [blockIdList]);
 
     useEffect(() => {
         // noteId 없으면 새 노트
@@ -98,21 +100,6 @@ export function useNoteDataFetch() {
 }
 
 
-/**
- * @desc 저장된 json 문서 파싱하여 모델객체로 연결
- * @param jsonText
- * @returns {any}
- */
-function jsonToBlockStore(jsonText) {
-    return JSON.parse(jsonText, (key, value) => {
-        if (value.type === "table") return Object.setPrototypeOf(value, Table.prototype);
-        if (value.type === "text" || value.type === "ul" || value.type === "ol") return Object.setPrototypeOf(value, TextBlock.prototype);
-        if (Object.hasOwn(value, "fontSize")) return Object.setPrototypeOf(value, FontStyle.prototype);
-        if (Object.hasOwn(value, "fontStyle")) return Object.setPrototypeOf(value, Text.prototype);
-        if (key === "blocks") return Object.setPrototypeOf(value, BlockStore.prototype);
-        return value;
-    })
-}
 
 
 export default NoteDataProvider;

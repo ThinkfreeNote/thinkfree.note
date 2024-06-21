@@ -10,6 +10,7 @@ import {useBlockStore} from "./useBlockHooks";
 import {useSelectionManager} from "../../context/SelectionManagerProvider";
 import {EditorSelection} from "../../../model/Selection";
 import {useIndexList} from "../context/NoteIndexListProvider";
+import useListHandler from "../list/hooks/useListHandler";
 
 /**
  * @desc blockIdList, blockStore 둘 다 조작하는 함수들 관리
@@ -21,7 +22,7 @@ function useNote() {
     const {offset} = useContext(MenuContext);
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
     const selectionManager = useSelectionManager();
-
+    const {isFirstList} = useListHandler();
     /**
      * @desc 블록을 삭제하는 함수
      */
@@ -132,30 +133,57 @@ function useNote() {
         // BlockStore 에 새로운 Text 들을 담은 ListBlock 추가 (이전과 같은 타입의 블럭을 생성)
         const newBlock = blockStore.createNewBlock(newBlockType, removedTextList);
 
-        // depth 가 0 인 경우 note 에 넣어줌
         if (curBlock.depth === 0) {
-            note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
-            // 기존 block 리렌더링
-            setReRenderTargetId(curBlock.id);
+            // 자식이 없는 경우
+            if (curBlock.childIdList.length === 0) {
+                note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
+                // 기존 block 리렌더링
+                setReRenderTargetId(curBlock.id);
+            }
+            // 자식이 있는 경우
+            else {
+                // 새로운 블럭의 정보를 넣어줌
+                newBlock.depth = curBlock.depth + 1;
+                newBlock.parentId = curBlock.id;
+
+                // 새로운 블럭은 자신의 첫 자식으로 들어감
+                curBlock.childIdList.unshift(newBlock.id);
+
+                // 리렌더링
+                setReRenderTargetId(curBlock.id);
+                reloadBlockIdList();
+            }
         }
-        // depth 가 1 이상인 경우 부모의 childIdList 에 Push
-        else {
-            const parentBlock = blockStore.getBlock(curBlock.parentId);
-            newBlock.depth = curBlock.depth;
-            console.log(curBlock.depth);
-            newBlock.parentId = curBlock.parentId;
+        else if (curBlock.depth > 0) {
+            // 자식이 없는 경우
+            if (curBlock.childIdList.length === 0) {
+                const parentBlock = blockStore.getBlock(curBlock.parentId);
 
-            parentBlock.childIdList.splice(parentBlock.childIdList.indexOf(curBlock.id) + 1, 0, newBlock.id);
+                // 새로운 블럭의 정보를 넣어줌
+                newBlock.depth = curBlock.depth;
+                newBlock.parentId = curBlock.parentId;
 
-            parentBlock.childIdList.forEach((id) => {
-                console.log(blockStore.getBlock(id));
-            })
+                // 새로운 블럭은 부모의 마지막 자식으로 들어감
+                parentBlock.childIdList.splice(parentBlock.childIdList.indexOf(curBlock.id) + 1, 0, newBlock.id);
 
-            // 기존 block 리렌더링
-            setReRenderTargetId(parentBlock.id);
-            reloadBlockIdList();
+                // 리렌더링
+                setReRenderTargetId(parentBlock.id);
+                reloadBlockIdList();
+            }
+            // 자식이 있는 경우
+            else {
+                // 새로운 블럭의 정보를 넣어줌
+                newBlock.depth = curBlock.depth + 1;
+                newBlock.parentId = curBlock.id;
+
+                // 새로운 블럭은 자신의 첫 자식으로 들어감
+                curBlock.childIdList.unshift(newBlock.id);
+
+                // 리렌더링
+                setReRenderTargetId(curBlock.id);
+                reloadBlockIdList();
+            }
         }
-
     }
 
     return {backspaceRemoveBlock, appendBlockAfterCurrentBlock, appendBlockAfterCurrentListBlock}

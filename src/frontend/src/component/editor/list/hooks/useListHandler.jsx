@@ -69,7 +69,18 @@ function useListHandler() {
         }
     };
 
-    return {increaseDepth};
+    const isFirstList = (curBlock) => {
+        let isFirstList;
+        // 첫 목록인지 검사
+        if (curBlock.depth === 0) {
+            const index = getOrder(curBlock.id)
+            return isFirstList = index === 0;
+        } else {
+            return isFirstList = blockStore.getBlock(curBlock.parentId).getChildIndex(curBlock.id) === 0;
+        }
+    }
+
+    return {increaseDepth, isFirstList};
 }
 
 export default useListHandler;

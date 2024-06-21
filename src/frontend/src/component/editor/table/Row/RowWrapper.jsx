@@ -1,5 +1,5 @@
 import React from 'react';
-import {useTableData} from "./hooks/useTableData";
+import {useTableData} from "../hooks/useTableData";
 
 function RowWrapper({children, rowIdx, rowId}) {
     const tableData = useTableData();

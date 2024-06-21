@@ -1,7 +1,7 @@
 import React from 'react';
-import {useTableData} from "./hooks/useTableData";
+import {useTableData} from "../hooks/useTableData";
 import CellWrapper from "./CellWrapper";
-import {useTableCursorPosition} from "./contexts/TableSelectionProvider";
+import {useTableCursorPosition} from "../contexts/TableSelectionProvider";
 
 
 function Cell({cellId, rowId, colIdx, rowIdx}) {

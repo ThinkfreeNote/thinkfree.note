@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {ColgroupSetterContext} from "./contexts/ColgroupProvider";
+import {ColgroupSetterContext} from "../contexts/ColgroupProvider";
 
 function CellRight({columnId}) {
     const {setCurrentCol,setStartPageX} = useContext(ColgroupSetterContext);

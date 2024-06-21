@@ -1,6 +1,6 @@
 import React from 'react';
-import Cell from "./Cell";
-import {useTableData} from "./hooks/useTableData";
+import Cell from "../Cell/Cell";
+import {useTableData} from "../hooks/useTableData";
 import RowWrapper from "./RowWrapper";
 
 function Row({rowId, rowIdx}) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {useTableData} from "./hooks/useTableData";
+import {useTableData} from "../hooks/useTableData";
 import TableSelector from "./TableSelector";
 import CellRight from "./CellRight";
 

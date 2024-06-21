@@ -10,7 +10,7 @@ function useListHandler() {
     const blockStore = useBlockStore();
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
     const {getOrder} = useIndexList();
-    const {getPrevBlockId, deleteBlock} = useBlockIdList();
+    const {getPrevBlockId} = useBlockIdList();
 
 
     const increaseDepth = () => {
@@ -69,18 +69,60 @@ function useListHandler() {
         }
     };
 
-    const isFirstList = (curBlock) => {
-        let isFirstList;
-        // 첫 목록인지 검사
+    const addListBlock = (curBlock, newBlock) => {
         if (curBlock.depth === 0) {
-            const index = getOrder(curBlock.id)
-            return isFirstList = index === 0;
-        } else {
-            return isFirstList = blockStore.getBlock(curBlock.parentId).getChildIndex(curBlock.id) === 0;
+            // 자식이 없는 경우
+            if (curBlock.childIdList.length === 0) {
+                note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
+                // 기존 block 리렌더링
+                setReRenderTargetId(curBlock.id);
+            }
+            // 자식이 있는 경우
+            else {
+                // 새로운 블럭의 정보를 넣어줌
+                newBlock.depth = curBlock.depth + 1;
+                newBlock.parentId = curBlock.id;
+
+                // 새로운 블럭은 자신의 첫 자식으로 들어감
+                curBlock.childIdList.unshift(newBlock.id);
+
+                // 리렌더링
+                setReRenderTargetId(curBlock.id);
+                note.reloadBlockIdList();
+            }
+        } else if (curBlock.depth > 0) {
+            // 자식이 없는 경우
+            if (curBlock.childIdList.length === 0) {
+                const parentBlock = blockStore.getBlock(curBlock.parentId);
+
+                // 새로운 블럭의 정보를 넣어줌
+                newBlock.depth = curBlock.depth;
+                newBlock.parentId = curBlock.parentId;
+
+                // 새로운 블럭은 부모의 마지막 자식으로 들어감
+                parentBlock.childIdList.splice(parentBlock.childIdList.indexOf(curBlock.id) + 1, 0, newBlock.id);
+
+                // 리렌더링
+                setReRenderTargetId(parentBlock.id);
+                note.reloadBlockIdList();
+            }
+            // 자식이 있는 경우
+            else {
+                // 새로운 블럭의 정보를 넣어줌
+                newBlock.depth = curBlock.depth + 1;
+                newBlock.parentId = curBlock.id;
+
+                // 새로운 블럭은 자신의 첫 자식으로 들어감
+                curBlock.childIdList.unshift(newBlock.id);
+
+                // 리렌더링
+                setReRenderTargetId(curBlock.id);
+                note.reloadBlockIdList();
+            }
         }
     }
 
-    return {increaseDepth, isFirstList};
+    return {increaseDepth, addListBlock};
 }
 
 export default useListHandler;

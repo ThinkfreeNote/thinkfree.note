@@ -1,7 +1,4 @@
 import {editorSelection} from "../../../App";
-import {Text} from "../../../model/Text";
-import {getRandomId} from "../../../utils/id";
-import {FontStyle} from "../../../model/FontStyle";
 import useBlockIdList from "./useBlockIdList";
 import {useContext} from "react";
 import {MenuContext} from "../../common/MenuContext";
@@ -9,20 +6,22 @@ import {BlockReRenderContext} from "../context/BlockReRenderContext";
 import {useBlockStore} from "./useBlockHooks";
 import {useSelectionManager} from "../../context/SelectionManagerProvider";
 import {EditorSelection} from "../../../model/Selection";
-import {useIndexList} from "../context/NoteIndexListProvider";
 import useListHandler from "../list/hooks/useListHandler";
+import useTextHandler from "../text/hooks/useTextHandler";
 
 /**
  * @desc blockIdList, blockStore 둘 다 조작하는 함수들 관리
  */
 function useNote() {
-    const {blockIdList, getPrevBlockId, reloadBlockIdList} = useBlockIdList();
+    const {blockIdList, getPrevBlockId} = useBlockIdList();
     const blockStore = useBlockStore();
     const note = useBlockIdList();
     const {offset} = useContext(MenuContext);
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
     const selectionManager = useSelectionManager();
-    const {isFirstList} = useListHandler();
+    const {divideText} = useTextHandler();
+    const {addListBlock} = useListHandler();
+
     /**
      * @desc 블록을 삭제하는 함수
      */
@@ -54,45 +53,34 @@ function useNote() {
         selectionManager.setEditorCaretPosition(prevBlockId, blockOffset, offset, "text");
     }
 
+    /**
+     * 텍스트 블록을 추가하는 함수
+     * @param e
+     */
     const appendBlockAfterCurrentBlock = (e) => {
         e.preventDefault();
 
         // 메뉴가 열려있으면 동작 x
         if (offset.x !== 0 && offset.y !== 0) return;
 
-        const block = blockStore.getBlock(editorSelection.startBlockId);
-        const text = block.getTextFromId(editorSelection.getClosestId("text").start);
-        let textIdx = block.getTextIdx(text.id);
-        let newBlockType = block.type;
+        const curBlock = blockStore.getBlock(editorSelection.startBlockId);
+        let newBlockType = curBlock.type;
 
-        // 분리하고 업데이트된 textIdx 구함
-        const dividedTextContents = editorSelection.getDividedTextContentsFromCaret();
-        const cnt = block.divideText(textIdx, dividedTextContents.before, dividedTextContents.after);
-
-        // text 마지막에 캐럿이 잡힐 경우 예외 처리
-        if (dividedTextContents.after === "") textIdx++;
-
-        // 추가된만큼 idx 증가
-        textIdx += cnt;
-
-        // 기존 textBlock에 있는 text들 삭제
-        const removedTextList = [];
-        while (true) {
-            const text = block.removeText(textIdx);
-            if (!text) break;
-            removedTextList.push(text);
-        }
-        if (block.textIdList.length === 0) {
-            block.addText(new Text(getRandomId(), "", new FontStyle()));
-        }
+        // 텍스트를 분리하고 삭제된 텍스트 리스트를 가져옴
+        const removedTextList = divideText(curBlock);
 
         // 새로운 Text들을 담은 TextBlock을 추가 (이전과 같은 타입의 텍스트 블럭을 생성)
         const newBlock = blockStore.createNewBlock(newBlockType, removedTextList);
-        note.addBlockId(newBlock.id, note.getIndexOfBlock(block.id) + 1);
+
+        note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
         // 기존 TextBlock 리렌더링
-        setReRenderTargetId(block.id);
+        setReRenderTargetId(curBlock.id);
     }
 
+    /**
+     * 리스트 블록을 추가하는 함수
+     * @param e
+     */
     const appendBlockAfterCurrentListBlock = (e) => {
         e.preventDefault();
         // 메뉴가 열려있으면 동작 x
@@ -100,7 +88,6 @@ function useNote() {
 
         const curBlock = blockStore.getBlock(editorSelection.startBlockId);
         const text = curBlock.getTextFromId(editorSelection.getClosestId("text").start);
-        let textIdx = curBlock.getTextIdx(text.id);
         let newBlockType = curBlock.type;
 
         // textValue 가 없고, depth 가 0일 때만 TextBlock 추가
@@ -109,81 +96,14 @@ function useNote() {
             newBlockType = "text";
         }
 
-        // 분리하고 업데이트된 textIdx 구함
-        const dividedTextContents = editorSelection.getDividedTextContentsFromCaret();
-        const cnt = curBlock.divideText(textIdx, dividedTextContents.before, dividedTextContents.after);
-
-        // text 마지막에 캐럿이 잡힐 경우 예외 처리
-        if (dividedTextContents.after === "") textIdx++;
-
-        // 추가된만큼 idx 증가
-        textIdx += cnt;
-
-        // 기존 textBlock에 있는 text들 삭제
-        const removedTextList = [];
-        while (true) {
-            const text = curBlock.removeText(textIdx);
-            if (!text) break;
-            removedTextList.push(text);
-        }
-        if (curBlock.textIdList.length === 0) {
-            curBlock.addText(new Text(getRandomId(), "", new FontStyle()));
-        }
+        // 텍스트를 분리하고 삭제된 텍스트 리스트를 가져옴
+        const removedTextList = divideText(curBlock);
 
         // BlockStore 에 새로운 Text 들을 담은 ListBlock 추가 (이전과 같은 타입의 블럭을 생성)
         const newBlock = blockStore.createNewBlock(newBlockType, removedTextList);
 
-        if (curBlock.depth === 0) {
-            // 자식이 없는 경우
-            if (curBlock.childIdList.length === 0) {
-                note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
-                // 기존 block 리렌더링
-                setReRenderTargetId(curBlock.id);
-            }
-            // 자식이 있는 경우
-            else {
-                // 새로운 블럭의 정보를 넣어줌
-                newBlock.depth = curBlock.depth + 1;
-                newBlock.parentId = curBlock.id;
-
-                // 새로운 블럭은 자신의 첫 자식으로 들어감
-                curBlock.childIdList.unshift(newBlock.id);
-
-                // 리렌더링
-                setReRenderTargetId(curBlock.id);
-                reloadBlockIdList();
-            }
-        }
-        else if (curBlock.depth > 0) {
-            // 자식이 없는 경우
-            if (curBlock.childIdList.length === 0) {
-                const parentBlock = blockStore.getBlock(curBlock.parentId);
-
-                // 새로운 블럭의 정보를 넣어줌
-                newBlock.depth = curBlock.depth;
-                newBlock.parentId = curBlock.parentId;
-
-                // 새로운 블럭은 부모의 마지막 자식으로 들어감
-                parentBlock.childIdList.splice(parentBlock.childIdList.indexOf(curBlock.id) + 1, 0, newBlock.id);
-
-                // 리렌더링
-                setReRenderTargetId(parentBlock.id);
-                reloadBlockIdList();
-            }
-            // 자식이 있는 경우
-            else {
-                // 새로운 블럭의 정보를 넣어줌
-                newBlock.depth = curBlock.depth + 1;
-                newBlock.parentId = curBlock.id;
-
-                // 새로운 블럭은 자신의 첫 자식으로 들어감
-                curBlock.childIdList.unshift(newBlock.id);
-
-                // 리렌더링
-                setReRenderTargetId(curBlock.id);
-                reloadBlockIdList();
-            }
-        }
+        // 새로운 블럭을 리스트에 맞게 넣어줌
+        addListBlock(curBlock, newBlock);
     }
 
     return {backspaceRemoveBlock, appendBlockAfterCurrentBlock, appendBlockAfterCurrentListBlock}

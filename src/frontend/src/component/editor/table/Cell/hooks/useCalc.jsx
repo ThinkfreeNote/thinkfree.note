@@ -3,10 +3,13 @@ import {Calc, checkCalc} from "../../../../../utils/table";
 /**
  * @desc 계산 함수 처리 훅
  * @param {Table} tableData
- * @param {string} text
  */
 export function useCalc(tableData) {
 
+    /**
+     * @param {string} text
+     * @returns {string}
+     */
     const calculate = (text) => {
         const calcType = checkCalc(text);
         // 계산함수 미적용 혹은 계산 함수가 아닌 경우

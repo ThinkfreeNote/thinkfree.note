@@ -7,13 +7,13 @@ import {useCalc} from "./hooks/useCalc";
 
 function Cell({cellId, rowId, colIdx, rowIdx}) {
     const tableData = useTableData();
-    const cell = tableData.getRow(rowId).getCell(cellId);
+    const {text} = tableData.getRow(rowId).getCell(cellId);
     const {isSelected} = useTableCursorPosition(rowId,cellId);
 
     const {calculate} = useCalc(tableData);
 
-    const contents = !isSelected ? calculate(cell.text) : cell.text;
-    return <CellWrapper key={cell.text} cellId={cellId} rowId={rowId} colIdx={colIdx} rowIdx={rowIdx} isSelected={isSelected}>
+    const contents = !isSelected ? calculate(text) : (text.startsWith("=") ? text.toUpperCase() : text);
+    return <CellWrapper key={text} cellId={cellId} rowId={rowId} colIdx={colIdx} rowIdx={rowIdx} isSelected={isSelected}>
         {contents.length !== 0 ? contents : <br/>}
     </CellWrapper>
 }

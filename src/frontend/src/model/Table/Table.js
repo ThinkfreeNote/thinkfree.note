@@ -1,13 +1,13 @@
 import {Block} from "../Block";
 import {generate4wordId, getRandomId} from "../../utils/id";
-import {checkCalc, getCalcValue, isCell} from "../../utils/table";
+import {isCell} from "../../utils/table";
 import {Row} from "./Row";
 
 /**
- * @property {Array} format
  * @property {Object} rows
  * @property {boolean} isRowHeader
  * @property {boolean} isColumnHeader
+ * @property {Array} format
  * @property {Array} contents
  */
 export class Table extends Block {
@@ -98,34 +98,15 @@ export class Table extends Block {
      * @param {boolean} isCalcMode 계산함수 적용 여부
      */
     getCellValue(rowId, colId, isCalcMode) {
-        const {value, color, bgColor, bold} = this.getRow(rowId).getCell(colId);
-        const calculatedValue = this.calculateValue(value);
+        const { color, bgColor, bold} = this.getRow(rowId).getCell(colId);
 
         return {
-            originValue : value,
-            value : isCalcMode ? calculatedValue : value,
             color,
             bgColor,
             bold
         };
     }
 
-    calculateValue(text) {
-        const calcType = checkCalc(text);
-
-        switch (calcType) {
-            case "method" : {
-                return getCalcValue(this,text);
-            }
-            case "sign" : {
-                console.log(text);
-                return text;
-            }
-            default : {
-                return text
-            }
-        }
-    }
 
     /**
      * @desc 테이블에서 셀의 위치 값
@@ -179,17 +160,6 @@ export class Table extends Block {
     getNextRowId(rowId) {
         const index = this.contents.indexOf(rowId);
         return this.contents[index + 1];
-    }
-
-    getIndexOfValue(rowIdx, colIdx) {
-        if (rowIdx >= this.contents.length || colIdx >= this.format.length) return null;
-        const rowId = this.contents[rowIdx]
-        const value = this.rows[rowId][this.format[colIdx]].value;
-
-        if (checkCalc(value)) {
-            return getCalcValue(this, value);
-        }
-        return value;
     }
 
     getFirstCellOffset() {

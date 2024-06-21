@@ -1,3 +1,10 @@
+/**
+ * @property {string} value
+ * @property {string} color
+ * @property {string} bgColor
+ * @property {boolean} bold
+ * @property {"cell"} type
+ */
 export class Cell {
     constructor() {
         this.type = "cell";
@@ -7,6 +14,9 @@ export class Cell {
         this.bold = false;
     }
 
+    /**
+     * @returns {string}
+     */
     get text () {
         return this.value;
     }

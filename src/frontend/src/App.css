@@ -262,7 +262,7 @@ table, th, td {
     color : white;
 }
 .new-note-button:hover {
-    background-color: var(--point-color-hover);
+    background-color: rgba(var(--point-color),.7);
 }
 
 /*------*/
@@ -665,7 +665,7 @@ table, th, td {
 }
 
 .note-save-button:hover {
-    background-color: rgb(130, 113, 218);
+    background-color: rgba(var(--point-color),.7);
 }
 
 .ul::before {

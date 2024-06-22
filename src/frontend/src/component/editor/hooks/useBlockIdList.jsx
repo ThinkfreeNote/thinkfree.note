@@ -20,7 +20,7 @@ function useBlockIdList() {
     }
 
     /**
-     * @desc blockIdList 에 추가 blockIdList  추가
+     * @desc blockIdList 에 추가 blockIdList 붙이기
      * @param {Array} blockIds
      * @param {number} offset offset 미입력 시 가장 마지막에 추가
      */

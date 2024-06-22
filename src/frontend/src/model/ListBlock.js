@@ -18,13 +18,10 @@ export class ListBlock extends TextBlock {
         return this.childIdList[curIdx - 1];
     }
 
-    moveChildList(fromBlock) {
-        this.childIdList.push(fromBlock);
-
-        fromBlock.childIdList.forEach((childId) => {
-            this.childIdList.push(childId);
-        });
-
-        fromBlock.childIdList = [];
+    removeChild(childBlockId) {
+        const index = this.getChildIndex(childBlockId);
+        if (index === -1) return false;
+        this.childIdList.splice(index, 1);
+        return true;
     }
 }

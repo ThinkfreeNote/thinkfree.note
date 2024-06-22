@@ -12,7 +12,6 @@ function useListHandler() {
     const {getOrder} = useIndexList();
     const {getPrevBlockId} = useBlockIdList();
 
-
     const increaseDepth = () => {
         const curBlockId = editorSelection.startBlockId;
         const curBlock = blockStore.getBlock(curBlockId);
@@ -122,7 +121,33 @@ function useListHandler() {
         }
     }
 
-    return {increaseDepth, addListBlock};
+    /**
+     * 자식, 손주의 depth 초기화
+     * @param curBlock
+     * @returns {*[]}
+     */
+    function resetChildBlockDepth(curBlock) {
+        const zeroDepthBlockIdList = [];
+
+        // 자식들을 0 depth 로
+        curBlock.childIdList.forEach((childId) => {
+            const childBlock = blockStore.getBlock(childId);
+
+            childBlock.depth = 0;
+            childBlock.parentId = "";
+            zeroDepthBlockIdList.push(childBlock.id);
+
+            // 손자들의 depth 를 1 로
+            childBlock.childIdList.forEach((grandChildId) => {
+                const grandChildBlock = blockStore.getBlock(grandChildId);
+                grandChildBlock.depth = 1;
+            });
+        });
+
+        return zeroDepthBlockIdList;
+    }
+
+    return {increaseDepth, addListBlock, resetChildBlockDepth};
 }
 
 export default useListHandler;

@@ -13,14 +13,14 @@ import useTextHandler from "../text/hooks/useTextHandler";
  * @desc blockIdList, blockStore 둘 다 조작하는 함수들 관리
  */
 function useNote() {
-    const {blockIdList, getPrevBlockId, reloadBlockIdList} = useBlockIdList();
+    const {blockIdList, getPrevBlockId} = useBlockIdList();
     const blockStore = useBlockStore();
     const note = useBlockIdList();
     const {offset} = useContext(MenuContext);
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
     const selectionManager = useSelectionManager();
     const {divideText} = useTextHandler();
-    const {addListBlock} = useListHandler();
+    const {addListBlock, resetChildBlockDepth} = useListHandler();
 
     /**
      * @desc 텍스트 블록을 삭제하는 함수
@@ -53,64 +53,47 @@ function useNote() {
     }
 
     /**
-     * 자식, 손주 들을 뎁스를 줄여줌
-     * @param curBlock
-     * @param updatedBlockIdList
-     */
-    function move(curBlock, updatedBlockIdList) {
-        // 자식들을 0 depth 로 만들고 blockIdList 에 추가
-        curBlock.childIdList.forEach((childId) => {
-            const childBlock = blockStore.getBlock(childId);
-
-            childBlock.depth = 0;
-            childBlock.parentId = "";
-            updatedBlockIdList.push(childBlock.id);
-
-            // 손자들의 depth 를 줄여줌
-            childBlock.childIdList.forEach((grandChildId) => {
-                const grandChildBlock = blockStore.getBlock(grandChildId);
-                grandChildBlock.depth = 1;
-            });
-        });
-
-        curBlock.childIdList = [];
-    }
-
-    /**
      * @desc 리스트 블록을 삭제하는 함수
      */
     const backspaceRemoveListBlock = () => {
         if (editorSelection.blockId[0] === blockIdList[0]) return;
         const curBlock = blockStore.getBlock(editorSelection.startBlockId);
+        let index = note.getIndexOfBlock(curBlock.id);
 
-        // depth 가 0일 때
-
-        // 블럭을 텍스트로 변경
+        // 텍스트 블럭으로 변경
         curBlock.type = "text";
 
-        const updatedBlockIdList = [];
-        // if (curBlock.depth >= 2) updatedBlockIdList.push(curBlock.id);
+        // blockIdList 에 넣을 Block 들
+        let updatedBlockIdList = [];
+
         if (curBlock.depth === 0) {
-            move(curBlock, updatedBlockIdList);
-        } else {
-            move(blockStore.getBlock(curBlock.parentId), updatedBlockIdList);
+            // 자식들의 depth 재조정
+            updatedBlockIdList = resetChildBlockDepth(curBlock);
+        }
+        else {
+            const parentBlock = blockStore.getBlock(curBlock.parentId);
+
+            // 부모 관계 끊어줌
+            parentBlock.removeChild(curBlock.id);
+            curBlock.parentId = "";
+
+            if (curBlock.depth === 1) {
+                // 자식들의 depth 재조정
+                updatedBlockIdList = resetChildBlockDepth(curBlock);
+                index = note.getIndexOfBlock(parentBlock.id);
+            } else {
+                index = note.getIndexOfBlock(parentBlock.parentId);
+            }
+
+            // 자신도 blockIdList 에 추가
+            updatedBlockIdList.unshift(curBlock.id);
         }
 
-        // move(curBlock, updatedBlockIdList);
-        // 블럭의 자식을 끊어줌
+        // 현재 블럭의 자식을 끊어줌
+        curBlock.childIdList = [];
 
-        let index;
         // 노트에 추가
-        if (curBlock.depth === 0) {
-            index = note.getIndexOfBlock(curBlock.id);
-        } else {
-            index = note.getIndexOfBlock(curBlock.parentId);
-            console.log(index);
-        }
-
         note.concatBlockIdList(updatedBlockIdList, index + 1);
-        console.log(curBlock.type);
-        // reloadBlockIdList(curBlock.id);
     }
 
     /**

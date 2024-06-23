@@ -742,6 +742,23 @@ h3 span {
     font-weight: 600 !important;
 }
 
+.contents[data-head-level="1"]::before {
+    padding: 5px;
+    content: "ㆍ";
+    margin-left: 0;
+}
+
+.contents[data-head-level="2"]::before {
+    padding: 5px;
+    content: "º";
+    margin-left: 20px;
+}
+
+.contents[data-head-level="3"]::before {
+    padding: 5px;
+    content: "□";
+    margin-left: 40px;
+}
 
 
 

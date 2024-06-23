@@ -5,7 +5,7 @@ import TableBlock from "./table/TableBlock";
 import {useBlockStore} from "./hooks/useBlockHooks";
 import ListBlock from "./list/ListBlock";
 import {useIndexList} from "./context/NoteIndexListProvider";
-import HeadBlock from "./head/headBlock";
+import HeadBlock from "./head/HeadBlock";
 
 
 /**

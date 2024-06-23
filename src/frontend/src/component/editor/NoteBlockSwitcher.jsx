@@ -6,6 +6,7 @@ import {useBlockStore} from "./hooks/useBlockHooks";
 import ListBlock from "./list/ListBlock";
 import {useIndexList} from "./context/NoteIndexListProvider";
 import HeadBlock from "./head/HeadBlock";
+import ContentsBlock from "./head/ContentsBlock";
 
 
 /**
@@ -35,6 +36,8 @@ const switcher = (type, index) => {
             return <ListBlock index={index}/>
         case "head":
             return <HeadBlock/>
+        case "contents":
+            return <ContentsBlock/>
         case "table" :
             return <TableBlock/>
         default :

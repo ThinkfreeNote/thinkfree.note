@@ -17,7 +17,6 @@ function ContentsBlock() {
     const key = generate4wordId();
     const useHeadBlockIdList = useHeadHandler().getHeadBlockIdList();
     useTextBlockObserver(ref);
-
     return (
         <div ref={ref} key={key} data-block-id={contentsBlock.id} contentEditable={false}>
             {useHeadBlockIdList.map(headBlockId => {

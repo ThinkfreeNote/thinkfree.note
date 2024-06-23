@@ -23,6 +23,7 @@ function BlockSelectMenu({closeMenu, blockId}) {
             <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 1)} name="제목1"/>
             <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 2)} name="제목2"/>
             <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 3)} name="제목3"/>
+            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("contents")} name="목차"/>
             <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ul")} name="순서 없는 리스트"/>
             <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ol")} name="순서 있는 리스트"/>
             <ContextMenu.Plain icon={<TableIcon/>} handler={() => addBlock("table")} name="테이블"/>

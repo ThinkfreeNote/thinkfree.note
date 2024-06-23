@@ -5,6 +5,7 @@ import {Text} from "./Text";
 import {FontStyle} from "./FontStyle";
 import {ListBlock} from "./ListBlock";
 import {HeadBlock} from "./HeadBlock";
+import {ContentsBlock} from "./ContentsBlock";
 
 export class BlockStore {
     // 블럭 조회
@@ -72,6 +73,11 @@ export class BlockStore {
             this.addBlock(headBlock);
 
             return headBlock;
+        } else if (type === "contents") {
+            const contentsBlock = new ContentsBlock(blockId, type, {});
+            this.addBlock(contentsBlock);
+
+            return contentsBlock;
         } else if (type === "table") {
             const table = new Table(blockId, type, []);
             this.addBlock(table);

@@ -6,12 +6,12 @@ import {generate4wordId} from "../../../utils/id";
 import useTextBlockObserver from "./hooks/useTextBlockObserver";
 
 function TextBlock() {
-    const {blockId} = useBlockId();
-    const textBlock = useBlockData(blockId);
+    let {blockId} = useBlockId();
+    let textBlock = useBlockData(blockId);
+
     const ref = useRef(null);
     const key = generate4wordId();
     useTextBlockObserver(ref);
-
 
     return (
         <p ref={ref} key={key} data-leaf="true">

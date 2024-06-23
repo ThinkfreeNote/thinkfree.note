@@ -6,21 +6,24 @@ import SaveButton from "../editor/SaveButton";
 import {useParams} from "react-router-dom";
 import SelectionManagerProvider from "../context/SelectionManagerProvider";
 import {DragAndDropProvider} from "../editor/context/DragAndDropProvider";
+import {NoteIndexListProvider} from "../editor/context/NoteIndexListProvider";
 
 
 function NoteEditorContainer() {
     const {noteId} = useParams();
     return (
         <NoteDataProvider key={noteId} noteId={noteId}>
-            <SelectionManagerProvider>
-                <BlockReRenderProvider>
-                   <DragAndDropProvider>
-                       {/* 에디터 */}
-                       <NoteEditor/>
-                       <SaveButton/>
-                   </DragAndDropProvider>
-                </BlockReRenderProvider>
-            </SelectionManagerProvider>
+            <NoteIndexListProvider>
+                <SelectionManagerProvider>
+                    <BlockReRenderProvider>
+                        <DragAndDropProvider>
+                        {/* 에디터 */}
+                        <NoteEditor/>
+                        <SaveButton/>
+                        </DragAndDropProvider>
+                    </BlockReRenderProvider>
+                </SelectionManagerProvider>
+            </NoteIndexListProvider>
         </NoteDataProvider>
     );
 }

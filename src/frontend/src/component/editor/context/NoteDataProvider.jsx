@@ -5,6 +5,7 @@ import {BlockStore} from "../../../model/BlockStore";
 import {Text} from "../../../model/Text";
 import {Table} from "../../../model/Table";
 import {useNavigate} from "react-router-dom";
+import {ListBlock} from "../../../model/ListBlock";
 
 
 export const BlockStoreContext = createContext(null);
@@ -19,13 +20,14 @@ export const BlockIdListContext = createContext(null);
 function NoteDataProvider({children, noteId}) {
     const [blockIdList, setBlockIdList] = useState([]);
     const blockStore = useRef(null);
+    window.blockStore = blockStore.current;
     const navigate = useNavigate();
 
     useEffect(() => {
         // noteId 없으면 새 노트
         if (!noteId) {
             blockStore.current = new BlockStore();
-            const firstBlock = blockStore.current.createBlock("text");
+            const firstBlock = blockStore.current.createNewBlock("text");
             setBlockIdList([firstBlock.id]);
         }
         // noteId 있을 때는 데이터 불러와서 파싱
@@ -106,7 +108,8 @@ export function useNoteDataFetch() {
 function jsonToBlockStore(jsonText) {
     return JSON.parse(jsonText, (key, value) => {
         if (value.type === "table") return Object.setPrototypeOf(value, Table.prototype);
-        if (value.type === "text" || value.type === "ul" || value.type === "ol") return Object.setPrototypeOf(value, TextBlock.prototype);
+        if (value.type === "text") return Object.setPrototypeOf(value, TextBlock.prototype);
+        if (value.type === "ul" || value.type === "ol") Object.setPrototypeOf(value, ListBlock.prototype);
         if (Object.hasOwn(value, "fontSize")) return Object.setPrototypeOf(value, FontStyle.prototype);
         if (Object.hasOwn(value, "fontStyle")) return Object.setPrototypeOf(value, Text.prototype);
         if (key === "blocks") return Object.setPrototypeOf(value, BlockStore.prototype);

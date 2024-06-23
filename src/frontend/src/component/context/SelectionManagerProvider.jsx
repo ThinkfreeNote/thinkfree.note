@@ -95,16 +95,17 @@ export function useSelectionManager() {
 export function useInitBlockCursor(blockId) {
     const blockStore = useBlockStore();
     const blockData = blockStore.getBlock(blockId);
-    const blockType = blockData.type;
+    const blockType = blockData?.type;
     const {setEditorCaretPosition} = useSelectionManager();
 
     useEffect(() => {
+        if(!blockType) return;
         if (blockType === "table") {
             setEditorCaretPosition(blockId, blockData.getFirstCellOffset(), EditorSelection.LAST_OFFSET, "table");
         } else {
             setEditorCaretPosition(blockId, blockData.getFirstTextId(), EditorSelection.FRONT_OFFSET, "text");
         }
-    }, [])
+    }, [blockType])
 
 }
 

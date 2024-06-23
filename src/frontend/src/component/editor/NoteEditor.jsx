@@ -8,6 +8,7 @@ import CommandWindow from "./CommandWindow";
 import useSlash from "./useSlash";
 import EditorToolBox from "./EditorToolBox";
 import useEditorDragHandler from "./hooks/useEditorDragHandler";
+import {NoteIndexListProvider} from "./context/NoteIndexListProvider";
 
 export const EditorContext = createContext(null);
 
@@ -36,7 +37,7 @@ function NoteEditor() {
                  onDragEnd={onDragEnd}
             >
                 <Title/>
-                {blockIdList.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}
+                {blockIdList.map((blockId, index) => <NoteBlockSwitcher key={blockId} blockId={blockId} index={index}/>)}
             </div>
             <CommandWindow/>
             {slashComponent}

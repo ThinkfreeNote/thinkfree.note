@@ -258,6 +258,7 @@ table, th, td {
     cursor : pointer;
     text-align: center;
 }
+
 .new-note-button:visited {
     color : white;
 }
@@ -668,13 +669,40 @@ table, th, td {
     background-color: rgba(var(--point-color),.7);
 }
 
-.ul::before {
-    content: "• "
+.ol[data-list-depth="0"]::before {
+    padding: 5px;
+    content: attr(data-list-value) ".";
+    margin-left: 0;
 }
 
-.list::before {
-    padding : 5px;
-    content: attr(data-li-value);
+.ol[data-list-depth="1"]::before {
+    padding: 5px;
+    content: attr(data-list-value) ".";
+    margin-left: 20px;
+}
+
+.ol[data-list-depth="2"]::before {
+    padding: 5px;
+    content: attr(data-list-value) ".";
+    margin-left: 40px;
+}
+
+.ul[data-list-depth="0"]::before {
+    padding: 5px;
+    content: "ㆍ";
+    margin-left: 0;
+}
+
+.ul[data-list-depth="1"]::before {
+    padding: 5px;
+    content: "º";
+    margin-left: 20px;
+}
+
+.ul[data-list-depth="2"]::before {
+    padding: 5px;
+    content: "□";
+    margin-left: 40px;
 }
 
 

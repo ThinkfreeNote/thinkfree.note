@@ -4,36 +4,38 @@ import TextBlock from "./text/TextBlock";
 import TableBlock from "./table/TableBlock";
 import {useBlockStore} from "./hooks/useBlockHooks";
 import ListBlock from "./list/ListBlock";
+import {useIndexList} from "./context/NoteIndexListProvider";
 
 
 /**
  * @desc 문서 모델에서 블록 모델을 가져와서 type에 맞게 렌더링 하는 컴포넌트
- * @param blockId
+ * @param blockId, index
  * @returns {JSX.Element}
  * @constructor
  */
 function NoteBlockSwitcher({blockId}) {
     const blockStore = useBlockStore();
-    const {type, id} = blockStore[blockId];
+    const {type} = blockStore[blockId];
+    const index = useIndexList().getOrder(blockId);// 현재는 ol을 위해 index 가져옴
 
-    return <BlockWrapper id={blockId} type={type}>
-        {switcher(type, id)}
+    return <BlockWrapper id={blockId} type={type} index={index}>
+        {switcher(type, index)}
     </BlockWrapper>
 }
 
 
-const switcher = (type, id) => {
+const switcher = (type, index) => {
     switch (type) {
         case "text" :
-            return <TextBlock blockId={id}/>
-        case "ol" :
-            return <ListBlock blockId={id} type={type}/>
-        case "ul" :
-            return <ListBlock blockId={id} type={type}/>
+            return <TextBlock/>
+        case "ul":
+            return <ListBlock/>
+        case "ol":
+            return <ListBlock index={index}/>
         case "table" :
-            return <TableBlock blockId={id}/>
+            return <TableBlock/>
         default :
-            return <TextBlock blockId={id}/>
+            return <TextBlock/>
     }
 }
 

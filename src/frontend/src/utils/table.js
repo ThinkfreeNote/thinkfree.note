@@ -5,6 +5,7 @@ export const Calc = Object.freeze({
     METHOD : Symbol("METHOD"),
     SIGN : Symbol("SIGN"),
     NONE : Symbol("NONE"),
+    CYCLE : Symbol("CYCLE"),
 })
 
 /**

@@ -12,7 +12,7 @@ function Cell({cellId, rowId, colIdx, rowIdx}) {
 
     const {calculate} = useCalc(tableData);
 
-    const contents = !isSelected ? calculate(text) : (text.startsWith("=") ? text.toUpperCase() : text);
+    let contents = !isSelected ? calculate(text,new Set([`${rowIdx},${colIdx}`])) : (text.startsWith("=") ? text.toUpperCase() : text);
     return <CellWrapper key={text} cellId={cellId} rowId={rowId} colIdx={colIdx} rowIdx={rowIdx} isSelected={isSelected}>
         {contents.length !== 0 ? contents : <br/>}
     </CellWrapper>

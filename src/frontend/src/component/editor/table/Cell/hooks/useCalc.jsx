@@ -1,5 +1,4 @@
 import {Calc, checkCalc} from "../../../../../utils/table";
-import row from "../../Row/Row";
 
 /**
  * @desc 계산 함수 처리 훅
@@ -9,9 +8,10 @@ export function useCalc(tableData) {
 
     /**
      * @param {string} text
+     * @param {Set} visitedCells
      * @returns {string}
      */
-    const calculate = (text) => {
+    const calculate = (text, visitedCells) => {
         const calcType = checkCalc(text);
         // 계산함수 미적용 혹은 계산 함수가 아닌 경우
         if (calcType === Calc.NONE) {
@@ -21,10 +21,10 @@ export function useCalc(tableData) {
 
         switch (calcType) {
             case Calc.METHOD : {
-                return calculateByMethod(text, method, parameters);
+                return calculateByMethod(text, method, parameters, visitedCells);
             }
             case Calc.SIGN : {
-                return calculateByMethod(text, method, parameters);
+                return calculateByMethod(text, method, parameters, visitedCells);
             }
             default : {
                 return text;
@@ -86,20 +86,35 @@ export function useCalc(tableData) {
      * @param {string} text
      * @param method
      * @param parameters
+     * @param {Set} visitedCells
      * @example calculateByMethod("=SUM(a1,b2)")
-     * @returns {string}
+     * @returns {string|symbol}
      */
-    const calculateByMethod = (text, method, parameters) => {
+    const calculateByMethod = (text, method, parameters, visitedCells) => {
         // 계산함수 파라미터 인덱스 변환 및 계산 값
         const parameterCellValues = parameters.map((param) => {
+            // 인자가 숫자인 경우
             if (!isNaN(Number(param))) return Number(param);
+
+            // 셀 번호인 경우 (a1, a2)
             const columnIdx = param.slice(0, 1).toLowerCase().charCodeAt(0) - 97;
             const rowIdx = Number(param.slice(1)) - 1;
-            if(rowIdx === -1) {
+            if (rowIdx === -1) {
                 return NaN;
             }
-            return Number(getIndexOfValue(rowIdx, columnIdx));
+            const value = getIndexOfValue(rowIdx, columnIdx, visitedCells);
+
+            // 계산 과정에서 순환 참조가 발생한 경우
+            if (value === Calc.CYCLE) {
+                return Calc.CYCLE;
+            }
+
+            return isNaN(Number(value)) ? "!값 오류" : Number(value);
         })
+
+        if (parameterCellValues.some(item => item === Calc.CYCLE)) {
+            return "!순환 참조 수식";
+        }
 
         if (method instanceof Array) {
             const methodList = [...method];
@@ -126,13 +141,22 @@ export function useCalc(tableData) {
     }
 
 
-    /** @return {string} 인덱스에 해당하는 셀의 값 획득 만약 계산함수라면 계산된 결과를 제공 */
-    const getIndexOfValue = (rowIdx, colIdx) => {
+    /** @return {string|symbol} 인덱스에 해당하는 셀의 값 획득 만약 계산함수라면 계산된 결과를 제공 */
+    const getIndexOfValue = (rowIdx, colIdx, visitedCells) => {
         if (rowIdx >= tableData.rowSize || colIdx >= tableData.columnSize) return "";
         const rowId = tableData.contents[rowIdx];
         const columnId = tableData.format[colIdx];
-        const value = tableData.getRow(rowId).getCell(columnId).text;
-        return calculate(value);
+
+        const cellIndex = `${rowIdx},${colIdx}`;
+        if (visitedCells.has(cellIndex)) {
+            return Calc.CYCLE;
+        }
+        visitedCells.add(cellIndex);
+
+        const result = calculate(tableData.getRow(rowId).getCell(columnId).text, visitedCells);
+        visitedCells.delete(cellIndex);
+
+        return result;
     }
 
 

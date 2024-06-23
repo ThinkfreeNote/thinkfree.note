@@ -20,12 +20,9 @@ function BlockSelectMenu({closeMenu, blockId}) {
             <ContextMenu.SubTitle text="기본 Blocks"/>
             <ContextMenu.Divider/>
             <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("text")} name="텍스트"/>
-            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 1)} name="h1"/>
-            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 2)} name="h2"/>
-            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 3)} name="h3"/>
-            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 4)} name="h4"/>
-            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 5)} name="h5"/>
-            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 6)} name="h6"/>
+            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 1)} name="제목1"/>
+            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 2)} name="제목2"/>
+            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 3)} name="제목3"/>
             <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ul")} name="순서 없는 리스트"/>
             <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ol")} name="순서 있는 리스트"/>
             <ContextMenu.Plain icon={<TableIcon/>} handler={() => addBlock("table")} name="테이블"/>

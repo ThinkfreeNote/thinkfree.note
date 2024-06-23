@@ -27,15 +27,6 @@ function HeadBlock() {
         case 3:
             Tag = "h3"
             break;
-        case 4:
-            Tag = "h4"
-            break;
-        case 5:
-            Tag = "h5"
-            break;
-        case 6:
-            Tag = "h6"
-            break;
     }
 
     return (

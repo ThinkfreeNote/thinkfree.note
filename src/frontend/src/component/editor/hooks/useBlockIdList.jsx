@@ -64,12 +64,29 @@ function useBlockIdList() {
         return index < 1 ? blockId : blockIdList[index - 1];
     }
 
+    /**
+     * @desc blockId 위치 변경
+     * @param blockId 옮길 블록 아이디
+     * @param offset 블록 아이디를 옮길 위치
+     */
+    const moveBlock = (blockId, offset) => {
+        const newBlockIdList = [...blockIdList];
+        const currentIdx = getIndexOfBlock(blockId);
+        const targetBlockId = newBlockIdList[offset];
+        newBlockIdList.splice(currentIdx, 1);
+
+        const index = newBlockIdList.indexOf(targetBlockId);
+        newBlockIdList.splice(index + 1, 0, blockId);
+
+        setBlockIdList(newBlockIdList);
+    }
+
     const reloadBlockIdList = () => {
         setBlockIdList([...blockIdList]);
     }
 
     return {
-        blockIdList, addBlockId, getIndexOfBlock, deleteBlock, replaceBlock, getPrevBlockId, reloadBlockIdList, concatBlockIdList
+        blockIdList, addBlockId, getIndexOfBlock, deleteBlock, replaceBlock, getPrevBlockId, reloadBlockIdList, concatBlockIdList, moveBlock
     }
 }
 

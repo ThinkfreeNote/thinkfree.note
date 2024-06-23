@@ -5,9 +5,10 @@
 :root {
     --header: 56px;
     --side: 20px;
-    --point-color: rgb(110, 93, 198);
-    --point-color-hover: rgb(130, 113, 218);
-    --point-color-shadow: rgba(110, 93, 198, .3);
+    --point-color: 254, 0, 121;
+    /*--point-color: 110, 93, 198;*/
+    --point-color-hover: rgb(130, 113, 218) ;
+    --point-color-shadow: rgba(254, 0, 121, .3);
 }
 
 
@@ -75,7 +76,7 @@ a {
 }
 
 a:active {
-    color: var(--point-color);
+    color: rgb(var(--point-color));
 }
 
 a:visited {
@@ -122,7 +123,7 @@ table, th, td {
     align-items: center;
     padding: 0 var(--side);
     font-size: 14px;
-    background-color: var(--point-color);
+    background-color: rgb(var(--point-color));
 }
 
 .header h1 {
@@ -171,18 +172,18 @@ table, th, td {
     display: block;
     width: 24px;
     height: 24px;
-    background-color: var(--point-color);
+    background-color: rgb(var(--point-color));
     border-radius: 4px;
     border: 1px solid white;
 }
 
 .user-dashboard-name {
-    color: var(--point-color);
+    color: rgb(var(--point-color));
     font-weight: 800;
 }
 
 .noteList-nav h3 {
-    font-size: 12px;
+    font-size: 11px;
     font-family: "Roboto", sans-serif;
     font-weight: 600;
     color: grey;
@@ -192,33 +193,40 @@ table, th, td {
     display: flex;
     align-items: center;
     gap: 10px;
-    height: 40px;
-    font-size: 14px;
+    height: 30px;
+    font-size: 13px;
     padding: 0 var(--side);
     border-radius: 4px;
-    color: rgba(96, 96, 96);
+    color: rgba(128, 128, 128);
+}
+
+.noteList-item:hover .noteList-item-menu-box {
+    opacity: 1;
 }
 
 .noteList-item.selected, .noteList-item:hover {
     background-color: rgba(237, 237, 235);
-    color: var(--point-color);
+    color : rgb(0,0,0);
     font-weight: 600;
-}
 
+}
 .noteList-item-title {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    line-height: 1.6em;
 }
 
 .noteList-item-marker {
-    color: var(--point-color);
+    color: rgb(var(--point-color));
 }
 
 .noteList-item-menu-box {
     margin-left: auto;
     display: flex;
     gap: 4px;
+    opacity: 0;
+    transition: opacity .4s ease-out;
 }
 
 .noteList-item-menu-box button {
@@ -231,31 +239,31 @@ table, th, td {
 .noteList-item-menu-box svg {
     width: 18px;
     height: 18px;
+    fill : rgb(48,48,48,.5)
 }
 
 .noteList-item-menu-box svg:hover {
-    fill: var(--point-color)
+    fill: rgb(var(--point-color));
 }
 
 .new-note-button {
-    margin: auto calc(var(--side) * 2) 0;
+    margin : auto calc(var(--side) * 2) 0;
     color: white;
-    padding: 8px 16px;
-    background-color: var(--point-color);
+    padding : 8px 16px;
+    background-color : rgb(var(--point-color));
     border: none;
     border-radius: 24px;
     font-weight: 600;
     font-size: 16px;
-    cursor: pointer;
+    cursor : pointer;
     text-align: center;
 }
 
 .new-note-button:visited {
-    color: white;
+    color : white;
 }
-
 .new-note-button:hover {
-    background-color: var(--point-color-hover);
+    background-color: rgba(var(--point-color),.7);
 }
 
 /*------*/
@@ -281,8 +289,13 @@ table, th, td {
 }
 
 .block-wrapper {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     position: relative;
+    padding: 3px;
+    border-radius: 4px;
+}
+.block-wrapper.isDragOver {
+    background-color: rgba(239, 246, 253,.7);
 }
 
 .table-block {
@@ -294,7 +307,7 @@ table, th, td {
     position: relative;
     left: -10px;
     top: -10px;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
 }
 
 .table-box {
@@ -325,7 +338,7 @@ table, th, td {
     top: -2px;
     left: -2px;
     z-index: 4;
-    border: 2px solid var(--point-color);
+    border: 2px solid rgba(var(--point-color),.7);
     pointer-events: none;
 }
 
@@ -339,7 +352,7 @@ table, th, td {
     display: flex;
     align-items: center;
     height: 24px;
-    z-index: 3;
+    z-index: 5;
     cursor: pointer;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -381,7 +394,6 @@ table, th, td {
     background-color: rgb(201, 202, 204) !important;
     font-weight: 600;
 }
-
 .table-header td {
     background-color: rgb(201, 202, 204) !important;
 }
@@ -425,6 +437,19 @@ table, th, td {
     height: 18px;
 }
 
+/* 공용 컨텍스트 메뉴 UI */
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+        transform : scale(.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .context-menu-overlay {
     position: fixed;
     z-index: 999;
@@ -435,32 +460,35 @@ table, th, td {
 .context-menu {
     position: absolute;
     background-color: white;
-    border-radius: 4px;
+    border-radius: 3px;
     padding: .3rem 0;
     box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+    animation: .2s ease normal fadein forwards;
+    opacity: 0;
 }
 
 .context-menu-item {
-    padding: 1em 1em;
+    padding: .8em 1em;
     font-family: "Noto Sans KR", sans-serif;
     font-size: 12px;
-    min-width: 12rem;
+    font-weight: 400;
+    min-width: 10rem;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 5px;
+    gap: 7px;
     cursor: pointer;
 }
 
 /* 컨텍스트 메뉴 아이템 (비활성화 아닐 때) */
-.context-menu-item:hover:not(.context-menu-disable), .context-menu-item.selected:not(.context-menu-disable) {
+.context-menu-item:hover:not(.context-menu-disable) ,.context-menu-item.selected:not(.context-menu-disable){
     background-color: rgba(241, 242, 244);
 }
 
 .context-menu-item svg {
-    width: 20px;
-    height: 20px;
-    fill: var(--point-color);
+    width: 16px;
+    height: 16px;
+    fill : rgba(var(--point-color),.8);
 }
 
 .context-menu-dropDown .context-menu {
@@ -500,8 +528,8 @@ table, th, td {
 }
 
 .block-menu-btn:hover {
-    background: rgb(239, 239, 239);
-    border-radius: 8px;
+    background: rgba(239, 239, 239,.7);
+    border-radius: 3px;
 }
 
 .block-menu-btn svg {
@@ -629,7 +657,7 @@ table, th, td {
     font-family: "Noto Sans KR", sans-serif;
     padding: 8px 16px;
     border-radius: 24px;
-    background-color: var(--point-color);
+    background-color: rgb(var(--point-color));
     color: white;
     cursor: pointer;
     box-shadow: 0 0 5px rgba(0, 0, 0, .3);
@@ -638,7 +666,7 @@ table, th, td {
 }
 
 .note-save-button:hover {
-    background-color: rgb(130, 113, 218);
+    background-color: rgba(var(--point-color),.7);
 }
 
 .ol[data-list-depth="0"]::before {
@@ -676,3 +704,29 @@ table, th, td {
     content: "□";
     margin-left: 40px;
 }
+
+
+/* drag */
+
+.drag-point-wrapper {
+    user-select: none;
+    position: absolute;
+    padding : 7px 0;
+    width: 100%;
+}
+
+.drag-point {
+    height: 3px;
+    margin: 0 3px;
+    background-color: rgb(162, 204, 248);
+    opacity: 1;
+    transition: opacity .3s ease-out;
+}
+
+.drag-point-wrapper.drag-on * {
+    pointer-events: none;
+}
+
+
+
+

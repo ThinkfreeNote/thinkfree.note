@@ -1,10 +1,10 @@
 import NotePage from "./component/container/NotePage";
 import "./App.css"
-import {MenuContextProvider} from "./component/common/MenuContext";
+import {MenuContextProvider} from "./component/ui/menu/MenuContext";
 import {EditorSelection} from "./model/Selection";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import NoteEditorContainer from "./component/container/NoteEditorContainer";
-import HomePage from "./component/HomePage";
+import HomePage from "./component/container/HomePage";
 
 export const editorSelection = new EditorSelection();
 // 디버깅용

@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import UserDashBoard from "./UserDashBoard";
-import NoteListNavigation from "./editor/NoteListNavigation";
+import NoteListNavigation from "./NoteListNavigation";
 import {useParams} from "react-router-dom";
-import NewNoteButton from "./editor/NewNoteButton";
-import BookMarkProvider from "./context/BookMarkProvider";
+import NewNoteButton from "../../editor/NewNoteButton";
+import BookMarkProvider from "../../context/BookMarkProvider";
 
 function SideNavigation() {
     const {noteId} = useParams();

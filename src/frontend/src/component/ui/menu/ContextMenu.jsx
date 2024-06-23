@@ -2,8 +2,8 @@ import React, {useContext, useLayoutEffect, useRef, useState} from 'react';
 import {MenuContext} from "./MenuContext";
 
 // 아이콘 에셋
-import {ReactComponent as ToggleOn} from "../../assets/icon_check.svg";
-import {ReactComponent as ArrowRightIcon} from "../../assets/icon_arrow_right.svg";
+import {ReactComponent as ToggleOn} from "../../../assets/icon_check.svg";
+import {ReactComponent as ArrowRightIcon} from "../../../assets/icon_arrow_right.svg";
 
 function ContextMenuMain({children, closeMenu}) {
     const menuRef = useRef(null);
@@ -47,35 +47,35 @@ function ContextMenuItemPlain({name, handler, disable = false, isSelected, icon}
 }
 
 // 토글 메뉴 아이템
-function ContextMenuItemToggle({name, handler, init = false}) {
+function ContextMenuItemToggle({name, handler, init = false, icon}) {
     const [on, setOn] = useState(init);
     return <div className="context-menu-item" onClick={() => {
         handler()
         setOn(!on);
     }}>
-        <span>{name}</span>
+        {icon}<span>{name}</span>
         {on && <ToggleOn width="24px" height="24px" style={{marginLeft: "auto"}}/>}
     </div>
 }
 
 // 구분선
 function ContextMenuItemDivider() {
-    return <hr style={{margin: "0 10px"}}></hr>
+    return <hr style={{margin: "0 5px", height : "1px", border : "none",background : "rgba(var(--point-color),.4)"}}></hr>
 }
 
 //
-function ContextMenuItemDropDown({children, name}) {
+function ContextMenuItemDropDown({children, name,icon}) {
     return <div className="context-menu-item context-menu-dropDown" style={{position: "relative"}}>
-        <span>{name}</span>
+        {icon}<span>{name}</span>
         <ArrowRightIcon width="18" height="18" style={{marginLeft: "auto"}}/>
-        <div style={{position: "absolute", transform: "translateX(90%)"}} className="context-menu">
+        <div style={{position: "absolute", left: "95%"}} className="context-menu">
             {children}
         </div>
     </div>
 }
 
 function ContextMenuSubTitle({text}) {
-    return <div style={{fontSize:"12px", color:"grey", background : "none", cursor:"initial", padding : ".5em 1em"} } className="context-menu-item">{text}</div>
+    return <div style={{fontSize:"12px", color:"grey", background : "none",fontWeight:600, cursor:"initial", padding : ".5em 1em"} } className="context-menu-item">{text}</div>
 }
 
 /**

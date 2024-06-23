@@ -1,7 +1,7 @@
 import {useContext} from "react";
 import {getCellIds, isCell} from "../../../../utils/table";
 import {editorSelection} from "../../../../App";
-import {MenuContext} from "../../../common/MenuContext";
+import {MenuContext} from "../../../ui/menu/MenuContext";
 import {useBlockStore} from "../../hooks/useBlockHooks";
 
 /**

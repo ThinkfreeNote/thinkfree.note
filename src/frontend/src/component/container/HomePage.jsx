@@ -1,5 +1,5 @@
 import React from 'react';
-import NewNoteButton from "./editor/NewNoteButton";
+import NewNoteButton from "../editor/NewNoteButton";
 
 function HomePage() {
     return (

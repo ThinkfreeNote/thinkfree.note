@@ -1,7 +1,14 @@
 import React from 'react';
-import {ContextMenu} from "../../common/ContextMenu";
+import {ContextMenu} from "../../ui/menu/ContextMenu";
 import useTable from "./hooks/useTable";
 import {useTableData} from "./hooks/useTableData";
+
+import {ReactComponent as LineArrowRightIcon} from "../../../assets/icon_lineArrow_right.svg";
+import {ReactComponent as LineArrowDownIcon} from "../../../assets/icon_lineArrow_down.svg";
+import {ReactComponent as LineArrowUpIcon} from "../../../assets/icon_lineArrow_up.svg";
+import {ReactComponent as LineArrowLeftIcon} from "../../../assets/icon_lineArrow_left.svg";
+import {ReactComponent as TableHeaderIcon} from "../../../assets/icon_table_header.svg";
+import {ReactComponent as DeleteIcon} from "../../../assets/icon_delete.svg";
 
 const convertTypeToText = (type) => {
     return type === "row" ? "행" : "열";
@@ -52,20 +59,21 @@ function TableMenu({closeMenu, type, rowIdx, colIdx}) {
 
     return (
         <ContextMenu closeMenu={closeMenu}>
+            <ContextMenu.SubTitle text="테이블 메뉴"/>
+            <ContextMenu.Divider/>
             {headerAble && (
                 <>
-                    <ContextMenu.Toggle name={`${convertTypeToText(type)} 헤더 `} handler={headerMenuHandler} init={tableData.getHeaderByType(type)} />
+                    <ContextMenu.Toggle icon={<TableHeaderIcon/>} name={`${convertTypeToText(type)} 헤더 `} handler={headerMenuHandler} init={tableData.getHeaderByType(type)} />
                     <ContextMenu.Divider/>
                 </>
             )}
-            <ContextMenu.Plain name={`${getTextByDirection(type, "prev")} ${convertTypeToText(type)} 삽입`}
+            <ContextMenu.Plain icon={type === "row" ? <LineArrowUpIcon/> : <LineArrowLeftIcon/> } name={`${getTextByDirection(type, "prev")} ${convertTypeToText(type)} 삽입`}
                                handler={insertPrevMenuHandler}/>
-            <ContextMenu.Plain name={`${getTextByDirection(type, "next")} ${convertTypeToText(type)} 삽입`}
+            <ContextMenu.Plain icon={type === "row" ? <LineArrowDownIcon/> : <LineArrowRightIcon/> } name={`${getTextByDirection(type, "next")} ${convertTypeToText(type)} 삽입`}
                                handler={insertNextMenuHandler}/>
-            <ContextMenu.Plain disable={!deleteAble} name={`${convertTypeToText(type)} 삭제`}
+            <ContextMenu.Plain icon={<DeleteIcon/>} disable={!deleteAble} name={`${convertTypeToText(type)} 삭제`}
                                handler={removeMenuHandler}/>
-            <ContextMenu.Divider/>
-            <ContextMenu.Plain name="계산 함수"/>
+
         </ContextMenu>
     )
 }

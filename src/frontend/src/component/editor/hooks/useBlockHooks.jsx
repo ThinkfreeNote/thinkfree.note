@@ -1,5 +1,7 @@
 import {useContext} from 'react';
 import {BlockStoreContext} from "../context/NoteDataProvider";
+import {Block} from "../../../model/Block";
+import {BlockStore} from "../../../model/BlockStore";
 
 /**
  * @desc blockId를 받아 블럭스토어에서 블럭 데이터를 가져오는 커스텀 훅

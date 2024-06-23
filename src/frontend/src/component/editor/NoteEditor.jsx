@@ -7,6 +7,7 @@ import useEditorSelection from "./hooks/useEditorSelection";
 import useSlash from "./useSlash";
 import EditorToolBox from "./EditorToolBox";
 import useEditorDragHandler from "./hooks/useEditorDragHandler";
+import {NoteIndexListProvider} from "./context/NoteIndexListProvider";
 
 export const EditorContext = createContext(null);
 
@@ -36,7 +37,7 @@ function NoteEditor() {
                  onKeyUp={onKeyUp}
             >
                 <Title/>
-                {blockIdList.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}
+                {blockIdList.map((blockId, index) => <NoteBlockSwitcher key={blockId} blockId={blockId} index={index}/>)}
             </div>
             {slashComponent}
             <EditorToolBox/>

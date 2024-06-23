@@ -3,10 +3,9 @@ import {getRandomId} from "../utils/id";
 import {Text} from "./Text";
 
 export class TextBlock extends Block {
-    constructor(id, type, contents = {}, textIdList = [], olIdx = 0) {
+    constructor(id, type, contents = {}, textIdList = []) {
         super(id, type, contents);
         this.textIdList = textIdList;
-        this.olIdx = olIdx;// orderList 순서용 속성
     }
 
     addText(text) {
@@ -34,10 +33,6 @@ export class TextBlock extends Block {
 
     updateTextValue(textId, value) {
         this.contents[textId].value = value;
-    }
-
-    removeLastInput(textId) {
-        this.contents[textId].value = this.contents[textId].value.slice(0,-1);
     }
 
     getTextFromId(textId) {

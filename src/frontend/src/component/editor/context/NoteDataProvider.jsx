@@ -27,7 +27,7 @@ function NoteDataProvider({children, noteId}) {
         // noteId 없으면 새 노트
         if (!noteId) {
             blockStore.current = new BlockStore();
-            const firstBlock = blockStore.current.createBlock("text");
+            const firstBlock = blockStore.current.createNewBlock("text");
             setBlockIdList([firstBlock.id]);
         }
         // noteId 있을 때는 데이터 불러와서 파싱

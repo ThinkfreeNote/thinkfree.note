@@ -7,6 +7,7 @@ import NoteEditorContainer from "./component/container/NoteEditorContainer";
 import HomePage from "./component/container/HomePage";
 
 export const editorSelection = new EditorSelection();
+// 디버깅용
 window.editorSelection = editorSelection;
 const router = createBrowserRouter([
     {

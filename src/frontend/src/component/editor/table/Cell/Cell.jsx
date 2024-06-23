@@ -3,6 +3,7 @@ import {useTableData} from "../hooks/useTableData";
 import CellWrapper from "./CellWrapper";
 import {useTableCursorPosition} from "../contexts/TableSelectionProvider";
 import {useCalc} from "./hooks/useCalc";
+import {Calc} from "../../../../utils/table";
 
 
 function Cell({cellId, rowId, colIdx, rowIdx}) {
@@ -12,7 +13,10 @@ function Cell({cellId, rowId, colIdx, rowIdx}) {
 
     const {calculate} = useCalc(tableData);
 
-    const contents = !isSelected ? calculate(text) : (text.startsWith("=") ? text.toUpperCase() : text);
+    let contents = !isSelected ? calculate(text,new Set([`${rowIdx},${colIdx}`])) : (text.startsWith("=") ? text.toUpperCase() : text);
+    if(contents === Calc.CYCLE) {
+        contents = "!순환 참조 수식";
+    }
     return <CellWrapper key={text} cellId={cellId} rowId={rowId} colIdx={colIdx} rowIdx={rowIdx} isSelected={isSelected}>
         {contents.length !== 0 ? contents : <br/>}
     </CellWrapper>

@@ -21,7 +21,7 @@ function useEditorHandler() {
         // 키 입력이 발생한 block Id와 타입
         const blockId = editorSelection.startBlockId;
         const block = blockStore.getBlock(blockId);
-        if (!blockId) return;
+        if (!blockId || !block) return;
         const blockType = block.type;
         // 테이블인 경우
         if (blockType === "table") {
@@ -101,10 +101,12 @@ function useEditorHandler() {
         // Input 입력이 발생한 block Id와 타입
         const blockId = editorSelection.startBlockId;
         if (!blockId) return;
-        const blockType = blockStore.getBlockType(blockId);
+        const blockType = editorSelection.startBlockType;
+        if(blockType === "title") return;
         if (blockType === "table") {
             updateCellValue();
-        } else {
+        }
+        else {
             updateTextValue();
         }
     }

@@ -39,19 +39,17 @@ function HeadBlock() {
     }
 
     return (
-        <>
-            <Tag ref={ref} key={key} data-block-id={headBlock.id} data-leaf="true">
-                {headBlock.textIdList.map(textId => {
-                    return (
-                        <TextComponent
-                            key={textId}
-                            textId={textId}
-                            text={headBlock.contents[textId]}
-                        />
-                    )
-                })}
-            </>
-        </>
+        <Tag ref={ref} key={key} data-block-id={headBlock.id} data-leaf="true">
+            {headBlock.textIdList.map(textId => {
+                return (
+                    <TextComponent
+                        key={textId}
+                        textId={textId}
+                        text={headBlock.contents[textId]}
+                    />
+                )
+            })}
+        </Tag>
     );
 }
 

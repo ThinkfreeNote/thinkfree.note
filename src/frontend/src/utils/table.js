@@ -40,7 +40,8 @@ export function checkCalc(text) {
     const regex = /^=[a-zA-Z]*\(([a-zA-Z]\d+,)*([a-zA-Z]\d+)\)$/;
 
     // = 으로 시작하고 +, - / * 기호를 이용
-    const regex2 = /^=([a-zA-Z0-9]+[+-/*])*[a-zA-Z0-9]+$/;
+    const regex2 = /^=(([0-9]|[a-zA-Z]\d)+[+-/*])*([0-9]|[a-zA-Z]\d)+$/;
+    // const regex2 = /^=([a-zA-Z0-9]+[+-/*])*[a-zA-Z0-9]+$/;
 
     if(regex.test(text)) return Calc.METHOD
     else if(regex2.test(text)) return Calc.SIGN

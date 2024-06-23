@@ -1,4 +1,5 @@
 import {Calc, checkCalc} from "../../../../../utils/table";
+import row from "../../Row/Row";
 
 /**
  * @desc 계산 함수 처리 훅
@@ -13,8 +14,8 @@ export function useCalc(tableData) {
     const calculate = (text) => {
         const calcType = checkCalc(text);
         // 계산함수 미적용 혹은 계산 함수가 아닌 경우
-        if (!calcType) {
-            return text;
+        if (calcType === Calc.NONE) {
+            return (text.startsWith("=") && text.length > 1) ? "!계산식 오류" : text;
         }
         const {method, parameters} = parseCalculate(text, calcType);
 
@@ -94,6 +95,9 @@ export function useCalc(tableData) {
             if (!isNaN(Number(param))) return Number(param);
             const columnIdx = param.slice(0, 1).toLowerCase().charCodeAt(0) - 97;
             const rowIdx = Number(param.slice(1)) - 1;
+            if(rowIdx === -1) {
+                return NaN;
+            }
             return Number(getIndexOfValue(rowIdx, columnIdx));
         })
 

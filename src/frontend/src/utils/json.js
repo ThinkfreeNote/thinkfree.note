@@ -14,7 +14,7 @@ import {ListBlock} from "../model/ListBlock";
 export function jsonToBlockStore(jsonText) {
     return JSON.parse(jsonText, (key, value) => {
         if (value.type === "table") return Object.setPrototypeOf(value, Table.prototype);
-        if (value.type === "text" || value.type === "ul" || value.type === "ol") return Object.setPrototypeOf(value, TextBlock.prototype);
+        if (value.type === "text") return Object.setPrototypeOf(value, TextBlock.prototype);
         if (value.type === "ul" || value.type === "ol") Object.setPrototypeOf(value, ListBlock.prototype);
         if (Object.hasOwn(value, "fontSize")) return Object.setPrototypeOf(value, FontStyle.prototype);
         if (Object.hasOwn(value, "fontStyle")) return Object.setPrototypeOf(value, Text.prototype);

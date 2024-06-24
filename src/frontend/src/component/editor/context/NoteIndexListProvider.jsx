@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect, useState} from 'react';
+import React, {createContext, useCallback, useContext, useEffect, useState} from 'react';
 import useBlockIdList from "../hooks/useBlockIdList";
 import {useBlockStore} from "../hooks/useBlockHooks";
 
@@ -21,7 +21,6 @@ export function NoteIndexListProvider({children}) {
             }
         })
         setIndexList(indexList);
-        console.log(indexList);
     }, [blockIdList]);
 
 
@@ -36,11 +35,11 @@ export function useIndexList() {
     const {getIndexOfBlock} = useBlockIdList();
     const indexList = useContext(NoteIndexListContext);
 
-    const getOrder = (blockId) => {
+    const getOrder = useCallback((blockId) => {
         const blockIndex = getIndexOfBlock(blockId);
         if (blockIndex === -1) return -1;
         return indexList[blockIndex];
-    }
+    },[indexList])
 
     return {getOrder}
 }

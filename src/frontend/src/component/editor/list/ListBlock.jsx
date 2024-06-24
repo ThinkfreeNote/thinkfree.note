@@ -38,7 +38,7 @@ function ListBlock({index = 1}) {
                     </div>
                     <div>
                         {listBlock.childIdList.map((blockId, index) => (
-                            <BlockWrapper key={blockId} id={blockId} type={listBlock.type}>
+                            <BlockWrapper key={blockId} id={blockId} type={listBlock.type} isDepth={true}>
                                 <ListBlock index={index}/>
                             </BlockWrapper>))}
                     </div>

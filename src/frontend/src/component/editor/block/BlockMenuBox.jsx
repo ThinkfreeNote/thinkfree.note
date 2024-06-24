@@ -8,7 +8,7 @@ import {useBlockId} from "../BlockManagerProvider";
 import BlockSelectMenu from "../BlockSelectMenu";
 import {useMouseHoverBlockId} from "../context/EditorMouseHoverProvider";
 
-function BlockMenuBox() {
+function BlockMenuBox({isDepth}) {
     const {blockId} = useBlockId();
     const {openMenu, closeMenu,isOpen} = useMenu();
     const AddBlockMenu = useMenu();
@@ -21,7 +21,8 @@ function BlockMenuBox() {
 
     return (
         <div contentEditable={false} className={`block-menu-btn-box ${hoverBlockId === blockId && "isHover"}`}>
-            <button className="block-menu-btn" onClick={addBlockHandler}><PlusIcon width="18px" height="18px" fill="black"/></button>
+            {!isDepth && <button className="block-menu-btn" onClick={addBlockHandler}><PlusIcon width="18px" height="18px"
+                                                                                    fill="black"/></button>}
             <button draggable={true} className="block-menu-btn" onClick={(e)=>{
                 openMenu(e.clientX,e.clientY);
             }}><HamburgerIcon width="18px" height="18px" fill="black"/></button>

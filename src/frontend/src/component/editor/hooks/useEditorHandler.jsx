@@ -29,7 +29,7 @@ function useEditorHandler() {
             e.key === "Enter" && tableEnterHandler(e);
         }
         // 텍스트 블록인 경우
-        else if (blockType === "text") {
+        else if (blockType === "text" || blockType === "head") {
             if (e.key === "Enter") {
                 if(editorSelection.isCaret()){
                     appendBlockAfterCurrentBlock(e);

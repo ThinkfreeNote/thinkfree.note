@@ -5,10 +5,13 @@ import {Text} from "./Text";
 import {FontStyle} from "./FontStyle";
 import {ListBlock} from "./ListBlock";
 import {jsonToBlockStore} from "../utils/json";
+import {HeadBlock} from "./HeadBlock";
+import {ContentsBlock} from "./ContentsBlock";
 
 /**
  * @typedef {ListBlock, TextBlock, Table} BlockModel
  */
+
 
 export class BlockStore {
     /**
@@ -45,7 +48,7 @@ export class BlockStore {
 
 
     // 블럭을 생성하여 스토어에 추가
-    createNewBlock(type, textList = []) {
+    createNewBlock(type, textList = [], headLevel = 1) {
         const blockId = getRandomId();
         if (type === "text") {
             const textBlock = new TextBlock(blockId, type, {}, []);
@@ -69,6 +72,21 @@ export class BlockStore {
 
             return listBlock;
 
+        } else if (type === "head") {
+            const headBlock = new HeadBlock(blockId, type, {}, headLevel);
+
+            // 인자로 들어온 텍스트가 없으면 기본값
+            textList.length === 0 ?
+                headBlock.addText(new Text(getRandomId(), "", new FontStyle())) :
+                textList.forEach((text) => headBlock.addText(text));
+            this.addBlock(headBlock);
+
+            return headBlock;
+        } else if (type === "contents") {
+            const contentsBlock = new ContentsBlock(blockId, type, {});
+            this.addBlock(contentsBlock);
+
+            return contentsBlock;
         } else if (type === "table") {
             const table = new Table(blockId, type, []);
             this.addBlock(table);

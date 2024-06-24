@@ -107,12 +107,12 @@ function useNote() {
         if (offset.x !== 0 && offset.y !== 0) return;
 
         const curBlock = blockStore.getBlock(editorSelection.startBlockId);
-        let newBlockType = curBlock.type;
+        let newBlockType = "text"
 
         // 텍스트를 분리하고 삭제된 텍스트 리스트를 가져옴
         const removedTextList = divideText(curBlock);
 
-        // 새로운 Text들을 담은 TextBlock을 추가 (이전과 같은 타입의 텍스트 블럭을 생성)
+        // 새로운 Text들을 담은 TextBlock을 추가
         const newBlock = blockStore.createNewBlock(newBlockType, removedTextList);
         note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
         // 기존 TextBlock 리렌더링

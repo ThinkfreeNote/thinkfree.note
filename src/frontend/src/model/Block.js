@@ -4,4 +4,8 @@ export class Block {
         this.type = type;
         this.contents = contents;
     }
+
+    getFirstBlockOffset() {
+        // 오버라이딩
+    }    
 }

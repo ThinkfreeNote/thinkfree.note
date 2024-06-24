@@ -22,7 +22,7 @@ export class EditorSelection {
 
     isStartCaret() {
         if (!this.isCaret()) return false;
-        if (this.getOffset().start === 0) return true;
+        if (this.startOffset === 0) return true;
     }
 
     isEditorLeaf() {

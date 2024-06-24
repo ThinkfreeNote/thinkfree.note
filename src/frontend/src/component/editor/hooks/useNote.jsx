@@ -69,6 +69,8 @@ function useNote() {
         if (curBlock.depth === 0) {
             // 자식들의 depth 재조정
             updatedBlockIdList = resetChildBlockDepth(curBlock);
+            setReRenderTargetId(curBlock.id);
+
         }
         else {
             const parentBlock = blockStore.getBlock(curBlock.parentId);
@@ -87,6 +89,7 @@ function useNote() {
 
             // 자신도 blockIdList 에 추가
             updatedBlockIdList.unshift(curBlock.id);
+            setReRenderTargetId(parentBlock.id);
         }
 
         // 현재 블럭의 자식을 끊어줌
@@ -94,6 +97,7 @@ function useNote() {
 
         // 노트에 추가
         note.concatBlockIdList(updatedBlockIdList, index + 1);
+        selectionManager.setEditorCaretPosition(curBlock.id, curBlock.getFirstBlockOffset(), EditorSelection.FRONT_OFFSET, "text");
     }
 
     /**
@@ -117,6 +121,7 @@ function useNote() {
         note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
         // 기존 TextBlock 리렌더링
         setReRenderTargetId(curBlock.id);
+        selectionManager.setEditorCaretPosition(newBlock.id,newBlock.getFirstTextId(),EditorSelection.FRONT_OFFSET,"text");
     }
 
     /**
@@ -146,6 +151,7 @@ function useNote() {
 
         // 새로운 블럭을 리스트에 맞게 넣어줌
         addListBlock(curBlock, newBlock);
+        selectionManager.setEditorCaretPosition(newBlock.id,newBlock.getFirstTextId(),EditorSelection.FRONT_OFFSET,"text");
     }
 
     return {

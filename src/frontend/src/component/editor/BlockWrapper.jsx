@@ -1,9 +1,7 @@
 import React, {useRef} from 'react';
-import {editorSelection} from "../../App";
 import BlockManagerProvider from "./BlockManagerProvider";
 import BlockMenuBox from "./block/BlockMenuBox";
 import BlockReRender from "./BlockReRender";
-import {useInitBlockCursor} from "../context/SelectionManagerProvider";
 import {useDragOverBlockId} from "./context/DragAndDropProvider";
 import BlockDragPoint from "./block/BlockDragPoint";
 
@@ -19,7 +17,6 @@ function BlockWrapper({id, children, type}) {
     const dragOverBlockId = useDragOverBlockId();
     const isDragOver = dragOverBlockId === id;
 
-    useInitBlockCursor(id);
     return (
         <BlockManagerProvider id={id}>
             <div

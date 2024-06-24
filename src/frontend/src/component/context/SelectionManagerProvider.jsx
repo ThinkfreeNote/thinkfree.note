@@ -33,7 +33,8 @@ function SelectionManagerProvider({children}) {
         if (!selectionTarget) return;
         editorSelection.removeSelection();
         const $block = document.querySelector(`[data-block-id="${selectionTarget.blockId}"]`);
-        if (selectionTarget.blockType === "text") {
+        if(!$block) return;
+        if (TEXT_TYPES.includes(selectionTarget.blockType)) {
             const $textSpan = $block.querySelector(`[data-text-id="${selectionTarget.blockOffset}"]`);
             if (!$textSpan) return;
             const childNode = $textSpan.childNodes[0];
@@ -61,6 +62,8 @@ function SelectionManagerProvider({children}) {
     </SelectionManagerContext.Provider>
 }
 
+export const TEXT_TYPES = ["text","ol","ul","head"];
+export const TABLE_TYPES = ["table"];
 
 /**
  * @desc 에디터 셀렉션 관리 훅

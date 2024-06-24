@@ -8,6 +8,8 @@ import {ReactComponent as TextBlockIcon} from "../../assets/icon_textBlock.svg";
 import {ReactComponent as UnorderedIcon} from "../../assets/icon_unorderedList.svg";
 import {ReactComponent as TableIcon} from "../../assets/icon_table.svg";
 import {TextBlock} from "../../model/TextBlock";
+import {useSelectionManager} from "../context/SelectionManagerProvider";
+import {EditorSelection} from "../../model/Selection";
 
 /**
  * @desc 슬래시로 블록 추가하는 컴포넌트 훅
@@ -61,10 +63,13 @@ function SlashMenu({closeMenu, editorRef}) {
     const [menuIndex, setMenuIndex] = useState(0);
     const {replaceBlock} = useBlockIdList();
     const blockStore = useBlockStore();
+    const {setEditorCaretPosition} = useSelectionManager();
 
     const replaceNewBlock = (type) => {
         closeMenu();
-        replaceBlock(editorSelection.blockId[0], blockStore.createNewBlock(type).id);
+        const newBlock = blockStore.createNewBlock(type);
+        replaceBlock(editorSelection.blockId[0],newBlock.id);
+        setEditorCaretPosition(newBlock.id, newBlock.getFirstBlockOffset(), EditorSelection.FRONT_OFFSET,type);
     }
 
     useEffect(() => {

@@ -4,6 +4,7 @@ import {useTableHandler} from "../table/hooks/useTableHandler";
 import useTextHandler from "../text/hooks/useTextHandler";
 import useNote from "./useNote";
 import useListHandler from "../list/hooks/useListHandler";
+import useBlockIdList from "./useBlockIdList";
 
 
 /**
@@ -11,9 +12,15 @@ import useListHandler from "../list/hooks/useListHandler";
  * @returns {{onInputHandler: function, onKeyDownHandler: function}}
  */
 function useEditorHandler() {
+    const {blockIdList} = useBlockIdList();
     const blockStore = useBlockStore();
-    const {backspaceRemoveBlock, backspaceRemoveListBlock , appendBlockAfterCurrentBlock, appendBlockAfterCurrentListBlock} = useNote();
-    const {tableArrowHandler, updateCellValue,openCalcDialog, tableEnterHandler} = useTableHandler();
+    const {
+        backspaceRemoveBlock,
+        backspaceRemoveListBlock,
+        appendBlockAfterCurrentBlock,
+        appendBlockAfterCurrentListBlock
+    } = useNote();
+    const {tableArrowHandler, updateCellValue, openCalcDialog, tableEnterHandler} = useTableHandler();
     const {updateTextValue, deleteTextValue} = useTextHandler();
     const {increaseDepth} = useListHandler();
 
@@ -21,7 +28,7 @@ function useEditorHandler() {
         // 키 입력이 발생한 block Id와 타입
         const blockId = editorSelection.startBlockId;
         const block = blockStore.getBlock(blockId);
-        if (!blockId) return;
+        if (!blockId || !block) return;
         const blockType = block.type;
         // 테이블인 경우
         if (blockType === "table") {
@@ -31,10 +38,9 @@ function useEditorHandler() {
         // 텍스트 블록인 경우
         else if (blockType === "text" || blockType === "head") {
             if (e.key === "Enter") {
-                if(editorSelection.isCaret()){
+                if (editorSelection.isCaret()) {
                     appendBlockAfterCurrentBlock(e);
-                }
-                else {
+                } else {
                     e.preventDefault();
                 }
             }
@@ -63,17 +69,16 @@ function useEditorHandler() {
         // 리스트 블록인 경우
         else if (blockType === "ul" || blockType === "ol") {
             if (e.key === "Enter") {
-                if(editorSelection.isCaret()){
+                if (editorSelection.isCaret()) {
                     appendBlockAfterCurrentListBlock(e);
-                }
-                else {
+                } else {
                     e.preventDefault();
                 }
             }
 
             if (e.key === "Tab") {
                 e.preventDefault();
-                if(editorSelection.isCaret()){
+                if (editorSelection.isCaret()) {
                     increaseDepth();
                 }
             }
@@ -101,18 +106,21 @@ function useEditorHandler() {
         // Input 입력이 발생한 block Id와 타입
         const blockId = editorSelection.startBlockId;
         if (!blockId) return;
-        const blockType = blockStore.getBlockType(blockId);
+        const blockType = editorSelection.startBlockType;
+        if (blockType === "title") return;
         if (blockType === "table") {
             updateCellValue();
         } else {
             updateTextValue();
         }
+        // selectionChange 가 Backspace 에서 적용되지 않아 사용하는 중
+        editorSelection.updateEditorSelection(blockIdList);
     }
 
     const onKeyUp = (e) => {
 
         // 계산함수 처리
-        if(e.key === "=") {
+        if (e.key === "=") {
             openCalcDialog();
         }
     }

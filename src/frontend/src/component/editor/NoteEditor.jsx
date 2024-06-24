@@ -7,7 +7,6 @@ import useEditorSelection from "./hooks/useEditorSelection";
 import useSlash from "./useSlash";
 import EditorToolBox from "./EditorToolBox";
 import useEditorDragHandler from "./hooks/useEditorDragHandler";
-import {NoteIndexListProvider} from "./context/NoteIndexListProvider";
 
 export const EditorContext = createContext(null);
 
@@ -20,7 +19,7 @@ function NoteEditor() {
     useEditorSelection(blockIdList);
 
     // contentEditable div 요소에서 처리할 이벤트 핸들러
-    const {onKeyDownHandler, onInputHandler,onKeyUp} = useEditorHandler();
+    const {onKeyDownHandler, onInputHandler, onKeyUp} = useEditorHandler();
     const {onDragOver, onDrop, onDragStart, onDragEnd} = useEditorDragHandler();
 
     return (
@@ -37,7 +36,7 @@ function NoteEditor() {
                  onKeyUp={onKeyUp}
             >
                 <Title/>
-                {blockIdList.map((blockId, index) => <NoteBlockSwitcher key={blockId} blockId={blockId} index={index}/>)}
+                {blockIdList.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}
             </div>
             {slashComponent}
             <EditorToolBox/>

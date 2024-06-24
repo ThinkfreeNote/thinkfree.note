@@ -4,7 +4,7 @@ import TextBlock from "./text/TextBlock";
 import TableBlock from "./table/TableBlock";
 import {useBlockStore} from "./hooks/useBlockHooks";
 import ListBlock from "./list/ListBlock";
-import {useIndexList} from "./context/NoteIndexListProvider";
+import OrderedListBlock from "./list/OrderedListBlock";
 import HeadBlock from "./head/HeadBlock";
 import ContentsBlock from "./contents/ContentsBlock";
 
@@ -17,23 +17,22 @@ import ContentsBlock from "./contents/ContentsBlock";
  */
 function NoteBlockSwitcher({blockId}) {
     const blockStore = useBlockStore();
-    const {type} = blockStore[blockId];
-    const index = useIndexList().getOrder(blockId);// 현재는 ol을 위해 index 가져옴
+    const type = blockStore.getBlockType(blockId);
 
-    return <BlockWrapper id={blockId} type={type} index={index}>
-        {switcher(type, index)}
+    return <BlockWrapper id={blockId} type={type}>
+        {switcher(type)}
     </BlockWrapper>
 }
 
 
-const switcher = (type, index) => {
+const switcher = (type) => {
     switch (type) {
         case "text" :
             return <TextBlock/>
         case "ul":
             return <ListBlock/>
         case "ol":
-            return <ListBlock index={index}/>
+            return <OrderedListBlock/>
         case "head":
             return <HeadBlock/>
         case "contents":

@@ -165,4 +165,7 @@ export class Table extends Block {
     getFirstCellOffset() {
         return [this.contents[0], this.format[0]];
     }
+    getFirstBlockOffset() {
+        return this.getFirstCellOffset();
+    }
 }

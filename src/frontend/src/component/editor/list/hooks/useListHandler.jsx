@@ -119,9 +119,8 @@ function useListHandler() {
                 reRenderTargetId = curBlock.id;
             }
         }
-            setReRenderTargetId(reRenderTargetId);
-            setEditorCaretPosition(reRenderTargetId,newBlock.getFirstTextId(),EditorSelection.FRONT_OFFSET,"text");
-
+        setReRenderTargetId(reRenderTargetId);
+        setEditorCaretPosition(reRenderTargetId,newBlock.getFirstTextId(),EditorSelection.FRONT_OFFSET,"text");
     }
 
     /**

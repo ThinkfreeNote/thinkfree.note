@@ -81,4 +81,8 @@ export class TextBlock extends Block {
     getFirstTextId() {
         return this.textIdList[0];
     }
+
+    getFirstBlockOffset() {
+        return this.getFirstTextId();
+    }
 }

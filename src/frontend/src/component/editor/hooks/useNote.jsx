@@ -148,6 +148,7 @@ function useNote() {
 
         // 새로운 블럭을 리스트에 맞게 넣어줌
         addListBlock(curBlock, newBlock);
+        selectionManager.setEditorCaretPosition(newBlock.id,newBlock.getFirstTextId(),EditorSelection.FRONT_OFFSET,"text");
     }
 
     return {

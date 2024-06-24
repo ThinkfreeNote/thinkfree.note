@@ -95,6 +95,7 @@ function useNote() {
 
         // 노트에 추가
         note.concatBlockIdList(updatedBlockIdList, index + 1);
+        selectionManager.setEditorCaretPosition(curBlock.id, curBlock.getFirstBlockOffset(), EditorSelection.FRONT_OFFSET, "text");
     }
 
     /**

@@ -291,9 +291,8 @@ table, th, td {
 }
 
 .block-wrapper {
-    margin-bottom: 5px;
     position: relative;
-    padding: 3px;
+    padding: 3px 3px 8px;
     border-radius: 4px;
 }
 
@@ -513,12 +512,7 @@ table, th, td {
     opacity: 0;
     transition: opacity .3s ease-out;
 }
-
-.block-wrapper:hover .block-menu-btn-box {
-    opacity: 1;
-}
-
-.block-menu-btn-box:hover {
+.block-menu-btn-box.isHover {
     opacity: 1;
 }
 

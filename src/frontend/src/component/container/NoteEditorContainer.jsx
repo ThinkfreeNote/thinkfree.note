@@ -8,6 +8,7 @@ import SelectionManagerProvider from "../context/SelectionManagerProvider";
 import {DragAndDropProvider} from "../editor/context/DragAndDropProvider";
 import {NoteIndexListProvider} from "../editor/context/NoteIndexListProvider";
 import {EditorDialogProvider} from "../editor/context/EditorDialogProvider";
+import {EditorMouseHoverProvider} from "../editor/context/EditorMouseHoverProvider";
 
 
 function NoteEditorContainer() {
@@ -19,9 +20,11 @@ function NoteEditorContainer() {
                     <BlockReRenderProvider>
                         <DragAndDropProvider>
                             <EditorDialogProvider>
-                            {/* 에디터 */}
-                                <NoteEditor/>
-                                <SaveButton/>
+                                {/* 에디터 */}
+                                <EditorMouseHoverProvider>
+                                    <NoteEditor/>
+                                    <SaveButton/>
+                                </EditorMouseHoverProvider>
                             </EditorDialogProvider>
                         </DragAndDropProvider>
                     </BlockReRenderProvider>

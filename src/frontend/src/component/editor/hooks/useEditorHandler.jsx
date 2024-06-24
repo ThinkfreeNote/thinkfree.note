@@ -5,6 +5,7 @@ import useTextHandler from "../text/hooks/useTextHandler";
 import useNote from "./useNote";
 import useListHandler from "../list/hooks/useListHandler";
 import useBlockIdList from "./useBlockIdList";
+import {useMouseHoverBlockManager} from "../context/EditorMouseHoverProvider";
 
 
 /**
@@ -124,7 +125,19 @@ function useEditorHandler() {
         }
     }
 
-    return {onKeyDownHandler, onInputHandler, onKeyUp};
+    const {setHoverBlockId,clearHoverBlockId} = useMouseHoverBlockManager();
+
+    const onMouseLeave = (e) => {
+        // console.log(e.target.closest("[data-block-id]"));
+    }
+
+    const onMouseOver = (e) => {
+        const $block = e.target.closest("[data-block-id]")?.dataset.blockId;
+
+        setHoverBlockId($block ?? null);
+    }
+
+    return {onKeyDownHandler, onInputHandler, onKeyUp, onMouseOver, onMouseLeave};
 }
 
 

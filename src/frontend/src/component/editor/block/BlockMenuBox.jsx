@@ -6,6 +6,7 @@ import BlockContextMenu from "./BlockContextMenu";
 import {createPortal} from "react-dom";
 import {useBlockId} from "../BlockManagerProvider";
 import BlockSelectMenu from "../BlockSelectMenu";
+import {useMouseHoverBlockId} from "../context/EditorMouseHoverProvider";
 
 function BlockMenuBox() {
     const {blockId} = useBlockId();
@@ -16,8 +17,10 @@ function BlockMenuBox() {
         AddBlockMenu.openMenu(e.clientX,e.clientY);
     }
 
+    const hoverBlockId = useMouseHoverBlockId();
+
     return (
-        <div contentEditable={false} className="block-menu-btn-box">
+        <div contentEditable={false} className={`block-menu-btn-box ${hoverBlockId === blockId && "isHover"}`}>
             <button className="block-menu-btn" onClick={addBlockHandler}><PlusIcon width="18px" height="18px" fill="black"/></button>
             <button draggable={true} className="block-menu-btn" onClick={(e)=>{
                 openMenu(e.clientX,e.clientY);

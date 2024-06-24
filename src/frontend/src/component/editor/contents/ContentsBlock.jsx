@@ -3,28 +3,30 @@ import React, {useRef} from 'react';
 import {useBlockData, useBlockStore} from "../hooks/useBlockHooks";
 import useTextBlockObserver from "../text/hooks/useTextBlockObserver";
 import {generate4wordId} from "../../../utils/id";
-import TextComponent from "../text/TextComponent";
-import BlockWrapper from "../BlockWrapper";
 import {useBlockId} from "../BlockManagerProvider";
-import useBlockIdList from "../hooks/useBlockIdList";
-import useHeadHandler from "./hooks/useHeadHandler";
+import useHeadHandler from "../head/hooks/useHeadHandler";
+import {editorSelection} from "../../../App";
 
 
 function ContentsBlock() {
     const {blockId} = useBlockId();
+    const blockStore = useBlockStore();
     const contentsBlock = useBlockData(blockId);
     const ref = useRef(null);
     const key = generate4wordId();
-    const useHeadBlockIdList = useHeadHandler().getHeadBlockIdList();
+    const {getHeadBlockIdList, getTextValue, scrollToHead} = useHeadHandler();
+    const headBlockIdList = getHeadBlockIdList();
+
     useTextBlockObserver(ref);
     return (
-        <div ref={ref} key={key} data-block-id={contentsBlock.id} contentEditable={false}>
-            {useHeadBlockIdList.map(headBlockId => {
+        <div ref={ref} key={key} className={"contentsBlock"} data-block-id={contentsBlock.id} contentEditable={false}>
+            {headBlockIdList.map(headBlockId => {
                 const headBlock = blockStore.getBlock(headBlockId);
-                const text = blockStore.getBlock(headBlock.textIdList[0]);
+                const textValue = getTextValue(headBlockId);
+
                 return (
-                    <p key={headBlockId} className="contents" data-contents-level={headBlock.level}>
-                        {text.value}
+                    <p key={headBlockId} className="contents" data-contents-level={headBlock.level} onClick={() => scrollToHead(headBlockId)}>
+                        {textValue}
                     </p>
                 )
             })}

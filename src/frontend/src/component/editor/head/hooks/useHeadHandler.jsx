@@ -1,8 +1,4 @@
 import {useBlockStore} from "../../hooks/useBlockHooks";
-import {editorSelection} from "../../../../App";
-import {useContext} from "react";
-import {BlockReRenderContext} from "../../context/BlockReRenderContext";
-import {useIndexList} from "../../context/NoteIndexListProvider";
 import useBlockIdList from "../../hooks/useBlockIdList";
 
 function useHeadHandler() {
@@ -16,10 +12,30 @@ function useHeadHandler() {
                 headBlockIdList.push(blockId)
             }
         })
+
         return headBlockIdList;
     };
 
-    return {getHeadBlockIdList};
+    const getTextValue = (headBlockId) => {
+        const headBlock = blockStore.getBlock(headBlockId);
+        let textValue = "";
+
+        headBlock.textIdList.forEach((textId) => {
+            const text = headBlock.getTextFromId(textId);
+            textValue += text.value;
+        });
+
+        return textValue;
+    }
+
+    const scrollToHead = (headBlockId) => {
+        const headElement = document.querySelector(`[data-block-id="${headBlockId}"]`);
+        if (headElement) {
+            headElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    return {getHeadBlockIdList, getTextValue, scrollToHead};
 }
 
 export default useHeadHandler;

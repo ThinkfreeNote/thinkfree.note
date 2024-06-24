@@ -1,4 +1,3 @@
-import {TextBlock} from "./TextBlock";
 import {Block} from "./Block";
 
 export class ContentsBlock extends Block {

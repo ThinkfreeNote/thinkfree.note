@@ -4,8 +4,9 @@ import TextBlock from "./text/TextBlock";
 import TableBlock from "./table/TableBlock";
 import {useBlockStore} from "./hooks/useBlockHooks";
 import ListBlock from "./list/ListBlock";
-import {useIndexList} from "./context/NoteIndexListProvider";
 import OrderedListBlock from "./list/OrderedListBlock";
+import HeadBlock from "./head/HeadBlock";
+import ContentsBlock from "./contents/ContentsBlock";
 
 
 /**
@@ -24,7 +25,7 @@ function NoteBlockSwitcher({blockId}) {
 }
 
 
-const switcher = (type,blockId) => {
+const switcher = (type) => {
     switch (type) {
         case "text" :
             return <TextBlock/>
@@ -32,6 +33,10 @@ const switcher = (type,blockId) => {
             return <ListBlock/>
         case "ol":
             return <OrderedListBlock/>
+        case "head":
+            return <HeadBlock/>
+        case "contents":
+            return <ContentsBlock/>
         case "table" :
             return <TableBlock/>
         default :

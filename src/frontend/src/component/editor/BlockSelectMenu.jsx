@@ -13,10 +13,9 @@ function BlockSelectMenu({closeMenu, blockId}) {
     const blockStore = useBlockStore();
     const {setEditorCaretPosition} = useSelectionManager();
 
-    const addBlock = (type) => {
-
+    const addBlock = (type, headLevel) => {
         // TODO: 만들고 아이디 반환
-        const newBlock = blockStore.createNewBlock(type);
+        const newBlock = blockStore.createNewBlock(type, [], headLevel);
         addBlockId(newBlock.id, getIndexOfBlock(blockId) + 1);
         closeMenu();
         setEditorCaretPosition(newBlock.id,newBlock.getFirstBlockOffset(),EditorSelection.FRONT_OFFSET,type);
@@ -27,6 +26,10 @@ function BlockSelectMenu({closeMenu, blockId}) {
             <ContextMenu.SubTitle text="기본 Blocks"/>
             <ContextMenu.Divider/>
             <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("text")} name="텍스트"/>
+            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 1)} name="제목1"/>
+            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 2)} name="제목2"/>
+            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 3)} name="제목3"/>
+            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("contents")} name="목차"/>
             <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ul")} name="순서 없는 리스트"/>
             <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ol")} name="순서 있는 리스트"/>
             <ContextMenu.Plain icon={<TableIcon/>} handler={() => addBlock("table")} name="테이블"/>

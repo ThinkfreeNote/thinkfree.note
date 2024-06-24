@@ -7,6 +7,7 @@ import ListBlock from "./list/ListBlock";
 import OrderedListBlock from "./list/OrderedListBlock";
 import HeadBlock from "./head/HeadBlock";
 import ContentsBlock from "./contents/ContentsBlock";
+import QuoteBlock from "./quote/QuoteBlock";
 
 
 /**
@@ -37,6 +38,8 @@ const switcher = (type) => {
             return <HeadBlock/>
         case "contents":
             return <ContentsBlock/>
+        case "quote":
+            return <QuoteBlock/>
         case "table" :
             return <TableBlock/>
         default :

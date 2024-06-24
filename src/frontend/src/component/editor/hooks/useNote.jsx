@@ -119,6 +119,7 @@ function useNote() {
         // 새로운 Text들을 담은 TextBlock을 추가
         const newBlock = blockStore.createNewBlock(newBlockType, removedTextList);
         note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
+
         // 기존 TextBlock 리렌더링
         setReRenderTargetId(curBlock.id);
         selectionManager.setEditorCaretPosition(newBlock.id,newBlock.getFirstTextId(),EditorSelection.FRONT_OFFSET,"text");
@@ -136,6 +137,12 @@ function useNote() {
         const curBlock = blockStore.getBlock(editorSelection.startBlockId);
         const text = curBlock.getTextFromId(editorSelection.getClosestId("text").start);
         let newBlockType = curBlock.type;
+
+        // 헤딩이나 인용이면 text 로 변경
+        if (curBlock.type === "head" || curBlock.type === "quote") {
+            curBlock.type = "text";// TODO: type만 text로 바꿔준거라 문제 생길 수도 있음
+            return;
+        }
 
         // textValue 가 없고, depth 가 0일 때만 TextBlock 추가
         if (text.value === "" && curBlock.textIdList.length === 1 && curBlock.depth === 0) {

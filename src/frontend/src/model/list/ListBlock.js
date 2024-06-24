@@ -1,4 +1,4 @@
-import {TextBlock} from "./TextBlock";
+import {TextBlock} from "../text/TextBlock";
 
 export class ListBlock extends TextBlock {
     constructor(id, type, contents = {}, parentId = "", childIdList = [], depth = 0) {

@@ -5,15 +5,22 @@ import {useBlockStore} from "./hooks/useBlockHooks";
 import {ReactComponent as TextBlockIcon} from "../../assets/icon_textBlock.svg";
 import {ReactComponent as UnorderedIcon} from "../../assets/icon_unorderedList.svg";
 import {ReactComponent as TableIcon} from "../../assets/icon_table.svg";
+import {useSelectionManager} from "../context/SelectionManagerProvider";
+import {EditorSelection} from "../../model/Selection";
 
 function BlockSelectMenu({closeMenu, blockId}) {
     const {addBlockId, getIndexOfBlock} = useBlockIdList();
     const blockStore = useBlockStore();
+    const {setEditorCaretPosition} = useSelectionManager();
 
     const addBlock = (type) => {
+
         // TODO: 만들고 아이디 반환
-        addBlockId(blockStore.createNewBlock(type).id, getIndexOfBlock(blockId) + 1);
+        const newBlock = blockStore.createNewBlock(type);
+        addBlockId(newBlock.id, getIndexOfBlock(blockId) + 1);
         closeMenu();
+        setEditorCaretPosition(newBlock.id,newBlock.getFirstBlockOffset(),EditorSelection.FRONT_OFFSET,type);
+
     }
     return (
         <ContextMenu closeMenu={closeMenu}>

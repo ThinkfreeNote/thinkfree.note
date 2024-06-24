@@ -5,13 +5,10 @@ import useTextBlockObserver from "../text/hooks/useTextBlockObserver";
 import {generate4wordId} from "../../../utils/id";
 import {useBlockId} from "../BlockManagerProvider";
 import useHeadHandler from "../head/hooks/useHeadHandler";
-import {editorSelection} from "../../../App";
-
 
 function ContentsBlock() {
     const {blockId} = useBlockId();
     const blockStore = useBlockStore();
-    const contentsBlock = useBlockData(blockId);
     const ref = useRef(null);
     const key = generate4wordId();
     const {getHeadBlockIdList, getTextValue, scrollToHead} = useHeadHandler();
@@ -19,7 +16,7 @@ function ContentsBlock() {
 
     useTextBlockObserver(ref);
     return (
-        <div ref={ref} key={key} className={"contentsBlock"} data-block-id={contentsBlock.id} contentEditable={false}>
+        <div ref={ref} key={key} className={"contentsBlock"} contentEditable={false}>
             {headBlockIdList.map(headBlockId => {
                 const headBlock = blockStore.getBlock(headBlockId);
                 const textValue = getTextValue(headBlockId);

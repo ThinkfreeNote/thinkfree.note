@@ -69,6 +69,8 @@ function useNote() {
         if (curBlock.depth === 0) {
             // 자식들의 depth 재조정
             updatedBlockIdList = resetChildBlockDepth(curBlock);
+            setReRenderTargetId(curBlock.id);
+
         }
         else {
             const parentBlock = blockStore.getBlock(curBlock.parentId);

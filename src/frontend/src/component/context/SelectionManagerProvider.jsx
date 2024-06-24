@@ -62,7 +62,7 @@ function SelectionManagerProvider({children}) {
     </SelectionManagerContext.Provider>
 }
 
-export const TEXT_TYPES = ["text","ol","ul","heading"];
+export const TEXT_TYPES = ["text","ol","ul","head"];
 export const TABLE_TYPES = ["table"];
 
 /**

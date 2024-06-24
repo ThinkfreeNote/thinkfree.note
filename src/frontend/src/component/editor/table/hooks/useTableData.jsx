@@ -1,4 +1,4 @@
-import {useBlockData} from "../../hooks/useBlockHooks";
+import {useBlockData, useBlockStore} from "../../hooks/useBlockHooks";
 import {useBlockId} from "../../BlockManagerProvider";
 
 /**
@@ -9,4 +9,16 @@ export function useTableData() {
     const {blockId} = useBlockId();
     
     return useBlockData(blockId);
+}
+
+/**
+ * @param blockId
+ * @param rowId
+ * @param columnId
+ * @returns {Cell}
+ */
+export function useCell(blockId, rowId,columnId) {
+    const table = useBlockStore().getBlock(blockId);
+
+    return table.getRow(rowId).getCell(columnId);
 }

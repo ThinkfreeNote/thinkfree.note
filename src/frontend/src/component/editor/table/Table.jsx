@@ -1,4 +1,4 @@
-import Row from "./Row";
+import Row from "./Row/Row";
 import React from "react";
 import TableWrapper from "./TableWrapper";
 import {useTableData} from "./hooks/useTableData";

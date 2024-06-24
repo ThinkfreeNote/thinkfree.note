@@ -1,6 +1,6 @@
 import React from 'react';
-import Cell from "./Cell";
-import {useTableData} from "./hooks/useTableData";
+import Cell from "../Cell/Cell";
+import {useTableData} from "../hooks/useTableData";
 import RowWrapper from "./RowWrapper";
 
 function Row({rowId, rowIdx}) {
@@ -9,7 +9,7 @@ function Row({rowId, rowIdx}) {
     return (
         <RowWrapper rowIdx={rowIdx} rowId={rowId}>
             {/* format 배열을 반복하며 Cell 추가 */}
-            {tableData.getFormat().map((cellId, idx) => {
+            {tableData.format.map((cellId, idx) => {
                 return (<Cell key={cellId} rowId={rowId} cellId={cellId} colIdx={idx} rowIdx={rowIdx}/>)
             })}
         </RowWrapper>

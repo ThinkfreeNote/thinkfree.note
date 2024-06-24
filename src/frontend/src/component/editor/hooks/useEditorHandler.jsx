@@ -13,7 +13,7 @@ import useListHandler from "../list/hooks/useListHandler";
 function useEditorHandler() {
     const blockStore = useBlockStore();
     const {backspaceRemoveBlock, backspaceRemoveListBlock , appendBlockAfterCurrentBlock, appendBlockAfterCurrentListBlock} = useNote();
-    const {tableArrowHandler, updateCellValue} = useTableHandler();
+    const {tableArrowHandler, updateCellValue,openCalcDialog, tableEnterHandler} = useTableHandler();
     const {updateTextValue, deleteTextValue} = useTextHandler();
     const {increaseDepth} = useListHandler();
 
@@ -26,6 +26,7 @@ function useEditorHandler() {
         // 테이블인 경우
         if (blockType === "table") {
             e.key.startsWith("Arrow") && tableArrowHandler(e);
+            e.key === "Enter" && tableEnterHandler(e);
         }
         // 텍스트 블록인 경우
         else if (blockType === "text" || blockType === "head") {
@@ -108,7 +109,15 @@ function useEditorHandler() {
         }
     }
 
-    return {onKeyDownHandler, onInputHandler};
+    const onKeyUp = (e) => {
+
+        // 계산함수 처리
+        if(e.key === "=") {
+            openCalcDialog();
+        }
+    }
+
+    return {onKeyDownHandler, onInputHandler, onKeyUp};
 }
 
 

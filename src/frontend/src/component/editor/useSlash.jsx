@@ -31,7 +31,7 @@ function useSlash(editorRef) {
                 }
             }
             else {
-                closeMenu();
+                isOpen && closeMenu();
             }
         }
 

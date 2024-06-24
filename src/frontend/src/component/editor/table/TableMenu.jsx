@@ -33,7 +33,7 @@ const getTextByDirection = (type, direction) => {
 function TableMenu({closeMenu, type, rowIdx, colIdx}) {
     const headerAble = rowIdx === 0 && colIdx === 0;
     const tableData = useTableData();
-    const deleteAble = type === "row" ? tableData.getRowLength() > 1 : tableData.getColumnLength() > 1;
+    const deleteAble = type === "row" ? tableData.rowSize > 1 : tableData.columnSize > 1;
     const {addRow, addColumn, removeRow, removeColumn,toggleHeader} = useTable();
 
     // 다음에 삽입

@@ -7,7 +7,7 @@ function Colgroup() {
 
     return (
         <colgroup>
-            {tableData.getFormat().map((item) => {
+            {tableData.format.map((item) => {
                 const width = tableData.getColumnStyle(item).width;
                 return (
                     // 윈도우 창 크기 조절 및 overflow 속성 미적용 이슈 해결하기 위해 minWidth, maxWidth 추가

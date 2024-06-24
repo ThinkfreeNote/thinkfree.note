@@ -40,7 +40,7 @@ function useListHandler() {
             curBlock.childIdList = [];
 
             note.deleteBlock(curBlockId);
-
+            setReRenderTargetId(prevBlock.id);
         } else if (curBlock.depth === 1) {
             const parentBlock = blockStore.getBlock(curBlock.parentId);
             const prevBlock = blockStore.getBlock(parentBlock.getPrevChildBlockId(curBlockId));
@@ -69,6 +69,7 @@ function useListHandler() {
     };
 
     const addListBlock = (curBlock, newBlock) => {
+        editorSelection.removeSelection();
         if (curBlock.depth === 0) {
             // 자식이 없는 경우
             if (curBlock.childIdList.length === 0) {
@@ -87,7 +88,6 @@ function useListHandler() {
 
                 // 리렌더링
                 setReRenderTargetId(curBlock.id);
-                note.reloadBlockIdList();
             }
         } else if (curBlock.depth > 0) {
             // 자식이 없는 경우
@@ -103,7 +103,6 @@ function useListHandler() {
 
                 // 리렌더링
                 setReRenderTargetId(parentBlock.id);
-                note.reloadBlockIdList();
             }
             // 자식이 있는 경우
             else {
@@ -116,7 +115,6 @@ function useListHandler() {
 
                 // 리렌더링
                 setReRenderTargetId(curBlock.id);
-                note.reloadBlockIdList();
             }
         }
     }

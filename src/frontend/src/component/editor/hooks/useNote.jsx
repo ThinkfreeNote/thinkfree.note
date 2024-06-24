@@ -87,6 +87,7 @@ function useNote() {
 
             // 자신도 blockIdList 에 추가
             updatedBlockIdList.unshift(curBlock.id);
+            setReRenderTargetId(parentBlock.id);
         }
 
         // 현재 블럭의 자식을 끊어줌

@@ -33,7 +33,9 @@ function ListBlock({index = 1}) {
             </p>
             {listBlock.childIdList.length > 0 &&
                 <div style={{display: "flex", padding : "5px 0"}}>
-                    <div className="fake-marker"></div>
+                    <div className="fake-marker" contentEditable={false}>
+                        <svg style={{height: 0}}/>
+                    </div>
                     <div>
                         {listBlock.childIdList.map((blockId, index) => (
                             <BlockWrapper key={blockId} id={blockId} type={listBlock.type}>

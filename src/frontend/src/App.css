@@ -298,7 +298,8 @@ table, th, td {
 }
 
 .block-wrapper.isDragOver {
-    background-color: rgba(239, 246, 253, .7);
+    background-color: rgba(251, 231, 238, 0.3);
+    /*background-color: rgba(239, 246, 253, .7);*/
 }
 
 .table-block {
@@ -695,6 +696,10 @@ table, th, td {
     white-space: normal;
 }
 
+.block-wrapper .block-wrapper .block-menu-btn-box {
+    /*display: none;*/
+}
+
 .fake-marker {
     width: 20px;
 }
@@ -729,7 +734,8 @@ table, th, td {
 .drag-point {
     height: 3px;
     margin: 0 3px;
-    background-color: rgb(162, 204, 248);
+    /*background-color: rgb(162, 204, 248);*/
+    background-color: rgb(255, 61, 144);
     opacity: 1;
     transition: opacity .3s ease-out;
 }

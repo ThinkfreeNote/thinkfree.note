@@ -19,8 +19,7 @@ function ListBlock({index = 1}) {
     return (
         <>
             <p ref={ref} key={key} className={listBlock.type} data-list-depth={listBlock.depth}
-               data-list-value={`${getListValue(index + 1, listBlock.depth)}`}
-               data-block-id={listBlock.id} data-leaf="true">
+               data-list-value={`${getListValue(index + 1, listBlock.depth)}`} data-leaf="true">
 
                 {listBlock.textIdList.map(textId => {
                     return (

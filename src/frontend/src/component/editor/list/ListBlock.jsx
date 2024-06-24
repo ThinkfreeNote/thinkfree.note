@@ -31,13 +31,16 @@ function ListBlock({index = 1}) {
                     )
                 })}
             </p>
-
-            {
-                listBlock.childIdList.map((blockId, index) => (
-                    <BlockWrapper key={blockId} id={blockId} type={listBlock.type}>
-                        <ListBlock index={index}/>
-                    </BlockWrapper>
-                ))
+            {listBlock.childIdList.length > 0 &&
+                <div style={{display: "flex", padding : "5px 0"}}>
+                    <div className="fake-marker"></div>
+                    <div>
+                        {listBlock.childIdList.map((blockId, index) => (
+                            <BlockWrapper key={blockId} id={blockId} type={listBlock.type}>
+                                <ListBlock index={index}/>
+                            </BlockWrapper>))}
+                    </div>
+                </div>
             }
         </>
     );

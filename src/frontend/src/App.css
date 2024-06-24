@@ -689,19 +689,19 @@ table, th, td {
 
 .ul[data-list-depth="0"]::before {
     padding: 5px;
-    content: "ㆍ";
+    content: "•";
     margin-left: 0;
 }
 
 .ul[data-list-depth="1"]::before {
     padding: 5px;
-    content: "º";
+    content: "◦";
     margin-left: 20px;
 }
 
 .ul[data-list-depth="2"]::before {
     padding: 5px;
-    content: "□";
+    content: "▪";
     margin-left: 40px;
 }
 
@@ -727,6 +727,7 @@ table, th, td {
     pointer-events: none;
 }
 
+/* headBlock */
 h1 span {
     font-size: 1.875em !important;
     font-weight: 600 !important;
@@ -742,6 +743,41 @@ h3 span {
     font-weight: 600 !important;
 }
 
+/* ContentsBlock */
+.contentsBlock {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: #f9f9f9;
+}
 
+.contents {
+    padding: 10px;
+    padding-left: 20px;
+    color: rgb(var(--point-color));
+}
+
+.contents:hover {
+    background-color: #e0e0e0;
+    padding-left: 30px;
+}
+
+.contents[data-contents-level="1"]::before {
+    padding: 10px;
+    content: "•";
+    margin-left: 0;
+}
+
+.contents[data-contents-level="2"]::before {
+    padding: 10px;
+    content: "◦";
+    margin-left: 20px;
+}
+
+.contents[data-contents-level="3"]::before {
+    padding: 10px;
+    content: "▪";
+    margin-left: 40px;
+}
 
 

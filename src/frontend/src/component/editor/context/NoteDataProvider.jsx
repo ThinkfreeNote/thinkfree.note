@@ -7,6 +7,7 @@ import {Table} from "../../../model/Table";
 import {useNavigate} from "react-router-dom";
 import {ListBlock} from "../../../model/ListBlock";
 import {HeadBlock} from "../../../model/HeadBlock";
+import {ContentsBlock} from "../../../model/ContentsBlock";
 
 
 export const BlockStoreContext = createContext(null);
@@ -112,6 +113,7 @@ function jsonToBlockStore(jsonText) {
         if (value.type === "text") return Object.setPrototypeOf(value, TextBlock.prototype);
         if (value.type === "ul" || value.type === "ol") Object.setPrototypeOf(value, ListBlock.prototype);
         if (value.type === "head") Object.setPrototypeOf(value, HeadBlock.prototype);
+        if (value.type === "contents") Object.setPrototypeOf(value, ContentsBlock.prototype);
         if (Object.hasOwn(value, "fontSize")) return Object.setPrototypeOf(value, FontStyle.prototype);
         if (Object.hasOwn(value, "fontStyle")) return Object.setPrototypeOf(value, Text.prototype);
         if (key === "blocks") return Object.setPrototypeOf(value, BlockStore.prototype);

@@ -102,7 +102,11 @@ export function useInitBlockCursor(blockId) {
         if(!blockType) return;
         if (blockType === "table") {
             setEditorCaretPosition(blockId, blockData.getFirstCellOffset(), EditorSelection.LAST_OFFSET, "table");
-        } else {
+        }
+        else if(blockType === "contents") {
+
+        }
+        else {
             setEditorCaretPosition(blockId, blockData.getFirstTextId(), EditorSelection.FRONT_OFFSET, "text");
         }
     }, [blockType])

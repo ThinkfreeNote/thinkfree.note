@@ -7,7 +7,7 @@ import {useBlockStore} from "./hooks/useBlockHooks";
 import {ReactComponent as TextBlockIcon} from "../../assets/icon_textBlock.svg";
 import {ReactComponent as UnorderedIcon} from "../../assets/icon_unorderedList.svg";
 import {ReactComponent as TableIcon} from "../../assets/icon_table.svg";
-import {TextBlock} from "../../model/TextBlock";
+import {TextBlock} from "../../model/text/TextBlock";
 import {useSelectionManager} from "../context/SelectionManagerProvider";
 import {EditorSelection} from "../../model/Selection";
 

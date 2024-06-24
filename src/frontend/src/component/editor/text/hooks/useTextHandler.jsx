@@ -1,8 +1,8 @@
 import {editorSelection} from "../../../../App";
 import {useBlockStore} from "../../hooks/useBlockHooks";
-import {Text} from "../../../../model/Text";
+import {Text} from "../../../../model/text/Text";
 import {getRandomId} from "../../../../utils/id";
-import {FontStyle} from "../../../../model/FontStyle";
+import {FontStyle} from "../../../../model/text/FontStyle";
 
 function useTextHandler() {
     const blockStore = useBlockStore();

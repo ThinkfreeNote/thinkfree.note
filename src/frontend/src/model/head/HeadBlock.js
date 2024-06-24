@@ -1,4 +1,4 @@
-import {TextBlock} from "./TextBlock";
+import {TextBlock} from "../text/TextBlock";
 
 export class HeadBlock extends TextBlock {
     constructor(id, type, contents = {}, level = 1) {

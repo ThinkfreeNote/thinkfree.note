@@ -1,12 +1,12 @@
 import {Table} from "../model/Table/Table";
-import {TextBlock} from "../model/TextBlock";
-import {FontStyle} from "../model/FontStyle";
+import {TextBlock} from "../model/text/TextBlock";
+import {FontStyle} from "../model/text/FontStyle";
 import {BlockStore} from "../model/BlockStore";
 import {Row} from "../model/Table/Row";
 import {Cell} from "../model/Table/Cell";
-import {ListBlock} from "../model/ListBlock";
-import {HeadBlock} from "../model/HeadBlock";
-import {ContentsBlock} from "../model/ContentsBlock";
+import {ListBlock} from "../model/list/ListBlock";
+import {HeadBlock} from "../model/head/HeadBlock";
+import {ContentsBlock} from "../model/head/ContentsBlock";
 
 /**
  * @desc 저장된 json 문서 파싱하여 모델객체로 연결

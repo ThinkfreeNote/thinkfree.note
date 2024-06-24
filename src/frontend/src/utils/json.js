@@ -7,6 +7,7 @@ import {Cell} from "../model/Table/Cell";
 import {ListBlock} from "../model/list/ListBlock";
 import {HeadBlock} from "../model/head/HeadBlock";
 import {ContentsBlock} from "../model/head/ContentsBlock";
+import {QuoteBlock} from "../model/quote/QuoteBlock";
 
 /**
  * @desc 저장된 json 문서 파싱하여 모델객체로 연결
@@ -20,6 +21,7 @@ export function jsonToBlockStore(jsonText) {
         if (value.type === "ul" || value.type === "ol") Object.setPrototypeOf(value, ListBlock.prototype);
         if (value.type === "head") Object.setPrototypeOf(value, HeadBlock.prototype);
         if (value.type === "contents") Object.setPrototypeOf(value, ContentsBlock.prototype);
+        if (value.type === "quote") Object.setPrototypeOf(value, QuoteBlock.prototype);
         if (Object.hasOwn(value, "fontSize")) return Object.setPrototypeOf(value, FontStyle.prototype);
         if (Object.hasOwn(value, "fontStyle")) return Object.setPrototypeOf(value, Text.prototype);
         if (key === "blocks") return Object.setPrototypeOf(value, BlockStore.prototype);

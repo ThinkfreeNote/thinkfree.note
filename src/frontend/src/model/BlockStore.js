@@ -7,6 +7,7 @@ import {ListBlock} from "./list/ListBlock";
 import {jsonToBlockStore} from "../utils/json";
 import {HeadBlock} from "./head/HeadBlock";
 import {ContentsBlock} from "./head/ContentsBlock";
+import {QuoteBlock} from "./quote/QuoteBlock";
 
 /**
  * @typedef {ListBlock, TextBlock, Table} BlockModel
@@ -87,6 +88,16 @@ export class BlockStore {
             this.addBlock(contentsBlock);
 
             return contentsBlock;
+        } else if (type === "quote") {
+            const quoteBlock = new QuoteBlock(blockId, type, {});
+
+            // 인자로 들어온 텍스트가 없으면 기본값
+            textList.length === 0 ?
+                quoteBlock.addText(new Text(getRandomId(), "", new FontStyle())) :
+                textList.forEach((text) => quoteBlock.addText(text));
+            this.addBlock(quoteBlock);
+
+            return quoteBlock;
         } else if (type === "table") {
             const table = new Table(blockId, type, []);
             this.addBlock(table);

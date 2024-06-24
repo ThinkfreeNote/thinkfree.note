@@ -17,7 +17,7 @@ function QuoteBlock() {
     useTextBlockObserver(ref);
 
     return (
-        <blockquote ref={ref} key={key} data-block-id={quoteBlock.id} data-leaf="true">
+        <blockquote ref={ref} key={key} data-leaf="true">
             {quoteBlock.textIdList.map(textId => {
                 return (
                     <TextComponent

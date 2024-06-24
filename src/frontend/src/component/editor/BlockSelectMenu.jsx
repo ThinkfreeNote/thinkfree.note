@@ -32,6 +32,7 @@ function BlockSelectMenu({closeMenu, blockId}) {
             <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("contents")} name="목차"/>
             <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ul")} name="순서 없는 리스트"/>
             <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ol")} name="순서 있는 리스트"/>
+            <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("quote")} name="인용"/>
             <ContextMenu.Plain icon={<TableIcon/>} handler={() => addBlock("table")} name="테이블"/>
         </ContextMenu>
     );

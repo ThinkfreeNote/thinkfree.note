@@ -8,9 +8,9 @@ import {ReactComponent as ItalicIcon} from "../../../assets/icon_italic.svg";
 import {ReactComponent as UnderlineIcon} from "../../../assets/icon_underline.svg";
 import {ReactComponent as LineThroghIcon} from "../../../assets/icon_lineThrough.svg";
 import {BlockReRenderContext} from "../context/BlockReRenderContext";
-import {Text} from "../../../model/Text";
+import {Text} from "../../../model/text/Text";
 import {getRandomId} from "../../../utils/id";
-import {FontStyle} from "../../../model/FontStyle";
+import {FontStyle} from "../../../model/text/FontStyle";
 
 
 const FONT_SIZE_LIST = [8, 10, 12, 14, 16, 18, 20, 24, 30, 36, 48];

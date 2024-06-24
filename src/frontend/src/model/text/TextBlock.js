@@ -1,5 +1,5 @@
-import {Block} from "./Block";
-import {getRandomId} from "../utils/id";
+import {Block} from "../Block";
+import {getRandomId} from "../../utils/id";
 import {Text} from "./Text";
 
 export class TextBlock extends Block {

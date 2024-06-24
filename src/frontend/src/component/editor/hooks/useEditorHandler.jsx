@@ -30,19 +30,21 @@ function useEditorHandler() {
         const block = blockStore.getBlock(blockId);
         if (!blockId || !block) return;
         const blockType = block.type;
+        // 셀렉션 키 다운일 경우 return
+        if (!editorSelection.isCaret()) {
+            e.preventDefault();
+            return;
+        }
+
         // 테이블인 경우
         if (blockType === "table") {
             e.key.startsWith("Arrow") && tableArrowHandler(e);
             e.key === "Enter" && tableEnterHandler(e);
         }
         // 텍스트 블록인 경우
-        else if (blockType === "text" || blockType === "head") {
+        else if (blockType === "text" || blockType === "head" || blockType === "quote") {
             if (e.key === "Enter") {
-                if (editorSelection.isCaret()) {
-                    appendBlockAfterCurrentBlock(e);
-                } else {
-                    e.preventDefault();
-                }
+                appendBlockAfterCurrentBlock(e);
             }
 
             if (e.key === "Tab") {
@@ -50,53 +52,33 @@ function useEditorHandler() {
             }
 
             if (e.key === "Backspace") {
-                // 캐럿일 때의 로직
-                if (editorSelection.isCaret()) {
-                    if (editorSelection.isStartCaret()) {
-                        e.preventDefault();
-                        // backspace 로 블록 삭제되는 경우
-                        backspaceRemoveBlock();
-                    } else {
-                        deleteTextValue();
-                    }
-                }
-                // 셀렉션일 때의 로직
-                else {
+                if (editorSelection.isStartCaret()) {
                     e.preventDefault();
+                    // backspace 로 블록 삭제되는 경우
+                    backspaceRemoveBlock();
+                } else {
+                    deleteTextValue();
                 }
             }
         }
         // 리스트 블록인 경우
         else if (blockType === "ul" || blockType === "ol") {
             if (e.key === "Enter") {
-                if (editorSelection.isCaret()) {
-                    appendBlockAfterCurrentListBlock(e);
-                } else {
-                    e.preventDefault();
-                }
+                appendBlockAfterCurrentListBlock(e);
             }
 
             if (e.key === "Tab") {
                 e.preventDefault();
-                if (editorSelection.isCaret()) {
-                    increaseDepth();
-                }
+                increaseDepth();
             }
 
             if (e.key === "Backspace") {
-                // 캐럿일 때의 로직
-                if (editorSelection.isCaret()) {
-                    if (editorSelection.isStartCaret()) {
-                        e.preventDefault();
-                        // backspace 로 블록 삭제되는 경우
-                        backspaceRemoveListBlock();
-                    } else {
-                        deleteTextValue();
-                    }
-                }
-                // 셀렉션일 때의 로직
-                else {
+                if (editorSelection.isStartCaret()) {
                     e.preventDefault();
+                    // backspace 로 블록 삭제되는 경우
+                    backspaceRemoveListBlock();
+                } else {
+                    deleteTextValue();
                 }
             }
         }
@@ -118,7 +100,6 @@ function useEditorHandler() {
     }
 
     const onKeyUp = (e) => {
-
         // 계산함수 처리
         if (e.key === "=") {
             openCalcDialog();

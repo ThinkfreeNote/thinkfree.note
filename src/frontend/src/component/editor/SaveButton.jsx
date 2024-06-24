@@ -12,13 +12,13 @@ function SaveButton() {
     const {title} = useContext(NoteTitleContext);
     const {saveNote,updateNote} =  useNoteDataFetch();
 
-    const postData = {
-        blockIdList,
-        blocks: {},
-    }
-    Object.assign(postData.blocks, blockStore);
-
     const clickHandler = () => {
+        const postData = {
+            blockIdList,
+            blocks: {},
+        }
+        Object.assign(postData.blocks, blockStore);
+
         // noteId가 있으면 업데이트, 없으면 새로 저장
         noteId ? updateNote(noteId,title,postData) : saveNote(title,postData);
     }

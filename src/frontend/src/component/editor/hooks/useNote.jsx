@@ -118,6 +118,7 @@ function useNote() {
         note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
         // 기존 TextBlock 리렌더링
         setReRenderTargetId(curBlock.id);
+        selectionManager.setEditorCaretPosition(newBlock.id,newBlock.getFirstTextId(),EditorSelection.FRONT_OFFSET,"text");
     }
 
     /**

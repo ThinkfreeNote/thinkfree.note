@@ -4,11 +4,14 @@ import {useContext} from "react";
 import {BlockReRenderContext} from "../../context/BlockReRenderContext";
 import {useIndexList} from "../../context/NoteIndexListProvider";
 import useBlockIdList from "../../hooks/useBlockIdList";
+import {useSelectionManager} from "../../../context/SelectionManagerProvider";
+import {EditorSelection} from "../../../../model/Selection";
 
 function useListHandler() {
     const note = useBlockIdList();
     const blockStore = useBlockStore();
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
+    const {setEditorCaretPosition} = useSelectionManager();
     const {getOrder} = useIndexList();
     const {getPrevBlockId} = useBlockIdList();
 
@@ -41,6 +44,7 @@ function useListHandler() {
 
             note.deleteBlock(curBlockId);
             setReRenderTargetId(prevBlock.id);
+            setEditorCaretPosition(prevBlock.id,editorSelection.startBlockOffset,editorSelection.startOffset,"text");
         } else if (curBlock.depth === 1) {
             const parentBlock = blockStore.getBlock(curBlock.parentId);
             const prevBlock = blockStore.getBlock(parentBlock.getPrevChildBlockId(curBlockId));
@@ -70,12 +74,13 @@ function useListHandler() {
 
     const addListBlock = (curBlock, newBlock) => {
         editorSelection.removeSelection();
+        let reRenderTargetId = null;
         if (curBlock.depth === 0) {
             // 자식이 없는 경우
             if (curBlock.childIdList.length === 0) {
                 note.addBlockId(newBlock.id, note.getIndexOfBlock(curBlock.id) + 1);
                 // 기존 block 리렌더링
-                setReRenderTargetId(curBlock.id);
+                reRenderTargetId = curBlock.id;
             }
             // 자식이 있는 경우
             else {
@@ -86,8 +91,7 @@ function useListHandler() {
                 // 새로운 블럭은 자신의 첫 자식으로 들어감
                 curBlock.childIdList.unshift(newBlock.id);
 
-                // 리렌더링
-                setReRenderTargetId(curBlock.id);
+                reRenderTargetId = curBlock.id;
             }
         } else if (curBlock.depth > 0) {
             // 자식이 없는 경우
@@ -101,8 +105,7 @@ function useListHandler() {
                 // 새로운 블럭은 부모의 마지막 자식으로 들어감
                 parentBlock.childIdList.splice(parentBlock.childIdList.indexOf(curBlock.id) + 1, 0, newBlock.id);
 
-                // 리렌더링
-                setReRenderTargetId(parentBlock.id);
+                reRenderTargetId = parentBlock.id;
             }
             // 자식이 있는 경우
             else {
@@ -113,10 +116,12 @@ function useListHandler() {
                 // 새로운 블럭은 자신의 첫 자식으로 들어감
                 curBlock.childIdList.unshift(newBlock.id);
 
-                // 리렌더링
-                setReRenderTargetId(curBlock.id);
+                reRenderTargetId = curBlock.id;
             }
         }
+            setReRenderTargetId(reRenderTargetId);
+            setEditorCaretPosition(reRenderTargetId,newBlock.getFirstTextId(),EditorSelection.FRONT_OFFSET,"text");
+
     }
 
     /**

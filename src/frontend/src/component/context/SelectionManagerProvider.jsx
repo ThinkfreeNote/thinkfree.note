@@ -33,6 +33,7 @@ function SelectionManagerProvider({children}) {
         if (!selectionTarget) return;
         editorSelection.removeSelection();
         const $block = document.querySelector(`[data-block-id="${selectionTarget.blockId}"]`);
+        if(!$block) return;
         if (selectionTarget.blockType === "text") {
             const $textSpan = $block.querySelector(`[data-text-id="${selectionTarget.blockOffset}"]`);
             if (!$textSpan) return;

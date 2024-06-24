@@ -19,8 +19,7 @@ function ListBlock({index = 1}) {
     return (
         <>
             <p ref={ref} key={key} className={listBlock.type} data-list-depth={listBlock.depth}
-               data-list-value={`${getListValue(index + 1, listBlock.depth)}`}
-               data-block-id={listBlock.id} data-leaf="true">
+               data-list-value={`${getListValue(index + 1, listBlock.depth)}`} data-leaf="true">
 
                 {listBlock.textIdList.map(textId => {
                     return (
@@ -32,13 +31,18 @@ function ListBlock({index = 1}) {
                     )
                 })}
             </p>
-
-            {
-                listBlock.childIdList.map((blockId, index) => (
-                    <BlockWrapper key={blockId} id={blockId} type={listBlock.type}>
-                        <ListBlock index={index}/>
-                    </BlockWrapper>
-                ))
+            {listBlock.childIdList.length > 0 &&
+                <div style={{display: "flex", padding : "5px 0"}}>
+                    <div className="fake-marker" contentEditable={false}>
+                        <svg style={{height: 0}}/>
+                    </div>
+                    <div>
+                        {listBlock.childIdList.map((blockId, index) => (
+                            <BlockWrapper key={blockId} id={blockId} type={listBlock.type} isDepth={true}>
+                                <ListBlock index={index}/>
+                            </BlockWrapper>))}
+                    </div>
+                </div>
             }
         </>
     );

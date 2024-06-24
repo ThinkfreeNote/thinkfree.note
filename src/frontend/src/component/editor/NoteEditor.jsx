@@ -19,8 +19,9 @@ function NoteEditor() {
     useEditorSelection(blockIdList);
 
     // contentEditable div 요소에서 처리할 이벤트 핸들러
-    const {onKeyDownHandler, onInputHandler, onKeyUp} = useEditorHandler();
+    const {onKeyDownHandler, onInputHandler, onKeyUp, onMouseOver, onMouseLeave} = useEditorHandler();
     const {onDragOver, onDrop, onDragStart, onDragEnd} = useEditorDragHandler();
+
 
     return (
         <EditorContext.Provider value={editorRef}>
@@ -34,6 +35,8 @@ function NoteEditor() {
                  onDragStart={onDragStart}
                  onDragEnd={onDragEnd}
                  onKeyUp={onKeyUp}
+                 onMouseOver={onMouseOver}
+                 onMouseOut={onMouseLeave}
             >
                 <Title/>
                 {blockIdList.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}

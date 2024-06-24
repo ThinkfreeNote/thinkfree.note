@@ -30,7 +30,7 @@ function HeadBlock() {
     }
 
     return (
-        <Tag ref={ref} key={key} data-block-id={headBlock.id} data-leaf="true">
+        <Tag ref={ref} key={key} data-leaf="true">
             {headBlock.textIdList.map(textId => {
                 return (
                     <TextComponent

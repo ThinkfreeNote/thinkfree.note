@@ -5,6 +5,7 @@ import useTextHandler from "../text/hooks/useTextHandler";
 import useNote from "./useNote";
 import useListHandler from "../list/hooks/useListHandler";
 import useBlockIdList from "./useBlockIdList";
+import {useMouseHoverBlockManager} from "../context/EditorMouseHoverProvider";
 
 
 /**
@@ -85,10 +86,9 @@ function useEditorHandler() {
     }
 
     const onInputHandler = (e) => {
-        // Input 입력이 발생한 block Id와 타입
-        const blockId = editorSelection.startBlockId;
-        if (!blockId) return;
         const blockType = editorSelection.startBlockType;
+        if(!blockType) return;
+
         if (blockType === "title") return;
         if (blockType === "table") {
             updateCellValue();
@@ -100,13 +100,29 @@ function useEditorHandler() {
     }
 
     const onKeyUp = (e) => {
-        // 계산함수 처리
-        if (e.key === "=") {
-            openCalcDialog();
+
+        const blockType = editorSelection.startBlockType;
+        if(blockType === "table") {
+            // 계산함수 처리
+            if (e.key === "=") {
+                openCalcDialog();
+            }
         }
     }
 
-    return {onKeyDownHandler, onInputHandler, onKeyUp};
+    const {setHoverBlockId,clearHoverBlockId} = useMouseHoverBlockManager();
+
+    const onMouseLeave = (e) => {
+        // console.log(e.target.closest("[data-block-id]"));
+    }
+
+    const onMouseOver = (e) => {
+        const $block = e.target.closest("[data-block-id]")?.dataset.blockId;
+
+        setHoverBlockId($block ?? null);
+    }
+
+    return {onKeyDownHandler, onInputHandler, onKeyUp, onMouseOver, onMouseLeave};
 }
 
 

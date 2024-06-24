@@ -25,6 +25,7 @@ function useEditorDragHandler() {
         if (!blockId) return;
         e.dataTransfer.setData("blockId", `${blockId}`);
         e.dataTransfer.dropEffect = "copy"
+        dragOverBlockIdManager.setDragStartBlockId(blockId);
     }
 
     const onDragEnd = (e) => {
@@ -38,6 +39,7 @@ function useEditorDragHandler() {
         dragOverBlockIdManager.clearBlockId();
         e.dataTransfer.dropEffect = "copy"
         const dragStartBlockId = e.dataTransfer.getData("blockId");
+        if(dragStartBlockId === blockId) return;
         moveBlock(dragStartBlockId, getIndexOfBlock(blockId));
     }
 

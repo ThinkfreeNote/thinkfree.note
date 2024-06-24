@@ -7,7 +7,7 @@
     --side: 20px;
     --point-color: 254, 0, 121;
     /*--point-color: 110, 93, 198;*/
-    --point-color-hover: rgb(130, 113, 218) ;
+    --point-color-hover: rgb(130, 113, 218);
     --point-color-shadow: rgba(254, 0, 121, .3);
 }
 
@@ -206,10 +206,11 @@ table, th, td {
 
 .noteList-item.selected, .noteList-item:hover {
     background-color: rgba(237, 237, 235);
-    color : rgb(0,0,0);
+    color: rgb(0, 0, 0);
     font-weight: 600;
 
 }
+
 .noteList-item-title {
     overflow: hidden;
     white-space: nowrap;
@@ -239,7 +240,7 @@ table, th, td {
 .noteList-item-menu-box svg {
     width: 18px;
     height: 18px;
-    fill : rgb(48,48,48,.5)
+    fill: rgb(48, 48, 48, .5)
 }
 
 .noteList-item-menu-box svg:hover {
@@ -247,23 +248,24 @@ table, th, td {
 }
 
 .new-note-button {
-    margin : auto calc(var(--side) * 2) 0;
+    margin: auto calc(var(--side) * 2) 0;
     color: white;
-    padding : 8px 16px;
-    background-color : rgb(var(--point-color));
+    padding: 8px 16px;
+    background-color: rgb(var(--point-color));
     border: none;
     border-radius: 24px;
     font-weight: 600;
     font-size: 16px;
-    cursor : pointer;
+    cursor: pointer;
     text-align: center;
 }
 
 .new-note-button:visited {
-    color : white;
+    color: white;
 }
+
 .new-note-button:hover {
-    background-color: rgba(var(--point-color),.7);
+    background-color: rgba(var(--point-color), .7);
 }
 
 /*------*/
@@ -289,13 +291,14 @@ table, th, td {
 }
 
 .block-wrapper {
-    margin-bottom: 5px;
     position: relative;
-    padding: 3px;
+    padding: 3px 3px 8px;
     border-radius: 4px;
 }
+
 .block-wrapper.isDragOver {
-    background-color: rgba(239, 246, 253,.7);
+    background-color: rgba(251, 231, 238, 0.3);
+    /*background-color: rgba(239, 246, 253, .7);*/
 }
 
 .table-block {
@@ -338,7 +341,7 @@ table, th, td {
     top: -2px;
     left: -2px;
     z-index: 4;
-    border: 2px solid rgba(var(--point-color),.7);
+    border: 2px solid rgba(var(--point-color), .7);
     pointer-events: none;
 }
 
@@ -394,6 +397,7 @@ table, th, td {
     background-color: rgb(201, 202, 204) !important;
     font-weight: 600;
 }
+
 .table-header td {
     background-color: rgb(201, 202, 204) !important;
 }
@@ -442,7 +446,7 @@ table, th, td {
 @keyframes fadein {
     from {
         opacity: 0;
-        transform : scale(.9);
+        transform: scale(.9);
     }
     to {
         opacity: 1;
@@ -481,14 +485,14 @@ table, th, td {
 }
 
 /* 컨텍스트 메뉴 아이템 (비활성화 아닐 때) */
-.context-menu-item:hover:not(.context-menu-disable) ,.context-menu-item.selected:not(.context-menu-disable){
+.context-menu-item:hover:not(.context-menu-disable), .context-menu-item.selected:not(.context-menu-disable) {
     background-color: rgba(241, 242, 244);
 }
 
 .context-menu-item svg {
     width: 16px;
     height: 16px;
-    fill : rgba(var(--point-color),.8);
+    fill: rgba(var(--point-color), .8);
 }
 
 .context-menu-dropDown .context-menu {
@@ -508,12 +512,7 @@ table, th, td {
     opacity: 0;
     transition: opacity .3s ease-out;
 }
-
-.block-wrapper:hover .block-menu-btn-box {
-    opacity: 1;
-}
-
-.block-menu-btn-box:hover {
+.block-menu-btn-box.isHover {
     opacity: 1;
 }
 
@@ -528,7 +527,7 @@ table, th, td {
 }
 
 .block-menu-btn:hover {
-    background: rgba(239, 239, 239,.7);
+    background: rgba(239, 239, 239, .7);
     border-radius: 3px;
 }
 
@@ -666,59 +665,71 @@ table, th, td {
 }
 
 .note-save-button:hover {
-    background-color: rgba(var(--point-color),.7);
+    background-color: rgba(var(--point-color), .7);
 }
 
-.ol[data-list-depth="0"]::before {
-    padding: 5px;
+[data-list-depth="0"] {
+    --marker: "•";
+}
+
+[data-list-depth="1"] {
+    --marker: "◦";
+}
+
+[data-list-depth="2"] {
+    --marker: "▪";
+}
+
+[data-list-depth] {
+    white-space: pre;
+    --left: 20px;
+    padding-left: calc(var(--left));
+}
+
+[data-list-depth] span {
+    white-space: normal;
+}
+
+.block-wrapper .block-wrapper .block-menu-btn-box {
+    /*display: none;*/
+}
+
+.fake-marker {
+    width: 20px;
+}
+
+[data-list-depth]::before {
+    --left: 20px;
+    font-size: 14px;
+    display: inline-block;
+    text-indent: -20px;
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+.ol[data-list-depth]::before {
     content: attr(data-list-value) ".";
-    margin-left: 0;
 }
 
-.ol[data-list-depth="1"]::before {
-    padding: 5px;
-    content: attr(data-list-value) ".";
-    margin-left: 20px;
+.ul[data-list-depth]::before {
+    content: var(--marker);
 }
-
-.ol[data-list-depth="2"]::before {
-    padding: 5px;
-    content: attr(data-list-value) ".";
-    margin-left: 40px;
-}
-
-.ul[data-list-depth="0"]::before {
-    padding: 5px;
-    content: "•";
-    margin-left: 0;
-}
-
-.ul[data-list-depth="1"]::before {
-    padding: 5px;
-    content: "◦";
-    margin-left: 20px;
-}
-
-.ul[data-list-depth="2"]::before {
-    padding: 5px;
-    content: "▪";
-    margin-left: 40px;
-}
-
 
 /* drag */
 
 .drag-point-wrapper {
     user-select: none;
     position: absolute;
-    padding : 7px 0;
+    padding: 7px 0;
     width: 100%;
 }
 
 .drag-point {
     height: 3px;
     margin: 0 3px;
-    background-color: rgb(162, 204, 248);
+    /*background-color: rgb(162, 204, 248);*/
+    background-color: rgb(255, 61, 144);
     opacity: 1;
     transition: opacity .3s ease-out;
 }

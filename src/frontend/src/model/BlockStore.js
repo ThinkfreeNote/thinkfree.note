@@ -115,12 +115,11 @@ export class BlockStore {
     // depth 재계산
     recalculateDepth(blockId,depth) {
         const block = this[blockId];
-        if(!DEPTH_TYPE.includes(block.type)) return;
+        if(!Object.hasOwn(block,"depth")) return;
         block.depth = depth;
 
-        block.childIdList.forEach(childId => {
-            const block = this[childId];
-            block.depth = depth + 1;
+        block.childIdList.forEach((childId)=>{
+            this.recalculateDepth(childId,depth+1);
         })
     }
 }

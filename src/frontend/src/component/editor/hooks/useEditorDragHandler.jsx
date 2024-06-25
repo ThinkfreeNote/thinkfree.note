@@ -46,7 +46,8 @@ function useEditorDragHandler() {
         e.dataTransfer.dropEffect = "copy"
         const dragStartBlockId = e.dataTransfer.getData("blockId");
         if(dragStartBlockId === blockId) return;
-        // moveBlock(dragStartBlockId, getIndexOfBlock(blockId));
+        if(!dragStartBlockId) return;
+
         blockMove(dragStartBlockId,blockId);
     }
 
@@ -54,6 +55,7 @@ function useEditorDragHandler() {
         const destinationBlock = blockStore.getBlock(destinationId);
         const destinationType = destinationBlock.type;
         const destinationDepth = destinationBlock.depth ?? 0;
+        const destinationParentBlock = blockStore.getBlock(destinationBlock.parentId);
         const targetBlock = blockStore.getBlock(targetId);
         const targetType = targetBlock.type;
         const targetDepth = targetBlock.depth ?? 0;
@@ -92,9 +94,27 @@ function useEditorDragHandler() {
         }
 
         if(targetDepth > 0 && destinationDepth > 0) {
-
+            // 부모가 같은 경우
+            if(targetBlock.parentId === destinationBlock.parentId) {
+                const targetIdx = destinationParentBlock.childIdList.indexOf(targetId);
+                destinationParentBlock.childIdList.splice(targetIdx,1);
+                const destinationIdx = destinationParentBlock.childIdList.indexOf(destinationId);
+                destinationParentBlock.childIdList.splice(destinationIdx+1,0,targetId);
+            }
+            // 부모가 다른 경우
+            else {
+                // targetParentBlock.removeChild(targetId)
+                // targetBlock.parentId = destinationBlock.parentId;
+                //
+                // // 뎁스가 다른 경우
+                // if(targetDepth !== destinationDepth) {
+                //     blockStore.recalculateDepth(targetId,destinationBlock.depth);
+                // }
+                //
+                // const destinationIdx = destinationParentBlock.childIdList.indexOf(destinationId);
+                // destinationParentBlock.childIdList.splice(destinationIdx+1, 0,targetId);
+            }
         }
-
     }
 
     return {onDragOver, onDrop, onDragEnd,onDragStart}

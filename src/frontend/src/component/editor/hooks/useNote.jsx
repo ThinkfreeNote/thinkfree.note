@@ -6,7 +6,7 @@ import {BlockReRenderContext} from "../context/BlockReRenderContext";
 import {useBlockStore} from "./useBlockHooks";
 import {useSelectionManager} from "../../context/SelectionManagerProvider";
 import {EditorSelection} from "../../../model/Selection";
-import useListHandler from "../list/hooks/useListHandler";
+import useEditorList from "./useEditorList";
 import useTextHandler from "../text/hooks/useTextHandler";
 
 /**
@@ -20,7 +20,7 @@ function useNote() {
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
     const selectionManager = useSelectionManager();
     const {divideText} = useTextHandler();
-    const {addListBlock, resetChildBlockDepth} = useListHandler();
+    const {addListBlock, resetChildBlockDepth} = useEditorList();
 
     /**
      * @desc 텍스트 블록을 삭제하는 함수
@@ -138,12 +138,6 @@ function useNote() {
         const curBlock = blockStore.getBlock(editorSelection.startBlockId);
         const text = curBlock.getTextFromId(editorSelection.getClosestId("text").start);
         let newBlockType = curBlock.type;
-
-        // 헤딩이나 인용이면 text 로 변경
-        if (curBlock.type === "head" || curBlock.type === "quote") {
-            curBlock.type = "text";// TODO: type만 text로 바꿔준거라 문제 생길 수도 있음
-            return;
-        }
 
         // textValue 가 없고, depth 가 0일 때만 TextBlock 추가
         if (text.value === "" && curBlock.textIdList.length === 1 && curBlock.depth === 0) {

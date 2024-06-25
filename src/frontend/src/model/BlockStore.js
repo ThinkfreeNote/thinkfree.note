@@ -63,7 +63,7 @@ export class BlockStore {
 
             return textBlock;
 
-        } else if (type === "ul" || type === "ol") {
+        } else if (type === "ul" || type === "ol" || type === "cl") {
             const listBlock = new ListBlock(blockId, type, {}, "", [], 0);
             // 인자로 들어온 텍스트가 없으면 기본값
             textList.length === 0 ?

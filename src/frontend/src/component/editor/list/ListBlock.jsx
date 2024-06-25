@@ -6,20 +6,28 @@ import {generate4wordId} from "../../../utils/id";
 import TextComponent from "../text/TextComponent";
 import BlockWrapper from "../BlockWrapper";
 import {useBlockId} from "../BlockManagerProvider";
+import useListHandler from "./hooks/useListHandler";
 
-function ListBlock({index = 1}) {
+function ListBlock({index = 0}) {
+    const {onClickHandler} = useListHandler();
     const {blockId} = useBlockId();
     const listBlock = useBlockData(blockId);
-
     const ref = useRef(null);
     const key = generate4wordId();
+    const listValue = getListIndexValue(index, listBlock.depth);
+
     useTextBlockObserver(ref);
+
     // text 맵으로 돌고
     // child가 있으면 block 맵으로 돌기
     return (
         <>
-            <p ref={ref} key={key} className={listBlock.type} data-list-depth={listBlock.depth}
-               data-list-value={`${getListValue(index + 1, listBlock.depth)}`} data-leaf="true">
+            <p ref={ref} key={key} className={listBlock.type} data-leaf="true"
+               data-list-depth={listBlock.depth}
+               data-list-value={listValue}
+               data-list-check={listBlock.isChecked}
+               onClick={onClickHandler}
+            >
 
                 {listBlock.textIdList.map(textId => {
                     return (
@@ -48,8 +56,7 @@ function ListBlock({index = 1}) {
     );
 }
 
-// TODO: 함수 빼야함
-const getListValue = (index, depth) => {
+const getListIndexValue = (index, depth) => {
     // 인덱스가 넘어가면 초기화
     const maxIndex = 26;
     // 0이면 maxIndex 반환

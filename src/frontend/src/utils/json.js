@@ -7,6 +7,7 @@ import {Cell} from "../model/Table/Cell";
 import {ListBlock} from "../model/ListBlock";
 import {HeadBlock} from "../model/HeadBlock";
 import {ContentsBlock} from "../model/ContentsBlock";
+import {Text} from "../model/Text";
 
 /**
  * @desc 저장된 json 문서 파싱하여 모델객체로 연결

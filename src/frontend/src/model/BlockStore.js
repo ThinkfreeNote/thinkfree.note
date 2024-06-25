@@ -7,6 +7,7 @@ import {ListBlock} from "./ListBlock";
 import {jsonToBlockStore} from "../utils/json";
 import {HeadBlock} from "./HeadBlock";
 import {ContentsBlock} from "./ContentsBlock";
+import {DEPTH_TYPE} from "../component/context/SelectionManagerProvider";
 
 /**
  * @typedef {ListBlock, TextBlock, Table} BlockModel
@@ -109,5 +110,17 @@ export class BlockStore {
 
     getBlockType(blockId) {
         return this[blockId]?.type;
+    }
+
+    // depth 재계산
+    recalculateDepth(blockId,depth) {
+        const block = this[blockId];
+        if(!DEPTH_TYPE.includes(block.type)) return;
+        block.depth = depth;
+
+        block.childIdList.forEach(childId => {
+            const block = this[childId];
+            block.depth = depth + 1;
+        })
     }
 }

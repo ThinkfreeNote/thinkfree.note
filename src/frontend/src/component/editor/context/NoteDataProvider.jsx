@@ -36,7 +36,10 @@ function NoteDataProvider({children, noteId}) {
                 const {blocks, blockIdList} = jsonToBlockStore(data.content);
                 blockStore.current = blocks;
                 setBlockIdList([...blockIdList]);
-            }).catch(e => navigate("/"));
+            }).catch(e => {
+                console.log(e);
+                navigate("/")
+            });
         }
     }, []);
 

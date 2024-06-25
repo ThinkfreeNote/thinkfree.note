@@ -149,7 +149,33 @@ function useListHandler() {
         return zeroDepthBlockIdList;
     }
 
-    return {increaseDepth, addListBlock, resetChildBlockDepth};
+    /**
+     * 리스트 css value 를 반환
+     */
+    const getListCssValue = (type, index, depth, isChecked) => {
+        // 체크 리스트인 경우
+        if (type === "cl") {
+            return isChecked ? "✅" : "❎";
+        }
+
+        // 인덱스가 넘어가면 초기화
+        const maxIndex = 26;
+        // 0이면 maxIndex 반환
+        const changedIndex = index % maxIndex || maxIndex; // 1-based index
+
+        switch (depth) {
+            case 0:
+                return index;
+            case 1:
+                return String.fromCharCode(64 + changedIndex); // 65 is 'A'
+            case 2:
+                return String.fromCharCode(96 + changedIndex); // 97 is 'a'
+            default:
+                return index;
+        }
+    }
+
+    return {increaseDepth, addListBlock, resetChildBlockDepth, getListCssValue};
 }
 
 export default useListHandler;

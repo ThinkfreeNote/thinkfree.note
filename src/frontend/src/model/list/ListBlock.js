@@ -1,11 +1,12 @@
 import {TextBlock} from "../text/TextBlock";
 
 export class ListBlock extends TextBlock {
-    constructor(id, type, contents = {}, parentId = "", childIdList = [], depth = 0) {
+    constructor(id, type, contents = {}, parentId = "", childIdList = [], depth = 0, isChecked = false) {
         super(id, type, contents);
         this.parentId = parentId;
         this.childIdList = childIdList;
         this.depth = depth;
+        this.isChecked = isChecked;
     }
 
     getChildIndex(childBlockId) {

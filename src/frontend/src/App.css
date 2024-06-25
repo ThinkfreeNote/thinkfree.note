@@ -716,6 +716,10 @@ table, th, td {
     content: var(--marker);
 }
 
+.cl::before {
+    content: attr(data-list-value);
+}
+
 /* drag */
 
 .drag-point-wrapper {

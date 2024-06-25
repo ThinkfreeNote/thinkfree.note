@@ -9,13 +9,15 @@ import {useBlockId} from "../BlockManagerProvider";
 import useListHandler from "./hooks/useListHandler";
 
 function ListBlock({index = 0}) {
+    const {onClickHandler} = useListHandler();
     const {blockId} = useBlockId();
     const listBlock = useBlockData(blockId);
     const ref = useRef(null);
     const key = generate4wordId();
     const listValue = getListIndexValue(index, listBlock.depth);
+
     useTextBlockObserver(ref);
-    listBlock.isChecked = "true";
+
     // text 맵으로 돌고
     // child가 있으면 block 맵으로 돌기
     return (
@@ -24,6 +26,7 @@ function ListBlock({index = 0}) {
                data-list-depth={listBlock.depth}
                data-list-value={listValue}
                data-list-check={listBlock.isChecked}
+               onClick={onClickHandler}
             >
 
                 {listBlock.textIdList.map(textId => {

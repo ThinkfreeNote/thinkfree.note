@@ -724,15 +724,13 @@ table, th, td {
 .cl[data-list-check="true"]::before {
     content: "✅";
 }
-.cl[data-list-check="false"]::before {
-    content: "⬜";
+
+.cl[data-list-check="true"] {
+    text-decoration: line-through;
 }
 
-.cl[data-list-check="true"]:hover::before {
+.cl[data-list-check="false"]::before {
     content: "⬜";
-}
-.cl[data-list-check="false"]:hover::before {
-    content: "✅";
 }
 
 .contents:hover {

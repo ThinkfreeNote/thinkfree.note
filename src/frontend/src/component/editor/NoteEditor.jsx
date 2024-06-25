@@ -7,6 +7,7 @@ import useEditorSelection from "./hooks/useEditorSelection";
 import useSlash from "./useSlash";
 import EditorToolBox from "./EditorToolBox";
 import useEditorDragHandler from "./hooks/useEditorDragHandler";
+import {useBlockStore} from "./hooks/useBlockHooks";
 
 export const EditorContext = createContext(null);
 
@@ -14,6 +15,9 @@ function NoteEditor() {
     const {blockIdList} = useBlockIdList();
     const editorRef = useRef(null);
     const {slashComponent} = useSlash(editorRef);
+    const blockStore = useBlockStore();
+
+
 
     // 에디터 셀렉션을 추적하는 핸들러
     useEditorSelection(blockIdList);
@@ -39,7 +43,10 @@ function NoteEditor() {
                  onMouseOut={onMouseLeave}
             >
                 <Title/>
-                {blockIdList.map(blockId => <NoteBlockSwitcher key={blockId} blockId={blockId}/>)}
+                {blockIdList.map(blockId => {
+                    const type = blockStore.getBlockType(blockId);
+                    return <NoteBlockSwitcher key={blockId} blockId={blockId} type={type}/>
+                })}
             </div>
             {slashComponent}
             <EditorToolBox/>

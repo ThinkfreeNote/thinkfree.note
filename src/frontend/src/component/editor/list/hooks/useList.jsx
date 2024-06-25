@@ -2,7 +2,7 @@ import {useBlockStore} from "../../hooks/useBlockHooks";
 import {useContext} from "react";
 import {BlockReRenderContext} from "../../context/BlockReRenderContext";
 
-function useList2() {
+function useList() {
     const blockStore = useBlockStore();
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
 
@@ -19,4 +19,4 @@ function useList2() {
     return {toggleCheckBox};
 }
 
-export default useList2;
+export default useList;

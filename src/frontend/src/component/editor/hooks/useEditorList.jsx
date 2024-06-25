@@ -7,7 +7,7 @@ import useBlockIdList from "./useBlockIdList";
 import {useSelectionManager} from "../../context/SelectionManagerProvider";
 import {EditorSelection} from "../../../model/Selection";
 
-function useEditorList2() {
+function useEditorList() {
     const note = useBlockIdList();
     const blockStore = useBlockStore();
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
@@ -131,6 +131,7 @@ function useEditorList2() {
     function resetChildBlockDepth(curBlock) {
         const zeroDepthBlockIdList = [];
         curBlock.depth = 0;
+
         // 자식들을 0 depth 로
         curBlock.childIdList.forEach((childId) => {
             const childBlock = blockStore.getBlock(childId);
@@ -152,4 +153,4 @@ function useEditorList2() {
     return {increaseDepth, addListBlock, resetChildBlockDepth};
 }
 
-export default useEditorList2;
+export default useEditorList;

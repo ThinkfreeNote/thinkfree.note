@@ -6,7 +6,7 @@ import {BlockReRenderContext} from "../context/BlockReRenderContext";
 import {useBlockStore} from "./useBlockHooks";
 import {useSelectionManager} from "../../context/SelectionManagerProvider";
 import {EditorSelection} from "../../../model/Selection";
-import useEditorList2 from "./useEditorList2";
+import useEditorList from "./useEditorList";
 import useTextHandler from "../text/hooks/useTextHandler";
 
 /**
@@ -20,7 +20,7 @@ function useNote() {
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
     const selectionManager = useSelectionManager();
     const {divideText} = useTextHandler();
-    const {addListBlock, resetChildBlockDepth} = useEditorList2();
+    const {addListBlock, resetChildBlockDepth} = useEditorList();
 
     /**
      * @desc 텍스트 블록을 삭제하는 함수

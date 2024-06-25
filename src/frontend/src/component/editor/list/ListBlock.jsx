@@ -6,10 +6,10 @@ import {generate4wordId} from "../../../utils/id";
 import TextComponent from "../text/TextComponent";
 import BlockWrapper from "../BlockWrapper";
 import {useBlockId} from "../BlockManagerProvider";
-import useListHandler2 from "./hooks/useListHandler2";
+import useListHandler from "./hooks/useListHandler";
 
 function ListBlock({index = 0}) {
-    const {onClickHandler} = useListHandler2();
+    const {onClickHandler} = useListHandler();
     const {blockId} = useBlockId();
     const listBlock = useBlockData(blockId);
     const ref = useRef(null);

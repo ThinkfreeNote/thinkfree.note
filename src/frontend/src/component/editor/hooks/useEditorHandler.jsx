@@ -63,7 +63,7 @@ function useEditorHandler() {
             }
         }
         // 리스트 블록인 경우
-        else if (blockType === "ul" || blockType === "ol") {
+        else if (blockType === "ul" || blockType === "ol" || blockType === "cl") {
             if (e.key === "Enter") {
                 appendBlockAfterCurrentListBlock(e);
             }

@@ -8,6 +8,7 @@ import {ListBlock} from "../model/list/ListBlock";
 import {HeadBlock} from "../model/head/HeadBlock";
 import {ContentsBlock} from "../model/head/ContentsBlock";
 import {QuoteBlock} from "../model/quote/QuoteBlock";
+import {Text} from "../model/text/Text";
 
 /**
  * @desc 저장된 json 문서 파싱하여 모델객체로 연결

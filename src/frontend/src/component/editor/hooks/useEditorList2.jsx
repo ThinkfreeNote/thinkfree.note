@@ -130,7 +130,7 @@ function useEditorList2() {
      */
     function resetChildBlockDepth(curBlock) {
         const zeroDepthBlockIdList = [];
-
+        curBlock.depth = 0;
         // 자식들을 0 depth 로
         curBlock.childIdList.forEach((childId) => {
             const childBlock = blockStore.getBlock(childId);

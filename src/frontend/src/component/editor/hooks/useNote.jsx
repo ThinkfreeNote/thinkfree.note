@@ -70,7 +70,6 @@ function useNote() {
             // 자식들의 depth 재조정
             updatedBlockIdList = resetChildBlockDepth(curBlock);
             setReRenderTargetId(curBlock.id);
-
         }
         else {
             const parentBlock = blockStore.getBlock(curBlock.parentId);
@@ -79,9 +78,11 @@ function useNote() {
             parentBlock.removeChild(curBlock.id);
             curBlock.parentId = "";
 
-            if (curBlock.depth === 1) {
+            const curDepth = curBlock.depth;
+            updatedBlockIdList = resetChildBlockDepth(curBlock);
+
+            if (curDepth === 1) {
                 // 자식들의 depth 재조정
-                updatedBlockIdList = resetChildBlockDepth(curBlock);
                 index = note.getIndexOfBlock(parentBlock.id);
             } else {
                 index = note.getIndexOfBlock(parentBlock.parentId);

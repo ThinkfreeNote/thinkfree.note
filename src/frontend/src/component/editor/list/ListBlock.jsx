@@ -13,16 +13,18 @@ function ListBlock({index = 0}) {
     const listBlock = useBlockData(blockId);
     const ref = useRef(null);
     const key = generate4wordId();
-    const listValue = useListHandler()
-        .getListCssValue(listBlock.type, index + 1, listBlock.depth, listBlock.isChecked);
+    const listValue = getListIndexValue(index, listBlock.depth);
     useTextBlockObserver(ref);
-
+    listBlock.isChecked = "true";
     // text 맵으로 돌고
     // child가 있으면 block 맵으로 돌기
     return (
         <>
-            <p ref={ref} key={key} className={listBlock.type} data-list-depth={listBlock.depth}
-               data-list-value={listValue} data-leaf="true">
+            <p ref={ref} key={key} className={listBlock.type} data-leaf="true"
+               data-list-depth={listBlock.depth}
+               data-list-value={listValue}
+               data-list-check={listBlock.isChecked}
+            >
 
                 {listBlock.textIdList.map(textId => {
                     return (
@@ -49,6 +51,24 @@ function ListBlock({index = 0}) {
             }
         </>
     );
+}
+
+const getListIndexValue = (index, depth) => {
+    // 인덱스가 넘어가면 초기화
+    const maxIndex = 26;
+    // 0이면 maxIndex 반환
+    const changedIndex = index % maxIndex || maxIndex; // 1-based index
+
+    switch (depth) {
+        case 0:
+            return index;
+        case 1:
+            return String.fromCharCode(64 + changedIndex); // 65 is 'A'
+        case 2:
+            return String.fromCharCode(96 + changedIndex); // 97 is 'a'
+        default:
+            return index;
+    }
 }
 
 export default React.memo(ListBlock);

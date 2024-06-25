@@ -34,6 +34,8 @@ const switcher = (type) => {
             return <ListBlock/>
         case "ol":
             return <OrderedListBlock/>
+        case "cl":
+            return <ListBlock/>
         case "head":
             return <HeadBlock/>
         case "contents":

@@ -18,7 +18,8 @@ export function jsonToBlockStore(jsonText) {
     return JSON.parse(jsonText, (key, value) => {
         if (value.type === "table") return Object.setPrototypeOf(value, Table.prototype);
         if (value.type === "text") return Object.setPrototypeOf(value, TextBlock.prototype);
-        if (value.type === "ul" || value.type === "ol") Object.setPrototypeOf(value, ListBlock.prototype);
+        if (value.type === "ul" || value.type === "ol" || value.type === "cl")
+            Object.setPrototypeOf(value, ListBlock.prototype);
         if (value.type === "head") Object.setPrototypeOf(value, HeadBlock.prototype);
         if (value.type === "contents") Object.setPrototypeOf(value, ContentsBlock.prototype);
         if (value.type === "quote") Object.setPrototypeOf(value, QuoteBlock.prototype);

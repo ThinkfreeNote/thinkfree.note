@@ -708,6 +708,7 @@ table, th, td {
     top: 0;
 }
 
+
 .ol[data-list-depth]::before {
     content: attr(data-list-value) ".";
 }
@@ -716,8 +717,27 @@ table, th, td {
     content: var(--marker);
 }
 
-.cl::before {
-    content: attr(data-list-value);
+.cl[data-list-check]::before {
+    margin-right: 5px;
+}
+
+.cl[data-list-check="true"]::before {
+    content: "✅";
+}
+.cl[data-list-check="false"]::before {
+    content: "⬜";
+}
+
+.cl[data-list-check="true"]:hover::before {
+    content: "⬜";
+}
+.cl[data-list-check="false"]:hover::before {
+    content: "✅";
+}
+
+.contents:hover {
+    background-color: #e0e0e0;
+    padding-left: 30px;
 }
 
 /* drag */

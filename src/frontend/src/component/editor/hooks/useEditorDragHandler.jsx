@@ -82,6 +82,7 @@ function useEditorDragHandler() {
         // 0뎁스에서 1뎁스 이상으로 이동하는 경우
         if(targetDepth === 0 && destinationDepth > 0) {
             if(!DEPTH_TYPE.includes(targetType)) return;
+            if(targetBlock.childIdList.length !== 0) return;
             if(targetType === destinationType) {
                 const parentBlock = blockStore.getBlock(destinationBlock.parentId);
                 targetBlock.parentId = destinationBlock.parentId;

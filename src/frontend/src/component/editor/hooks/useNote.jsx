@@ -78,9 +78,10 @@ function useNote() {
             parentBlock.removeChild(curBlock.id);
             curBlock.parentId = "";
 
+            const curDepth = curBlock.depth;
             updatedBlockIdList = resetChildBlockDepth(curBlock);
 
-            if (curBlock.depth === 1) {
+            if (curDepth === 1) {
                 // 자식들의 depth 재조정
                 index = note.getIndexOfBlock(parentBlock.id);
             } else {

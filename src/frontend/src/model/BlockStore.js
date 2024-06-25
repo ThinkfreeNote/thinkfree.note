@@ -121,4 +121,15 @@ export class BlockStore {
     getBlockType(blockId) {
         return this[blockId]?.type;
     }
+
+    // depth 재계산
+    recalculateDepth(blockId,depth) {
+        const block = this[blockId];
+        if(!Object.hasOwn(block,"depth")) return;
+        block.depth = depth;
+
+        block.childIdList.forEach((childId)=>{
+            this.recalculateDepth(childId,depth+1);
+        })
+    }
 }

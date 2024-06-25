@@ -7,7 +7,7 @@ import useBlockIdList from "./useBlockIdList";
 import {useSelectionManager} from "../../context/SelectionManagerProvider";
 import {EditorSelection} from "../../../model/Selection";
 
-function useEditorList() {
+function useEditorList2() {
     const note = useBlockIdList();
     const blockStore = useBlockStore();
     const {setReRenderTargetId} = useContext(BlockReRenderContext);
@@ -152,4 +152,4 @@ function useEditorList() {
     return {increaseDepth, addListBlock, resetChildBlockDepth};
 }
 
-export default useEditorList;
+export default useEditorList2;

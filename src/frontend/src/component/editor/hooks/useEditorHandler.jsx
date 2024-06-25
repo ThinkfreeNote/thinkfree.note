@@ -3,7 +3,7 @@ import {useBlockStore} from "./useBlockHooks";
 import {useTableHandler} from "../table/hooks/useTableHandler";
 import useTextHandler from "../text/hooks/useTextHandler";
 import useNote from "./useNote";
-import useEditorList from "./useEditorList";
+import useEditorList2 from "./useEditorList2";
 import useBlockIdList from "./useBlockIdList";
 import {useMouseHoverBlockManager} from "../context/EditorMouseHoverProvider";
 
@@ -23,7 +23,7 @@ function useEditorHandler() {
     } = useNote();
     const {tableArrowHandler, updateCellValue, openCalcDialog, tableEnterHandler} = useTableHandler();
     const {updateTextValue, deleteTextValue} = useTextHandler();
-    const {increaseDepth} = useEditorList();
+    const {increaseDepth} = useEditorList2();
 
     const onKeyDownHandler = (e) => {
         // 키 입력이 발생한 block Id와 타입

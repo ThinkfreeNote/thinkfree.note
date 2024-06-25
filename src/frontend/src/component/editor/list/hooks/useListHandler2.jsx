@@ -1,9 +1,9 @@
 import {useBlockStore} from "../../hooks/useBlockHooks";
-import useList from "./useList";
+import useList2 from "./useList2";
 
 
-function useListHandler() {
-    const {toggleCheckBox} = useList();
+function useListHandler2() {
+    const {toggleCheckBox} = useList2();
     const blockStore = useBlockStore();
 
     const onClickHandler = (e) => {
@@ -20,4 +20,4 @@ function useListHandler() {
     return {onClickHandler};
 }
 
-export default useListHandler;
+export default useListHandler2;

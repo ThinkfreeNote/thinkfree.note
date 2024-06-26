@@ -14,7 +14,7 @@ function ListBlock({index = 0}) {
     const listBlock = useBlockData(blockId);
     const ref = useRef(null);
     const key = generate4wordId();
-    const listValue = getListIndexValue(index, listBlock.depth);
+    const listValue = getListIndexValue(index +1, listBlock.depth);
 
     useTextBlockObserver(ref);
 

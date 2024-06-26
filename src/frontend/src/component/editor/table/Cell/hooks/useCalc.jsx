@@ -7,15 +7,16 @@ import {Calc, checkCalc} from "../../../../../utils/table";
 export function useCalc(tableData) {
 
     /**
-     * @param {string} text
+     * @param {string} value
      * @param {Set} visitedCells
      * @returns {string}
      */
-    const calculate = (text, visitedCells) => {
+    const calculate = (value, visitedCells) => {
+        const text = value.replaceAll(" ","");
         const calcType = checkCalc(text);
         // 계산함수 미적용 혹은 계산 함수가 아닌 경우
         if (calcType === Calc.NONE) {
-            return (text.startsWith("=") && text.length > 1) ? "!계산식 오류" : text;
+            return (text.startsWith("=") && text.length > 1) ? "!계산식 오류" : value;
         }
         const {method, parameters} = parseCalculate(text, calcType);
 
@@ -27,7 +28,7 @@ export function useCalc(tableData) {
                 return calculateByMethod(text, method, parameters, visitedCells);
             }
             default : {
-                return text;
+                return value;
             }
         }
     }

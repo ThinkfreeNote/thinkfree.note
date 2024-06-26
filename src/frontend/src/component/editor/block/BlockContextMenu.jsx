@@ -33,9 +33,10 @@ function BlockContextMenu({closeMenu}) {
         <ContextMenu closeMenu={closeMenu}>
             <ContextMenu.SubTitle text={"블록 메뉴"}/>
             <ContextMenu.Divider/>
-            <ContextMenu.DropDown icon={<TransIcon/>} name="전환">
-                <ContextMenu.Plain icon={<TextBlockIcon/>} name="텍스트박스"/>
-            </ContextMenu.DropDown>
+            {/*<ContextMenu.Plain icon={<TransIcon/>} name="전환"/>*/}
+            {/*<ContextMenu.DropDown icon={<TransIcon/>} name="전환">*/}
+            {/*    <ContextMenu.Plain icon={<TextBlockIcon/>} name="텍스트박스"/>*/}
+            {/*</ContextMenu.DropDown>*/}
             <ContextMenu.Plain icon={<DuplicateIcon/>} name="복제" handler={duplicateHandler}/>
             <ContextMenu.Plain icon={<DeleteIcon/>} name="삭제" handler={deleteHandler}/>
         </ContextMenu>

@@ -7,6 +7,9 @@ import {useBlockStore} from "./hooks/useBlockHooks";
 import {ReactComponent as TextBlockIcon} from "../../assets/icon_textBlock.svg";
 import {ReactComponent as UnorderedIcon} from "../../assets/icon_unorderedList.svg";
 import {ReactComponent as TableIcon} from "../../assets/icon_table.svg";
+import {ReactComponent as ContentIcon} from "../../assets/icon_content.svg";
+import {ReactComponent as BlockquoteIcon} from "../../assets/icon_blockquote.svg";
+import {ReactComponent as CheckIcon} from "../../assets/icon_checkList.svg";
 import {TextBlock} from "../../model/text/TextBlock";
 import {useSelectionManager} from "../context/SelectionManagerProvider";
 import {EditorSelection} from "../../model/Selection";
@@ -49,8 +52,8 @@ function useSlash(editorRef) {
 }
 
 
-const SLASH_ITEM_TYPES = [["텍스트블록", "text", <TextBlockIcon/>],["제목1","head",<TextBlockIcon/>,1],["제목2","head",<TextBlockIcon/>,2],["제목3","head",<TextBlockIcon/>,3],["제목4","head",<TextBlockIcon/>,4], ["목록", "ul", <UnorderedIcon/>],["순서 목록", "ol", <UnorderedIcon/>], ["표", "table",
-    <TableIcon/>]];
+const SLASH_ITEM_TYPES = [["텍스트블록", "text", <TextBlockIcon/>],["제목1","head",<TextBlockIcon/>,1],["제목2","head",<TextBlockIcon/>,2],["제목3","head",<TextBlockIcon/>,3],["목차","contents",<ContentIcon/>], ["목록", "ul", <UnorderedIcon/>],["순서 목록", "ol", <UnorderedIcon/>],["To-Do 리스트","cl",<CheckIcon/>], ["표", "table",
+    <TableIcon/>],["인용","quote",<BlockquoteIcon/>]];
 
 /**
  * @desc ContextMenu 기반의 슬래시 메뉴
@@ -77,7 +80,7 @@ function SlashMenu({closeMenu, editorRef}) {
         const $selectedItem = $slash.querySelector(".selected");
 
         if(!$selectedItem) return;
-        $selectedItem.scrollIntoView({behavior : "smooth",block:"end"});
+        $selectedItem.scrollIntoView({behavior : "auto",block:"end"});
     }, [menuIndex]);
 
     useEffect(() => {
@@ -92,7 +95,7 @@ function SlashMenu({closeMenu, editorRef}) {
             if (e.key === "Enter") {
                 e.preventDefault();
                 if (menuIndex <= 0) return
-                replaceNewBlock(SLASH_ITEM_TYPES[menuIndex - 1][1]);
+                replaceNewBlock(SLASH_ITEM_TYPES[menuIndex - 1][1],SLASH_ITEM_TYPES[menuIndex-1][3]);
                 e.stopPropagation();
             }
             if (e.key.startsWith("Arrow")) {

@@ -468,6 +468,7 @@ table, th, td {
     padding: .3rem 0;
     max-height: 200px;
     overflow-y: scroll;
+    overflow-x : visible;
     box-shadow: 0 0 5px rgba(0, 0, 0, .3);
     animation: .2s ease normal fadein forwards;
     opacity: 0;

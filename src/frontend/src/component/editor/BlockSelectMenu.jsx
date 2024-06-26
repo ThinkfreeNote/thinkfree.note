@@ -5,6 +5,9 @@ import {useBlockStore} from "./hooks/useBlockHooks";
 import {ReactComponent as TextBlockIcon} from "../../assets/icon_textBlock.svg";
 import {ReactComponent as UnorderedIcon} from "../../assets/icon_unorderedList.svg";
 import {ReactComponent as TableIcon} from "../../assets/icon_table.svg";
+import {ReactComponent as ContentIcon} from "../../assets/icon_content.svg";
+import {ReactComponent as QuoteIcon} from "../../assets/icon_blockquote.svg";
+import {ReactComponent as CheckListIcon} from "../../assets/icon_checkList.svg";
 import {useSelectionManager} from "../context/SelectionManagerProvider";
 import {EditorSelection} from "../../model/Selection";
 
@@ -29,11 +32,11 @@ function BlockSelectMenu({closeMenu, blockId}) {
             <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 1)} name="제목1"/>
             <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 2)} name="제목2"/>
             <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("head", 3)} name="제목3"/>
-            <ContextMenu.Plain icon={<TextBlockIcon/>} handler={() => addBlock("contents")} name="목차"/>
-            <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ul")} name="순서 없는 리스트"/>
-            <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ol")} name="순서 있는 리스트"/>
-            <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("cl")} name="체크 리스트"/>
-            <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("quote")} name="인용"/>
+            <ContextMenu.Plain icon={<ContentIcon/>} handler={() => addBlock("contents")} name="목차"/>
+            <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ul")} name="목록"/>
+            <ContextMenu.Plain icon={<UnorderedIcon/>} handler={() => addBlock("ol")} name="순서 목록"/>
+            <ContextMenu.Plain icon={<CheckListIcon/>} handler={() => addBlock("cl")} name="To-Do 리스트"/>
+            <ContextMenu.Plain icon={<QuoteIcon/>} handler={() => addBlock("quote")} name="인용"/>
             <ContextMenu.Plain icon={<TableIcon/>} handler={() => addBlock("table")} name="테이블"/>
         </ContextMenu>
     );

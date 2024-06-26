@@ -153,7 +153,10 @@ export function useCalc(tableData) {
         }
         visitedCells.add(cellIndex);
 
-        const result = calculate(tableData.getRow(rowId).getCell(columnId).text, visitedCells);
+        const text = tableData.getRow(rowId).getCell(columnId).text.replaceAll(" ","");
+
+        console.log(text);
+        const result = calculate(text, visitedCells);
         visitedCells.delete(cellIndex);
 
         return result;

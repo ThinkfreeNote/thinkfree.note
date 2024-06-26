@@ -5,7 +5,7 @@ import {MenuContext} from "./MenuContext";
 import {ReactComponent as ToggleOn} from "../../../assets/icon_check.svg";
 import {ReactComponent as ArrowRightIcon} from "../../../assets/icon_arrow_right.svg";
 
-function ContextMenuMain({children, closeMenu}) {
+function ContextMenuMain({children, closeMenu ,className}) {
     const menuRef = useRef(null);
     const {offset, setOffset} = useContext(MenuContext);
 
@@ -30,7 +30,7 @@ function ContextMenuMain({children, closeMenu}) {
 
 
     return (
-        <div onClick={overlayClickHandler} contentEditable={false} className="context-menu-overlay"
+        <div  onClick={overlayClickHandler} contentEditable={false} className={`context-menu-overlay ${className}`}
              style={{userSelect: "none"}}>
             <div ref={menuRef} className="context-menu" style={{top: offset.y, left: offset.x}}>
                 {children}

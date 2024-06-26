@@ -7,6 +7,9 @@ import {useBlockStore} from "./hooks/useBlockHooks";
 import {ReactComponent as TextBlockIcon} from "../../assets/icon_textBlock.svg";
 import {ReactComponent as UnorderedIcon} from "../../assets/icon_unorderedList.svg";
 import {ReactComponent as TableIcon} from "../../assets/icon_table.svg";
+import {ReactComponent as ContentIcon} from "../../assets/icon_content.svg";
+import {ReactComponent as BlockquoteIcon} from "../../assets/icon_blockquote.svg";
+import {ReactComponent as CheckIcon} from "../../assets/icon_checkList.svg";
 import {TextBlock} from "../../model/text/TextBlock";
 import {useSelectionManager} from "../context/SelectionManagerProvider";
 import {EditorSelection} from "../../model/Selection";
@@ -49,8 +52,8 @@ function useSlash(editorRef) {
 }
 
 
-const SLASH_ITEM_TYPES = [["텍스트블록", "text", <TextBlockIcon/>], ["목록", "ul", <UnorderedIcon/>],["순서 목록", "ol", <UnorderedIcon/>], ["표", "table",
-    <TableIcon/>]];
+const SLASH_ITEM_TYPES = [["텍스트블록", "text", <TextBlockIcon/>],["제목1","head",<TextBlockIcon/>,1],["제목2","head",<TextBlockIcon/>,2],["제목3","head",<TextBlockIcon/>,3],["목차","contents",<ContentIcon/>], ["목록", "ul", <UnorderedIcon/>],["순서 목록", "ol", <UnorderedIcon/>],["To-Do 리스트","cl",<CheckIcon/>], ["표", "table",
+    <TableIcon/>],["인용","quote",<BlockquoteIcon/>]];
 
 /**
  * @desc ContextMenu 기반의 슬래시 메뉴
@@ -65,12 +68,20 @@ function SlashMenu({closeMenu, editorRef}) {
     const blockStore = useBlockStore();
     const {setEditorCaretPosition} = useSelectionManager();
 
-    const replaceNewBlock = (type) => {
+    const replaceNewBlock = (type,level) => {
         closeMenu();
-        const newBlock = blockStore.createNewBlock(type);
+        const newBlock = blockStore.createNewBlock(type,[],level);
         replaceBlock(editorSelection.blockId[0],newBlock.id);
         setEditorCaretPosition(newBlock.id, newBlock.getFirstBlockOffset(), EditorSelection.FRONT_OFFSET,type);
     }
+
+    useEffect(() => {
+        const $slash = document.querySelector(".slash");
+        const $selectedItem = $slash.querySelector(".selected");
+
+        if(!$selectedItem) return;
+        $selectedItem.scrollIntoView({behavior : "auto",block:"end"});
+    }, [menuIndex]);
 
     useEffect(() => {
         if (!editorRef.current) return;
@@ -84,15 +95,17 @@ function SlashMenu({closeMenu, editorRef}) {
             if (e.key === "Enter") {
                 e.preventDefault();
                 if (menuIndex <= 0) return
-                replaceNewBlock(SLASH_ITEM_TYPES[menuIndex - 1][1]);
+                replaceNewBlock(SLASH_ITEM_TYPES[menuIndex - 1][1],SLASH_ITEM_TYPES[menuIndex-1][3]);
                 e.stopPropagation();
             }
             if (e.key.startsWith("Arrow")) {
                 e.preventDefault();
+
                 if (e.key === "ArrowDown" || e.key === "ArrowRight") {
-                    setMenuIndex(prev => prev === SLASH_ITEM_TYPES.length ? prev : prev + 1);
+                    // setMenuIndex(prev => (prev + 1) % (SLASH_ITEM_TYPES.length +1));
+                    setMenuIndex(prev => prev + 1 > SLASH_ITEM_TYPES.length ? 1 : prev+1);
                 } else {
-                    setMenuIndex(prev => prev === 0 ? prev : prev - 1);
+                    setMenuIndex(prev => prev - 1 > 0 ?  prev -1 : SLASH_ITEM_TYPES.length);
                 }
             }
         }
@@ -105,12 +118,12 @@ function SlashMenu({closeMenu, editorRef}) {
 
     }, [menuIndex]);
 
-    return <ContextMenu closeMenu={closeMenu}>
+    return <ContextMenu className={"slash"} closeMenu={closeMenu}>
         <ContextMenu.SubTitle text="블록 추가"/>
         <ContextMenu.Divider/>
         {SLASH_ITEM_TYPES.map((item, idx) => {
-            const [text, type, icon] = item;
-            return <ContextMenu.Plain key={idx} isSelected={menuIndex === idx + 1} handler={() => replaceNewBlock(type)}
+            const [text, type, icon,level] = item;
+            return <ContextMenu.Plain key={idx} isSelected={menuIndex === idx + 1} handler={() => replaceNewBlock(type,level)}
                                       name={text} icon={icon}/>
         })}
     </ContextMenu>

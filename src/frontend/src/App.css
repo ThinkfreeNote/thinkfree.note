@@ -7,7 +7,7 @@
     --side: 20px;
     --point-color: 254, 0, 121;
     /*--point-color: 110, 93, 198;*/
-    --point-color-hover: rgb(130, 113, 218);
+    --point-color-hover: rgb(253, 169, 207);
     --point-color-shadow: rgba(254, 0, 121, .3);
 }
 
@@ -466,9 +466,21 @@ table, th, td {
     background-color: white;
     border-radius: 3px;
     padding: .3rem 0;
+    max-height: 200px;
+    overflow-y: scroll;
     box-shadow: 0 0 5px rgba(0, 0, 0, .3);
     animation: .2s ease normal fadein forwards;
     opacity: 0;
+}
+.context-menu::-webkit-scrollbar {
+    width: 3px;
+
+}
+.context-menu::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--point-color));
+}
+.context-menu::-webkit-scrollbar-track {
+    background-color: rgb(224,224,224);
 }
 
 .context-menu-item {

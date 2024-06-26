@@ -27,7 +27,7 @@ function EditorToolBox() {
 
             // 텍스트 toolBox
             const type = blockStore.getBlockType(startNodeBlockId);
-            if (type === "text" || type === "ol" || type === "ul") {
+            if (type === "text" || type === "ol" || type === "ul" || type === "cl") {
                 if (!editorSelection.isCaret()) {
                     setIsShow("text");
                     setBlockId(startNodeBlockId);
